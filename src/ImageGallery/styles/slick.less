@@ -1,24 +1,45 @@
 .@{image-gallery-prefix-cls} {
-  .slick-thumb li {
-    width: 96px;
-    height: 72px;
-  }
-
-  .slick-dots {
+  .@{prefix}-i-g-thumbnails {
+    position: absolute;
+    bottom: 46px;
     display: flex;
-    li.icon {
+    justify-content: center;
+    & > .icon {
       width: 24px;
+      height: 72px;
       background-color: rgba(0, 0, 0, 0.25);
-      & > div {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    & > .icon.r {
+      margin-left: 6px;
+    }
+    & > .icon.l {
+      margin-right: 6px;
+    }
+    & > .@{prefix}-i-g-thumbnails-container {
+      padding: 0;
+      margin: 0;
+      max-width: 972px;
+      display: flex;
+      white-space: nowrap;
+      overflow: hidden;
+      ul {
+        padding: 0;
+        margin: 0;
+        transition: all 450ms ease-out 0s;
       }
     }
     li {
+      box-sizing: border-box;
       border: 4px solid transparent;
+      width: 96px;
+      min-width: 96px;
+      height: 72px;
+      margin: 0 6px;
     }
-    li:hover:not(.icon) {
+    li:hover {
       border: 4px solid @ig-blue;
     }
     .slick-active {
@@ -37,36 +58,32 @@
     content: '';
   }
 
-  .slick-prev,
-  .slick-next {
-    position: fixed;
-  }
+  .@{prefix}-slick-slider {
+    position: inherit;
+    height: 100%;
+    .slick-prev,
+    .slick-next {
+      width: 40px;
+      height: 46px;
+      position: absolute;
+    }
+    .slick-prev {
+      left: 50px;
+    }
 
-  .slick-prev {
-    left: 50px;
-  }
-
-  .slick-next {
-    right: 50px;
-  }
-
-  .slick-slider-wraper {
-    height: 520px;
-    border-radius: 8px;
+    .slick-next {
+      right: 50px;
+    }
   }
 
   .slick-list {
     width: 570px;
     margin: 0 auto;
-    .slick-slide .image-gallery-image {
-      width: 100%;
-      object-fit: contain;
-      max-height: calc(100vh - 80px);
-    }
   }
 
-  .image-gallery-thumbnails-container {
-    position: relative;
-    margin-top: 48px;
+  .@{prefix}-i-g-image {
+    width: 100%;
+    object-fit: contain;
+    max-height: calc(100vh - 80px);
   }
 }

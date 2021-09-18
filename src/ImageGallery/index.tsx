@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, useRef, useState } from 'react';
 
 import classNames from 'classnames';
 import SliderWrapper from './components/Slider';
@@ -8,27 +8,42 @@ import {
   CareLeftFilled,
   CareRightFilled,
 } from './components/Svg';
-
+import { thumbnailsMaxLength } from './config/index';
 import { getPrefixCls } from './config/index';
 import './styles/index.less';
 const PREFIX_URL =
   'https://raw.githubusercontent.com/xiaolin/react-image-gallery/master/static/';
 
-interface Props {
-  prefixCls?: string;
-}
-
-const defaultProps: Props = {
-  prefixCls: '',
+type Items = {
+  src: string;
 };
 
-const ImageGallery: FC<Props> = (props = defaultProps) => {
-  const Slider = useRef<any>();
+interface Props {
+  prefixCls?: string;
+  thumbnailsSlideToCount?: number;
+  items: Items[];
+}
+
+const ImageGallery: FC<Props> = ({
+  thumbnailsSlideToCount = 1,
+  prefixCls,
+  items,
+}) => {
+  // const prefixCls = props.prefixCls;
+  const Slider = useRef<any>(); // Slider.current.slickPrev()
+  const thumbnailsSlideWidth = 108;
+  const maxL = (items.length - thumbnailsMaxLength) * thumbnailsSlideWidth;
+  const [thumbnailsMobileW, setThumbnailsMobileW] = useState(0);
+  const [thumbnailsStyle, setThumbnailsStyle] = useState({});
+  const [flag, setFlag] = useState<boolean>(false);
 
   const settings = {
     dots: true,
-    dotsClass: 'slick-dots slick-thumb image-gallery-thumbnails-container',
-    className: 'slick-slider-wraper',
+    dotsClass: `slick-dots slick-thumb ${getPrefixCls(
+      prefixCls,
+      'i-g-thumbnails',
+    )}`,
+    className: getPrefixCls(prefixCls, 'slick-slider'),
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -47,17 +62,70 @@ const ImageGallery: FC<Props> = (props = defaultProps) => {
       );
     },
     appendDots: (dots: React.ReactDOM[]) => {
-      const maxMore = dots.length >= 9;
+      const maxMore = dots.length >= thumbnailsMaxLength;
       return (
-        <ul>
+        <div>
           {maxMore && (
-            <CareLeftFilled onClick={() => Slider.current.slickPrev()} />
+            <CareLeftFilled
+              onClick={() => {
+                let trans =
+                  -thumbnailsSlideWidth * thumbnailsSlideToCount +
+                  thumbnailsMobileW;
+                console.log(trans, Math.abs(trans), maxL);
+
+                if (Math.abs(trans) > maxL) {
+                  console.log(flag, 'flag');
+
+                  if (flag) {
+                    return;
+                  }
+                  if (thumbnailsSlideToCount > 1) {
+                    trans = trans + thumbnailsSlideWidth;
+                    setFlag(true);
+                  } else {
+                    return;
+                  }
+                }
+                setThumbnailsMobileW(trans);
+                setThumbnailsStyle({
+                  transform: `translate3d(${trans}px, 0px, 0px)`,
+                });
+              }}
+            />
           )}
-          {dots}
+          <div
+            className={`${getPrefixCls(prefixCls, 'i-g-thumbnails-container')}`}
+          >
+            <ul style={thumbnailsStyle}>{dots}</ul>
+          </div>
           {maxMore && (
-            <CareRightFilled onClick={() => Slider.current.slickNext()} />
+            <CareRightFilled
+              onClick={() => {
+                let trans =
+                  thumbnailsSlideWidth * thumbnailsSlideToCount +
+                  thumbnailsMobileW;
+
+                console.log(trans, 'trans');
+
+                if (trans > 0) {
+                  if (!flag) {
+                    return;
+                  }
+                  if (thumbnailsSlideToCount > 1) {
+                    trans = trans - thumbnailsSlideWidth;
+                    setFlag(false);
+                  } else {
+                    return;
+                  }
+                }
+                setThumbnailsMobileW(trans);
+                setThumbnailsStyle({
+                  transform: `translate3d(${trans}px, 0px, 0px)`,
+                });
+              }}
+            />
           )}
-        </ul>
+        </div>
       );
     },
     beforeChange: (oldIndex: number, newIndex: number) => {
@@ -69,68 +137,23 @@ const ImageGallery: FC<Props> = (props = defaultProps) => {
     },
   };
 
-  const prefixCls = getPrefixCls(props.prefixCls);
-
-  const className = classNames(prefixCls, {});
+  const wrapCls = classNames(getPrefixCls(prefixCls), {});
 
   return (
-    <div className={className}>
-      <div className="container">
+    <div className={wrapCls}>
+      <div className={getPrefixCls(prefixCls, 'i-g-container')}>
         <SliderWrapper sliderWrapper={Slider} settings={settings}>
-          <div>
-            <img
-              className="image-gallery-image"
-              src={`${PREFIX_URL}/${1}.jpg`}
-            />
-          </div>
-          <div>
-            <img
-              className="image-gallery-image"
-              src={`${PREFIX_URL}/${2}.jpg`}
-            />
-          </div>
-          <div>
-            <img
-              className="image-gallery-image"
-              src={`${PREFIX_URL}/${3}.jpg`}
-            />
-          </div>
-          <div>
-            <img
-              className="image-gallery-image"
-              src={`${PREFIX_URL}/${4}.jpg`}
-            />
-          </div>
-          <div>
-            <img
-              className="image-gallery-image"
-              src={`${PREFIX_URL}/${5}.jpg`}
-            />
-          </div>
-          <div>
-            <img
-              className="image-gallery-image"
-              src={`${PREFIX_URL}/${6}.jpg`}
-            />
-          </div>
-          <div>
-            <img
-              className="image-gallery-image"
-              src={`${PREFIX_URL}/${7}.jpg`}
-            />
-          </div>
-          <div>
-            <img
-              className="image-gallery-image"
-              src={`${PREFIX_URL}/${8}.jpg`}
-            />
-          </div>
-          <div>
-            <img
-              className="image-gallery-image"
-              src={`${PREFIX_URL}/${9}.jpg`}
-            />
-          </div>
+          {items &&
+            items.map((i: Items) => {
+              return (
+                <div key={i.src}>
+                  <img
+                    className={getPrefixCls(prefixCls, 'i-g-image')}
+                    src={i.src}
+                  />
+                </div>
+              );
+            })}
         </SliderWrapper>
       </div>
     </div>
