@@ -1,4 +1,50 @@
 @prefix: lib;
 
 @ig-blue: rgba(60, 122, 247, 1);
+@bgc: #2c2c2c;
 @image-gallery-prefix-cls: ~'@{prefix}-image-gallery';
+
+.image() {
+  object-fit: contain;
+  vertical-align: middle;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.dfcc() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bc(@color) {
+  background-color: @color;
+}
+
+.position(@value) {
+  position: @value;
+}
+
+.pcenter(@value) {
+  .position(@value);
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.zi(@value) {
+  z-index: @value;
+}
+
+.h(@value) {
+  height: @value;
+}
+
+.w(@value) {
+  width: @value;
+}

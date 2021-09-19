@@ -91,8 +91,8 @@ const ImageGallery: FC<Props> = ({
       return (
         <a>
           <img
-            style={{ width: '100%', height: '100%' }}
-            src={`${PREFIX_URL}/${1 + i}.jpg`}
+            className={`${getPrefixCls(prefixCls, 'i-g-t-c-img')}`}
+            src={items[i].src}
           />
         </a>
       );
@@ -104,7 +104,12 @@ const ImageGallery: FC<Props> = ({
           <div
             className={`${getPrefixCls(prefixCls, 'i-g-thumbnails-container')}`}
           >
-            <ul style={thumbnailsStyle}>{dots}</ul>
+            <ul
+              className={`${getPrefixCls(prefixCls, 'i-g-t-c-ul')}`}
+              style={thumbnailsStyle}
+            >
+              {dots}
+            </ul>
           </div>
           {getControlMobileBtn(dots, 'right')}
         </div>
@@ -128,7 +133,10 @@ const ImageGallery: FC<Props> = ({
           {items &&
             items.map((i: Items) => {
               return (
-                <div key={i.src}>
+                <div
+                  key={i.src}
+                  className={getPrefixCls(prefixCls, 'i-g-image-box')}
+                >
                   <img
                     className={getPrefixCls(prefixCls, 'i-g-image')}
                     src={i.src}
