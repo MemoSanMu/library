@@ -8,7 +8,11 @@ import {
   CareLeftFilled,
   CareRightFilled,
 } from './components/Svg';
-import { thumbnailsMaxLength } from './config/index';
+import {
+  thumbnailsMaxLength,
+  thumbnailsSlideWidth,
+  getMaxXMobileRang,
+} from './config/index';
 import { getPrefixCls } from './config/index';
 import './styles/index.less';
 const PREFIX_URL =
@@ -17,25 +21,57 @@ const PREFIX_URL =
 type Items = {
   src: string;
 };
+type Direction = string | 'left' | 'right';
 
 interface Props {
   prefixCls?: string;
-  thumbnailsSlideToCount?: number;
+  thumbnailsSlideMobileCount?: number; // 缩略图可滚动条数
   items: Items[];
 }
 
 const ImageGallery: FC<Props> = ({
-  thumbnailsSlideToCount = 1,
+  thumbnailsSlideMobileCount = 1,
   prefixCls,
   items,
 }) => {
-  // const prefixCls = props.prefixCls;
   const Slider = useRef<any>(); // Slider.current.slickPrev()
-  const thumbnailsSlideWidth = 108;
-  const maxL = (items.length - thumbnailsMaxLength) * thumbnailsSlideWidth;
-  const [thumbnailsMobileW, setThumbnailsMobileW] = useState(0);
-  const [thumbnailsStyle, setThumbnailsStyle] = useState({});
-  const [flag, setFlag] = useState<boolean>(false);
+
+  const maxXMobileRange = getMaxXMobileRang(items.length);
+  const [thumbnailsMobileW, setThumbnailsMobileW] = useState(0); // 缩略图 累计滚动的x轴宽度
+  const [thumbnailsStyle, setThumbnailsStyle] = useState({}); // 缩略图 滚动样式
+
+  // 处理缩略图左右切换移动按钮 滚动宽度
+  const handleControlMobile = (isLeft: boolean) => {
+    let transX;
+    if (isLeft) {
+      transX =
+        -thumbnailsSlideWidth * thumbnailsSlideMobileCount + thumbnailsMobileW;
+      if (Math.abs(transX) > maxXMobileRange) {
+        transX = -maxXMobileRange;
+      }
+    } else {
+      transX =
+        thumbnailsSlideWidth * thumbnailsSlideMobileCount + thumbnailsMobileW;
+      if (transX > 0) {
+        transX = 0;
+      }
+    }
+    setThumbnailsMobileW(transX);
+    setThumbnailsStyle({
+      transform: `translate3d(${transX}px, 0px, 0px)`,
+    });
+  };
+
+  // 获取缩略图左右切换移动按钮
+  const getControlMobileBtn = (
+    dots: React.ReactDOM[],
+    direction: Direction,
+  ) => {
+    const maxMore = dots.length >= thumbnailsMaxLength;
+    const isLeft = direction === 'left';
+    const Component = isLeft ? CareLeftFilled : CareRightFilled;
+    return maxMore && <Component onClick={() => handleControlMobile(isLeft)} />;
+  };
 
   const settings = {
     dots: true,
@@ -62,69 +98,15 @@ const ImageGallery: FC<Props> = ({
       );
     },
     appendDots: (dots: React.ReactDOM[]) => {
-      const maxMore = dots.length >= thumbnailsMaxLength;
       return (
         <div>
-          {maxMore && (
-            <CareLeftFilled
-              onClick={() => {
-                let trans =
-                  -thumbnailsSlideWidth * thumbnailsSlideToCount +
-                  thumbnailsMobileW;
-                console.log(trans, Math.abs(trans), maxL);
-
-                if (Math.abs(trans) > maxL) {
-                  console.log(flag, 'flag');
-
-                  if (flag) {
-                    return;
-                  }
-                  if (thumbnailsSlideToCount > 1) {
-                    trans = trans + thumbnailsSlideWidth;
-                    setFlag(true);
-                  } else {
-                    return;
-                  }
-                }
-                setThumbnailsMobileW(trans);
-                setThumbnailsStyle({
-                  transform: `translate3d(${trans}px, 0px, 0px)`,
-                });
-              }}
-            />
-          )}
+          {getControlMobileBtn(dots, 'left')}
           <div
             className={`${getPrefixCls(prefixCls, 'i-g-thumbnails-container')}`}
           >
             <ul style={thumbnailsStyle}>{dots}</ul>
           </div>
-          {maxMore && (
-            <CareRightFilled
-              onClick={() => {
-                let trans =
-                  thumbnailsSlideWidth * thumbnailsSlideToCount +
-                  thumbnailsMobileW;
-
-                console.log(trans, 'trans');
-
-                if (trans > 0) {
-                  if (!flag) {
-                    return;
-                  }
-                  if (thumbnailsSlideToCount > 1) {
-                    trans = trans - thumbnailsSlideWidth;
-                    setFlag(false);
-                  } else {
-                    return;
-                  }
-                }
-                setThumbnailsMobileW(trans);
-                setThumbnailsStyle({
-                  transform: `translate3d(${trans}px, 0px, 0px)`,
-                });
-              }}
-            />
-          )}
+          {getControlMobileBtn(dots, 'right')}
         </div>
       );
     },

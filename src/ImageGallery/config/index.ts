@@ -16,3 +16,10 @@ export const getPrefixCls = (
 
 // 索引缩略图最大展示长度
 export const thumbnailsMaxLength = 9;
+
+// 单个缩略图 的宽度 width+margin+border
+export const thumbnailsSlideWidth = 108;
+
+// 根据传入的 缩略图 可滚动条数 算出最大可滚动范围
+export const getMaxXMobileRang = (itemLength: number) =>
+  (itemLength - thumbnailsMaxLength) * thumbnailsSlideWidth;
