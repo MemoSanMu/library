@@ -1,4 +1,5 @@
 import React, { FC, useRef, useState } from 'react';
+import RcTooltip from 'rc-tooltip';
 
 import classNames from 'classnames';
 import SliderWrapper from './components/Slider';
@@ -7,6 +8,7 @@ import {
   LeftOutlined,
   CareLeftFilled,
   CareRightFilled,
+  ZoomOut,
 } from './components/Svg';
 import {
   thumbnailsMaxLength,
@@ -30,12 +32,13 @@ interface Props {
   initialSlide?: number; // 第一张幻灯片的索引
 }
 
-const ImageGallery: FC<Props> = ({
-  thumbnailsSlideMobileCount = 1,
-  prefixCls,
-  items,
-  initialSlide = 2,
-}) => {
+const ImageGallery: FC<Props> = (props) => {
+  const {
+    thumbnailsSlideMobileCount = 1,
+    prefixCls,
+    items,
+    initialSlide = 0,
+  } = props;
   const Slider = useRef<any>(); // Slider.current.slickPrev()
   const itemsLength = items.length;
   const maxXMobileRange = getMaxXMobileRang(itemsLength);
@@ -48,7 +51,9 @@ const ImageGallery: FC<Props> = ({
   // 处理缩略图左右切换移动按钮 滚动宽度
   const handleControlMobile = (isLeft: boolean) => {
     let transX;
-    if (isLeft) {
+    // 这个位置控制缩略图的滚动方向
+    // !isLeft = 点左右移; isLeft = 点左左移;
+    if (!isLeft) {
       transX =
         -thumbnailsSlideWidth * thumbnailsSlideMobileCount + thumbnailsMobileW;
       if (Math.abs(transX) > maxXMobileRange) {
@@ -88,11 +93,11 @@ const ImageGallery: FC<Props> = ({
     infinite: true,
     speed: 500,
     slidesToShow: 1,
-    // lazyLoad: true,
+    lazyLoad: true,
     slidesToScroll: 1,
     nextArrow: <RightOutlined />,
     prevArrow: <LeftOutlined />,
-    initialSlide: currentIndex, // 第一张幻灯片的索引
+    initialSlide, // 第一张幻灯片的索引
     customPaging: function (i: number) {
       return (
         <a>
@@ -109,7 +114,18 @@ const ImageGallery: FC<Props> = ({
           {/* 控制区域 */}
           <div className={`${getPrefixCls(prefixCls, 'i-g-control')}`}>
             <div className={`${getPrefixCls(prefixCls, 'i-g-control-btns')}`}>
-              操作区域
+              <RcTooltip
+                placement="top"
+                overlayClassName={`${getPrefixCls(
+                  prefixCls,
+                  'i-g-rc-tooltip',
+                )}`}
+                overlay={<span>缩小</span>}
+              >
+                <div>
+                  <ZoomOut onClick={() => console.log('big')} />
+                </div>
+              </RcTooltip>
             </div>
             <div
               className={`${getPrefixCls(prefixCls, 'i-g-control-pagination')}`}
@@ -135,9 +151,7 @@ const ImageGallery: FC<Props> = ({
         </div>
       );
     },
-    beforeChange: (oldIndex: number, newIndex: number) => {
-      console.log(oldIndex, 'oldIndex');
-      console.log(newIndex, 'newIndex');
+    beforeChange: (_: number, newIndex: number) => {
       setCurrentIndex(newIndex);
     },
     onInit: () => {
