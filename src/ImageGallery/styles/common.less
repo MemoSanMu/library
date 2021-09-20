@@ -2,13 +2,22 @@
 
 @ig-blue: rgba(60, 122, 247, 1);
 @bgc: #2c2c2c;
+@white: #ffffff;
 @image-gallery-prefix-cls: ~'@{prefix}-image-gallery';
 
+.h(@value) {
+  height: @value;
+}
+
+.w(@value) {
+  width: @value;
+}
+
 .image() {
+  .w(auto);
+  .h(auto);
   object-fit: contain;
   vertical-align: middle;
-  width: auto;
-  height: auto;
   max-width: 100%;
   max-height: 100%;
 }
@@ -39,12 +48,4 @@
 
 .zi(@value) {
   z-index: @value;
-}
-
-.h(@value) {
-  height: @value;
-}
-
-.w(@value) {
-  width: @value;
 }

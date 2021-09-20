@@ -27,18 +27,23 @@ interface Props {
   prefixCls?: string;
   thumbnailsSlideMobileCount?: number; // 缩略图可滚动条数
   items: Items[];
+  initialSlide?: number; // 第一张幻灯片的索引
 }
 
 const ImageGallery: FC<Props> = ({
   thumbnailsSlideMobileCount = 1,
   prefixCls,
   items,
+  initialSlide = 2,
 }) => {
   const Slider = useRef<any>(); // Slider.current.slickPrev()
-
-  const maxXMobileRange = getMaxXMobileRang(items.length);
+  const itemsLength = items.length;
+  const maxXMobileRange = getMaxXMobileRang(itemsLength);
   const [thumbnailsMobileW, setThumbnailsMobileW] = useState(0); // 缩略图 累计滚动的x轴宽度
-  const [thumbnailsStyle, setThumbnailsStyle] = useState({}); // 缩略图 滚动样式
+  const [thumbnailsStyle, setThumbnailsStyle] = useState<React.CSSProperties>(
+    {},
+  ); // 缩略图 滚动样式
+  const [currentIndex, setCurrentIndex] = useState<number>(initialSlide); // 当前展示幻灯片索引
 
   // 处理缩略图左右切换移动按钮 滚动宽度
   const handleControlMobile = (isLeft: boolean) => {
@@ -87,6 +92,7 @@ const ImageGallery: FC<Props> = ({
     slidesToScroll: 1,
     nextArrow: <RightOutlined />,
     prevArrow: <LeftOutlined />,
+    initialSlide: currentIndex, // 第一张幻灯片的索引
     customPaging: function (i: number) {
       return (
         <a>
@@ -100,7 +106,20 @@ const ImageGallery: FC<Props> = ({
     appendDots: (dots: React.ReactDOM[]) => {
       return (
         <div>
+          {/* 控制区域 */}
+          <div className={`${getPrefixCls(prefixCls, 'i-g-control')}`}>
+            <div className={`${getPrefixCls(prefixCls, 'i-g-control-btns')}`}>
+              操作区域
+            </div>
+            <div
+              className={`${getPrefixCls(prefixCls, 'i-g-control-pagination')}`}
+            >
+              {`${currentIndex + 1}/${itemsLength}`}
+            </div>
+          </div>
+          {/* 缩略图左侧滑动按钮 */}
           {getControlMobileBtn(dots, 'left')}
+          {/* 缩略图区域 */}
           <div
             className={`${getPrefixCls(prefixCls, 'i-g-thumbnails-container')}`}
           >
@@ -111,6 +130,7 @@ const ImageGallery: FC<Props> = ({
               {dots}
             </ul>
           </div>
+          {/* 缩略图右测滑动按钮 */}
           {getControlMobileBtn(dots, 'right')}
         </div>
       );
@@ -118,6 +138,7 @@ const ImageGallery: FC<Props> = ({
     beforeChange: (oldIndex: number, newIndex: number) => {
       console.log(oldIndex, 'oldIndex');
       console.log(newIndex, 'newIndex');
+      setCurrentIndex(newIndex);
     },
     onInit: () => {
       console.log('onInit');
