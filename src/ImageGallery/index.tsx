@@ -9,13 +9,18 @@ import {
   CareLeftFilled,
   CareRightFilled,
   ZoomOut,
+  ZoomIn,
+  RotateLeft,
+  RotateRight,
+  Download,
+  Delate,
 } from './components/Svg';
 import {
   thumbnailsMaxLength,
   thumbnailsSlideWidth,
   getMaxXMobileRang,
 } from './config/index';
-import { getPrefixCls } from './config/index';
+import { getPrefixCls, wrapperCls } from './config/index';
 import './styles/index.less';
 const PREFIX_URL =
   'https://raw.githubusercontent.com/xiaolin/react-image-gallery/master/static/';
@@ -32,6 +37,8 @@ interface Props {
   initialSlide?: number; // 第一张幻灯片的索引
 }
 
+let scale = 1;
+
 const ImageGallery: FC<Props> = (props) => {
   const {
     thumbnailsSlideMobileCount = 1,
@@ -46,6 +53,8 @@ const ImageGallery: FC<Props> = (props) => {
   const [thumbnailsStyle, setThumbnailsStyle] = useState<React.CSSProperties>(
     {},
   ); // 缩略图 滚动样式
+  const [galleryImageStyle, setGalleryImageStyle] =
+    useState<React.CSSProperties>({}); // 缩略图 滚动样式
   const [currentIndex, setCurrentIndex] = useState<number>(initialSlide); // 当前展示幻灯片索引
 
   // 处理缩略图左右切换移动按钮 滚动宽度
@@ -113,7 +122,30 @@ const ImageGallery: FC<Props> = (props) => {
         <div>
           {/* 控制区域 */}
           <div className={`${getPrefixCls(prefixCls, 'i-g-control')}`}>
-            <div className={`${getPrefixCls(prefixCls, 'i-g-control-btns')}`}>
+            <div className={`${getPrefixCls(prefixCls, 'i-g-control-icon')}`}>
+              <RcTooltip
+                placement="top"
+                overlayClassName={`${getPrefixCls(
+                  prefixCls,
+                  'i-g-rc-tooltip',
+                )}`}
+                overlay={<span>放大</span>}
+              >
+                {/* 放大 */}
+                <div>
+                  <ZoomIn
+                    onClick={() => {
+                      // rotate3d(0, 0, 1, 0deg)
+                      scale += 0.25;
+                      setGalleryImageStyle({
+                        transform: `scale3d(${scale}, ${scale}, 1)`,
+                        zIndex: 10,
+                        opacity: 1,
+                      });
+                    }}
+                  />
+                </div>
+              </RcTooltip>
               <RcTooltip
                 placement="top"
                 overlayClassName={`${getPrefixCls(
@@ -122,8 +154,70 @@ const ImageGallery: FC<Props> = (props) => {
                 )}`}
                 overlay={<span>缩小</span>}
               >
+                {/* 缩小 */}
                 <div>
-                  <ZoomOut onClick={() => console.log('big')} />
+                  <ZoomOut
+                    onClick={() => {
+                      scale -= 0.25;
+                      setGalleryImageStyle({
+                        transform: `scale3d(${scale}, ${scale}, 1)`,
+                        zIndex: 10,
+                        opacity: 1,
+                      });
+                    }}
+                  />
+                </div>
+              </RcTooltip>
+              <RcTooltip
+                placement="top"
+                overlayClassName={`${getPrefixCls(
+                  prefixCls,
+                  'i-g-rc-tooltip',
+                )}`}
+                overlay={<span>左旋转</span>}
+              >
+                {/* 左旋转 */}
+                <div>
+                  <RotateLeft onClick={() => console.log('RotateLeft')} />
+                </div>
+              </RcTooltip>
+              <RcTooltip
+                placement="top"
+                overlayClassName={`${getPrefixCls(
+                  prefixCls,
+                  'i-g-rc-tooltip',
+                )}`}
+                overlay={<span>右旋转</span>}
+              >
+                {/* 右旋转 */}
+                <div>
+                  <RotateRight onClick={() => console.log('RotateRight')} />
+                </div>
+              </RcTooltip>
+              <RcTooltip
+                placement="top"
+                overlayClassName={`${getPrefixCls(
+                  prefixCls,
+                  'i-g-rc-tooltip',
+                )}`}
+                overlay={<span>下载</span>}
+              >
+                {/* 下载 */}
+                <div>
+                  <Download onClick={() => console.log('Download')} />
+                </div>
+              </RcTooltip>
+              <RcTooltip
+                placement="top"
+                overlayClassName={`${getPrefixCls(
+                  prefixCls,
+                  'i-g-rc-tooltip',
+                )}`}
+                overlay={<span>删除</span>}
+              >
+                {/* 删除 */}
+                <div>
+                  <Delate onClick={() => console.log('Delate')} />
                 </div>
               </RcTooltip>
             </div>
@@ -137,7 +231,7 @@ const ImageGallery: FC<Props> = (props) => {
           {getControlMobileBtn(dots, 'left')}
           {/* 缩略图区域 */}
           <div
-            className={`${getPrefixCls(prefixCls, 'i-g-thumbnails-container')}`}
+            className={`${getPrefixCls(prefixCls, 'i-g-thumbnails-content')}`}
           >
             <ul
               className={`${getPrefixCls(prefixCls, 'i-g-t-c-ul')}`}
@@ -163,16 +257,17 @@ const ImageGallery: FC<Props> = (props) => {
 
   return (
     <div className={wrapCls}>
-      <div className={getPrefixCls(prefixCls, 'i-g-container')}>
+      <div className={getPrefixCls(prefixCls, `${wrapperCls}-container`)}>
         <SliderWrapper sliderWrapper={Slider} settings={settings}>
           {items &&
             items.map((i: Items) => {
               return (
                 <div
                   key={i.src}
-                  className={getPrefixCls(prefixCls, 'i-g-image-box')}
+                  className={getPrefixCls(prefixCls, 'i-g-image-content')}
                 >
                   <img
+                    style={galleryImageStyle}
                     className={getPrefixCls(prefixCls, 'i-g-image')}
                     src={i.src}
                   />

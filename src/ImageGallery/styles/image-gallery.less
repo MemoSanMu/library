@@ -3,7 +3,7 @@
   .zi(99999);
   background-color: @bgc;
 
-  .@{prefix}-i-g-container {
+  .@{prefix}-image-gallery-container {
     .h(100%);
     .position(relative);
   }
@@ -25,7 +25,7 @@
     & > .icon.l {
       margin-right: 6px;
     }
-    & > .@{prefix}-i-g-thumbnails-container {
+    & > .@{prefix}-i-g-thumbnails-content {
       padding: 0;
       margin: 0;
       max-width: 972px;
@@ -109,13 +109,19 @@
     }
   }
 
-  .@{prefix}-i-g-image-box {
+  .@{prefix}-i-g-image-content {
     display: flex !important;
     align-items: center;
+    overflow: hidden;
+  }
+
+  .@{prefix}-i-g-image-content:focus {
+    outline: 0;
   }
 
   .@{prefix}-i-g-image {
     .image();
+    transition: all 250ms ease-out 0s;
   }
 
   // 操作控制区域
@@ -125,13 +131,16 @@
     .zi(2);
   }
   // 操作按钮
-  .@{prefix}-i-g-control-btns {
+  .@{prefix}-i-g-control-icon {
     .w(272px);
     .h(40px);
     .bc(rgba(0, 0, 0, 1));
     opacity: 0.65;
     border-radius: 20px;
     color: @white;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
   }
   // 操作分页
   .@{prefix}-i-g-control-pagination {
