@@ -81,17 +81,17 @@
       .zi(2);
     }
     .slick-prev {
-      left: 50px;
+      left: 39px;
     }
 
     .slick-next {
-      right: 50px;
+      right: 39px;
     }
   }
 
   .slick-list {
     .h(calc(100vh - 248px));
-    .w(100vw);
+    .w(calc(100vw - 236px));
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -158,5 +158,20 @@
   .zi(100000);
   .rc-tooltip-inner {
     min-height: auto;
+  }
+}
+
+.@{image-gallery-loading} {
+  .pcenter(fixed);
+  .zi(1000000);
+  .dfcc();
+  background-color: rgba(0, 0, 0, 0.1);
+  .@{prefix}-loading-clip {
+    background: transparent !important;
+    border-radius: 100%;
+    border: 2px solid;
+    display: inline-block;
+    animation: clip 1s 0s infinite linear;
+    animation-fill-mode: both;
   }
 }

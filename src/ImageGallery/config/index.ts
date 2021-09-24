@@ -1,3 +1,11 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: wangsen
+ * @Date: 2021-09-17 15:17:27
+ * @LastEditors: wangsen
+ * @LastEditTime: 2021-09-24 20:22:27
+ */
 const rootPrefix = 'lib';
 
 export const wrapperCls = 'image-gallery';
@@ -23,3 +31,9 @@ export const thumbnailsSlideWidth = 108;
 // 根据传入的 缩略图 可滚动条数 算出最大可滚动范围
 export const getMaxXMobileRang = (itemLength: number) =>
   (itemLength - thumbnailsMaxLength) * thumbnailsSlideWidth;
+
+// 默认的控制样式初始值
+export const defaultController = {
+  rotate: 0,
+  scale: 1,
+};

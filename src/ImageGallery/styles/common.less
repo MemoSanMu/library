@@ -5,6 +5,7 @@
 @white: #ffffff;
 @image-gallery-prefix-cls: ~'@{prefix}-image-gallery';
 @image-gallery-rc-tooltip: ~'@{prefix}-i-g-rc-tooltip';
+@image-gallery-loading: ~'@{prefix}-i-g-loading';
 
 .h(@value) {
   height: @value;
@@ -49,4 +50,16 @@
 
 .zi(@value) {
   z-index: @value;
+}
+
+@keyframes clip {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(0.8);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
 }
