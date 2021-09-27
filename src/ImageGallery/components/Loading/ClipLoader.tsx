@@ -1,5 +1,12 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: wangsen
+ * @Date: 2021-09-24 16:40:06
+ * @LastEditors: wangsen
+ * @LastEditTime: 2021-09-27 14:36:13
+ */
 import React, { FC } from 'react';
-import ReactDOM from 'react-dom';
 import { LoaderSizeProps } from './interfaces';
 import { getPrefixCls } from '../../config/index';
 import Portals from '../Portal';

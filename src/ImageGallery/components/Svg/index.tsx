@@ -44,7 +44,8 @@ export const LeftOutlined = (props: any) => {
 };
 
 interface ThumbnailsSlick {
-  onClick: () => void;
+  onClick?: () => void;
+  className?: string;
 }
 
 export const CareLeftFilled = ({ onClick }: ThumbnailsSlick) => {
@@ -212,6 +213,68 @@ export const Delate = ({ onClick }: ThumbnailsSlick) => {
           id="Shape"
           fill="#FFFFFF"
           fillRule="nonzero"
+        ></path>
+      </Svg>
+    </div>
+  );
+};
+
+// warning
+export const Warning = () => {
+  return (
+    <svg
+      width="14px"
+      height="14px"
+      viewBox="0 0 14 14"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+    >
+      <title>Icons / S / Warning</title>
+      <g
+        id="多图预览"
+        stroke="none"
+        strokeWidth="1"
+        fill="none"
+        fillRule="evenodd"
+      >
+        <g
+          transform="translate(-623.000000, -1588.000000)"
+          fill="#FBAA33"
+          id="Message-全局提示-/-Warning-警告"
+        >
+          <g transform="translate(606.000000, 1575.000000)">
+            <g
+              id="Icons-/-S-/-Warning"
+              transform="translate(16.000000, 12.000000)"
+            >
+              <path
+                d="M1,8 C1,4.13359375 4.13359375,1 8,1 C11.8664062,1 15,4.13359375 15,8 C15,11.8664062 11.8664062,15 8,15 C4.13359375,15 1,11.8664062 1,8 Z M8.4375,4.0625 C8.4375,3.82050781 8.24199219,3.625 8,3.625 L8,3.625 C7.75800781,3.625 7.5625,3.82050781 7.5625,4.0625 L7.5625,4.0625 C7.5625,4.30449219 7.75800781,4.5 8,4.5 L8,4.5 C8.24199219,4.5 8.4375,4.30449219 8.4375,4.0625 L8.4375,4.0625 L8.4375,4.0625 Z M8.4375,5.8125 C8.4375,5.57050781 8.24199219,5.375 8,5.375 L8,5.375 C7.75800781,5.375 7.5625,5.57050781 7.5625,5.8125 L7.5625,11.9375 C7.5625,12.1794922 7.75800781,12.375 8,12.375 L8,12.375 C8.24199219,12.375 8.4375,12.1794922 8.4375,11.9375 L8.4375,5.8125 L8.4375,5.8125 Z"
+                id="Shape-Copy-2"
+                transform="translate(8.000000, 8.000000) scale(1, -1) translate(-8.000000, -8.000000) "
+              ></path>
+            </g>
+          </g>
+        </g>
+      </g>
+    </svg>
+  );
+};
+
+// 关闭图片画廊
+export const Close = ({ onClick, className }: ThumbnailsSlick) => {
+  const ops = {
+    id: 'Icon_CloseLine',
+    width: '24px',
+    height: '24px',
+  };
+  return (
+    <div className={className} onClick={onClick}>
+      <Svg {...ops}>
+        <path
+          d="M8.809375,8 L12.9109375,3.1109375 C12.9796875,3.0296875 12.921875,2.90625 12.815625,2.90625 L11.56875,2.90625 C11.4953125,2.90625 11.425,2.9390625 11.3765625,2.9953125 L7.99375,7.028125 L4.6109375,2.9953125 C4.5640625,2.9390625 4.49375,2.90625 4.41875,2.90625 L3.171875,2.90625 C3.065625,2.90625 3.0078125,3.0296875 3.0765625,3.1109375 L7.178125,8 L3.0765625,12.8890625 C3.0078125,12.9703125 3.065625,13.09375 3.171875,13.09375 L4.41875,13.09375 C4.4921875,13.09375 4.5625,13.0609375 4.6109375,13.0046875 L7.99375,8.971875 L11.3765625,13.0046875 C11.4234375,13.0609375 11.49375,13.09375 11.56875,13.09375 L12.815625,13.09375 C12.921875,13.09375 12.9796875,12.9703125 12.9109375,12.8890625 L8.809375,8 Z"
+          id="路径"
+          fill="#FFFFFF"
         ></path>
       </Svg>
     </div>

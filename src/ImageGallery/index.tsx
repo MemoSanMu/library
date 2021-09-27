@@ -1,5 +1,6 @@
 import React, { FC, useRef, useState, useCallback } from 'react';
-import RcTooltip from 'rc-tooltip';
+import Message from './components/Message';
+import Toast from './components/Toast';
 import { isEqual } from 'lodash-es';
 import classNames from 'classnames';
 import SliderWrapper from './components/Slider';
@@ -14,8 +15,11 @@ import {
   RotateRight,
   Download,
   Delate,
+  Warning,
+  Close,
 } from './components/Svg';
 import ClipLoader from './components/Loading/ClipLoader';
+import Tooltip from './components/Tooltip';
 import {
   thumbnailsMaxLength,
   thumbnailsSlideWidth,
@@ -50,6 +54,8 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
   });
 
   const [isDownloading, setIsDownloading] = useState<boolean>(false); // 下载中loading
+
+  const [isShowToast, setIsShowToast] = useState<boolean>(false); // 缩放大小
 
   // 当前画廊数据
   const [imageGalleryItems, setImageGalleryItems] = useState<Items[]>(items);
@@ -111,6 +117,13 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
     console.log('init');
   };
 
+  const handleToast = (isShowToast: boolean) => {
+    setIsShowToast(isShowToast);
+    setTimeout(() => {
+      setIsShowToast(false);
+    }, 2000);
+  };
+
   // 下载图片
   const handleDownloadImage = async () => {
     try {
@@ -129,18 +142,38 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
     // 放大
     if (isIn) {
       if (scale >= 2) {
-        console.log('不能再放大了');
+        Message({
+          content: '不能再放大了',
+          icon: (
+            <span>
+              <Warning />
+            </span>
+          ),
+          duration: 3,
+          className: `${getPrefixCls(prefixCls, 'i-g-rc-notification')}`,
+        });
         return;
       }
     } else {
       if (scale <= 0.25) {
-        console.log('不能再缩小了');
+        Message({
+          content: '不能再缩小了',
+          icon: (
+            <span>
+              <Warning />
+            </span>
+          ),
+          duration: 3,
+          className: `${getPrefixCls(prefixCls, 'i-g-rc-notification')}`,
+        });
         return;
       }
     }
+    const sacleProgress = isIn ? scale + 0.25 : scale - 0.25;
+    handleToast(true);
     setController({
       ...controller,
-      scale: isIn ? scale + 0.25 : scale - 0.25,
+      scale: sacleProgress,
     });
   };
 
@@ -197,84 +230,25 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
           {/* 控制区域 */}
           <div className={`${getPrefixCls(prefixCls, 'i-g-control')}`}>
             <div className={`${getPrefixCls(prefixCls, 'i-g-control-icon')}`}>
-              <RcTooltip
-                placement="top"
-                overlayClassName={`${getPrefixCls(
-                  prefixCls,
-                  'i-g-rc-tooltip',
-                )}`}
-                overlay={<span>放大</span>}
-              >
-                {/* 放大 */}
-                <div>
-                  <ZoomIn onClick={() => handleZoom('ZoomIn')} />
-                </div>
-              </RcTooltip>
-              <RcTooltip
-                placement="top"
-                overlayClassName={`${getPrefixCls(
-                  prefixCls,
-                  'i-g-rc-tooltip',
-                )}`}
-                overlay={<span>缩小</span>}
-              >
-                {/* 缩小 */}
-                <div>
-                  <ZoomOut onClick={() => handleZoom('ZoomOut')} />
-                </div>
-              </RcTooltip>
-              <RcTooltip
-                placement="top"
-                overlayClassName={`${getPrefixCls(
-                  prefixCls,
-                  'i-g-rc-tooltip',
-                )}`}
-                overlay={<span>左旋转</span>}
-              >
-                {/* 左旋转 */}
-                <div>
-                  <RotateLeft onClick={() => handleRotate('RotateLeft')} />
-                </div>
-              </RcTooltip>
-              <RcTooltip
-                placement="top"
-                overlayClassName={`${getPrefixCls(
-                  prefixCls,
-                  'i-g-rc-tooltip',
-                )}`}
-                overlay={<span>右旋转</span>}
-              >
-                {/* 右旋转 */}
-                <div>
-                  <RotateRight onClick={() => handleRotate('RotateRight')} />
-                </div>
-              </RcTooltip>
-              <RcTooltip
-                placement="top"
-                overlayClassName={`${getPrefixCls(
-                  prefixCls,
-                  'i-g-rc-tooltip',
-                )}`}
-                overlay={<span>下载</span>}
-              >
-                {/* 下载 */}
-                <div>
-                  <Download onClick={handleDownloadImage} />
-                </div>
-              </RcTooltip>
-              <RcTooltip
-                placement="top"
-                overlayClassName={`${getPrefixCls(
-                  prefixCls,
-                  'i-g-rc-tooltip',
-                )}`}
-                overlay={<span>删除</span>}
-              >
-                {/* 删除 */}
-                <div>
-                  <Delate onClick={handleDel} />
-                </div>
-              </RcTooltip>
+              {/* 放大 */}
+              <Tooltip text="放大">
+                <ZoomIn onClick={() => handleZoom('ZoomIn')} />
+              </Tooltip>
+              <Tooltip text="缩小">
+                <ZoomOut onClick={() => handleZoom('ZoomOut')} />
+              </Tooltip>
+              <Tooltip text="左旋转">
+                <RotateLeft onClick={() => handleRotate('RotateLeft')} />
+              </Tooltip>
+              <Tooltip text="右旋转">
+                <RotateRight onClick={() => handleRotate('RotateRight')} />
+              </Tooltip>
+              <Tooltip text="下载">
+                <Download onClick={handleDownloadImage} />
+              </Tooltip>
+              <Tooltip text="删除">
+                <Delate onClick={handleDel} />
+              </Tooltip>
             </div>
             <div
               className={`${getPrefixCls(prefixCls, 'i-g-control-pagination')}`}
@@ -308,12 +282,15 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
 
   return (
     <div className={wrapCls}>
+      {/* loading */}
       <ClipLoader
         color={'#108ee9'}
         size={40}
         prefixCls={prefixCls}
         loading={isDownloading}
       />
+
+      {/* slider */}
       <div className={getPrefixCls(prefixCls, `${wrapperCls}-container`)}>
         <SliderWrapper sliderWrapper={Slider} settings={settings}>
           {imageGalleryItems &&
@@ -333,6 +310,15 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
             })}
         </SliderWrapper>
       </div>
+
+      {/* sacle Progress Toast */}
+      <Toast show={isShowToast} sacleProgress={controller.scale} />
+
+      {/* close */}
+      <Close
+        className={getPrefixCls(prefixCls, 'i-g-close')}
+        onClick={() => {}}
+      />
     </div>
   );
 };

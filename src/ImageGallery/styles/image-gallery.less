@@ -36,6 +36,7 @@
     .@{prefix}-i-g-t-c-ul {
       padding: 0;
       margin: 0;
+      display: flex;
       transition: all 450ms ease-out 0s;
       & > li {
         .w(96px);
@@ -152,12 +153,37 @@
     font-size: 16px;
     font-family: PingFangSC-Regular;
   }
+
+  // 关闭
+  .@{prefix}-i-g-close {
+    .position(absolute);
+    top: 27px;
+    right: 48px;
+  }
 }
 
 .@{image-gallery-rc-tooltip} {
   .zi(100000);
   .rc-tooltip-inner {
     min-height: auto;
+  }
+}
+
+.@{image-gallery-rc-notification} {
+  .zi(100000);
+  transform: translate3d(-50%, 0, 0);
+  .@{prefix}-i-g-rc-notification-message {
+    color: rgba(82, 88, 101, 100);
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    &.@{prefix}-p-l {
+      box-sizing: border-box;
+      padding-left: 7px;
+    }
+  }
+  .@{prefix}-i-g-rc-notification-notice-content {
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -173,5 +199,23 @@
     display: inline-block;
     animation: clip 1s 0s infinite linear;
     animation-fill-mode: both;
+  }
+}
+
+.@{image-gallery-toast} {
+  .pcenter(fixed);
+  .dfcc();
+  .zi(100000);
+  pointer-events: none;
+  display: none;
+  &.show {
+    display: flex;
+  }
+  .@{prefix}-toast-content {
+    padding: 16px 29px;
+    border-radius: 8px;
+    background-color: #00000073;
+    color: rgba(255, 255, 255, 100);
+    font-size: 24px;
   }
 }
