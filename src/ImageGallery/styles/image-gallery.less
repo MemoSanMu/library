@@ -3,12 +3,12 @@
   .zi(99999);
   background-color: @bgc;
 
-  .@{prefix}-image-gallery-container {
+  .@{prefix}-@{image-gallery}-container {
     .h(100%);
     .position(relative);
   }
 
-  .@{prefix}-i-g-thumbnails {
+  .@{prefix}-@{image-gallery}-thumbnails {
     .position(absolute);
     bottom: 46px;
     display: flex;
@@ -25,7 +25,7 @@
     & > .icon.l {
       margin-right: 6px;
     }
-    & > .@{prefix}-i-g-thumbnails-content {
+    & > .@{prefix}-@{image-gallery}-thumbnails-content {
       padding: 0;
       margin: 0;
       max-width: 972px;
@@ -33,7 +33,7 @@
       white-space: nowrap;
       overflow: hidden;
     }
-    .@{prefix}-i-g-t-c-ul {
+    .@{prefix}-@{image-gallery}-t-c-ul {
       padding: 0;
       margin: 0;
       display: flex;
@@ -60,7 +60,7 @@
       }
     }
 
-    .@{prefix}-i-g-t-c-img {
+    .@{prefix}-@{image-gallery}-t-c-img {
       .bc(@bgc);
       .image();
     }
@@ -112,30 +112,29 @@
     }
   }
 
-  .@{prefix}-i-g-image-content {
+  .@{prefix}-@{image-gallery}-image-content {
     display: flex !important;
     justify-content: center;
     align-items: center;
     overflow: hidden;
   }
 
-  .@{prefix}-i-g-image-content:focus {
+  .@{prefix}-@{image-gallery}-image-content:focus {
     outline: 0;
   }
 
-  .@{prefix}-i-g-image {
+  .@{prefix}-@{image-gallery}-image {
     .image();
-    transition: all 50ms ease-in-out 0s;
   }
 
   // 操作控制区域
-  .@{prefix}-i-g-control {
+  .@{prefix}-@{image-gallery}-control {
     .position(absolute);
     top: -110px;
     .zi(2);
   }
   // 操作按钮
-  .@{prefix}-i-g-control-icon {
+  .@{prefix}-@{image-gallery}-control-icon {
     .w(272px);
     .h(40px);
     .bc(rgba(0, 0, 0, 1));
@@ -147,7 +146,7 @@
     align-items: center;
   }
   // 操作分页
-  .@{prefix}-i-g-control-pagination {
+  .@{prefix}-@{image-gallery}-control-pagination {
     padding-top: 36px;
     color: rgba(255, 255, 255, 100);
     font-size: 16px;
@@ -155,7 +154,7 @@
   }
 
   // 关闭
-  .@{prefix}-i-g-close {
+  .@{prefix}-@{image-gallery}-close {
     .position(absolute);
     top: 27px;
     right: 48px;
@@ -172,7 +171,7 @@
 .@{image-gallery-rc-notification} {
   .zi(100000);
   transform: translate3d(-50%, 0, 0);
-  .@{prefix}-i-g-rc-notification-message {
+  .@{prefix}-@{image-gallery}-rc-notification-message {
     color: rgba(82, 88, 101, 100);
     font-family: PingFangSC-Regular;
     font-size: 14px;
@@ -181,7 +180,7 @@
       padding-left: 7px;
     }
   }
-  .@{prefix}-i-g-rc-notification-notice-content {
+  .@{prefix}-@{image-gallery}-rc-notification-notice-content {
     display: flex;
     align-items: center;
   }

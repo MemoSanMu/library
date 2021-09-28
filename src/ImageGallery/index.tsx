@@ -26,6 +26,7 @@ import {
   thumbnailsSlideWidth,
   getMaxXMobileRang,
   defaultController,
+  imageGallery,
 } from './config/index';
 import { handleDownload } from './utils';
 import { getPrefixCls, wrapperCls } from './config/index';
@@ -143,7 +144,10 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
             </span>
           ),
           duration: 3,
-          className: `${getPrefixCls(prefixCls, 'i-g-rc-notification')}`,
+          className: `${getPrefixCls(
+            prefixCls,
+            `${imageGallery}-rc-notification`,
+          )}`,
         });
         return;
       }
@@ -157,7 +161,10 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
             </span>
           ),
           duration: 3,
-          className: `${getPrefixCls(prefixCls, 'i-g-rc-notification')}`,
+          className: `${getPrefixCls(
+            prefixCls,
+            `${imageGallery}-rc-notification`,
+          )}`,
         });
         return;
       }
@@ -196,7 +203,7 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
     dots: true,
     dotsClass: `slick-dots slick-thumb ${getPrefixCls(
       prefixCls,
-      'i-g-thumbnails',
+      `${imageGallery}-thumbnails`,
     )}`,
     className: getPrefixCls(prefixCls, 'slick-slider'),
     infinite: true,
@@ -212,7 +219,7 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
       return (
         <a>
           <img
-            className={`${getPrefixCls(prefixCls, 'i-g-t-c-img')}`}
+            className={`${getPrefixCls(prefixCls, `${imageGallery}-t-c-img`)}`}
             src={imageGalleryItems[i]?.src}
           />
         </a>
@@ -222,8 +229,15 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
       return (
         <div>
           {/* 控制区域 */}
-          <div className={`${getPrefixCls(prefixCls, 'i-g-control')}`}>
-            <div className={`${getPrefixCls(prefixCls, 'i-g-control-icon')}`}>
+          <div
+            className={`${getPrefixCls(prefixCls, `${imageGallery}-control`)}`}
+          >
+            <div
+              className={`${getPrefixCls(
+                prefixCls,
+                `${imageGallery}-control-icon`,
+              )}`}
+            >
               {/* 放大 */}
               <Tooltip text="放大">
                 <ZoomIn onClick={() => handleZoom('ZoomIn')} />
@@ -245,7 +259,10 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
               </Tooltip>
             </div>
             <div
-              className={`${getPrefixCls(prefixCls, 'i-g-control-pagination')}`}
+              className={`${getPrefixCls(
+                prefixCls,
+                `${imageGallery}-control-pagination`,
+              )}`}
             >
               {`${currentIndex + 1}/${itemsLength}`}
             </div>
@@ -254,10 +271,13 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
           {getControlMobileBtn(dots, 'left')}
           {/* 缩略图区域 */}
           <div
-            className={`${getPrefixCls(prefixCls, 'i-g-thumbnails-content')}`}
+            className={`${getPrefixCls(
+              prefixCls,
+              `${imageGallery}-thumbnails-content`,
+            )}`}
           >
             <ul
-              className={`${getPrefixCls(prefixCls, 'i-g-t-c-ul')}`}
+              className={`${getPrefixCls(prefixCls, `${imageGallery}-t-c-ul`)}`}
               style={thumbnailsStyle}
             >
               {dots}
@@ -304,7 +324,7 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
 
       {/* close */}
       <Close
-        className={getPrefixCls(prefixCls, 'i-g-close')}
+        className={getPrefixCls(prefixCls, `${imageGallery}-close`)}
         onClick={() => {}}
       />
     </div>

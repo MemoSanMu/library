@@ -4,11 +4,11 @@
  * @Author: wangsen
  * @Date: 2021-09-27 16:13:57
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-27 17:58:47
+ * @LastEditTime: 2021-09-28 19:50:49
  */
 import React, { FC, useCallback } from 'react';
 import classNames from 'classnames';
-import { getPrefixCls } from '../../config/index';
+import { getPrefixCls, imageGallery } from '../../config/index';
 
 interface ToastProps {
   prefixCls?: string;
@@ -27,9 +27,12 @@ const Toast: FC<ToastProps> = (props) => {
     );
   }, [sacleProgress]);
 
-  const messageCls = classNames(getPrefixCls(prefixCls, 'i-g-toast'), {
-    show: show,
-  });
+  const messageCls = classNames(
+    getPrefixCls(prefixCls, `${imageGallery}-toast`),
+    {
+      show: show,
+    },
+  );
 
   return <div className={messageCls}>{toastContent()}</div>;
 };

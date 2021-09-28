@@ -4,11 +4,11 @@
  * @Author: wangsen
  * @Date: 2021-09-26 16:21:32
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-26 17:24:57
+ * @LastEditTime: 2021-09-28 19:56:01
  */
 import React, { FC } from 'react';
 import RcTooltip from 'rc-tooltip';
-import { getPrefixCls } from '../../config/index';
+import { getPrefixCls, imageGallery } from '../../config/index';
 import { TooltipPlacement } from '../../interfaces';
 
 interface TooltipProps {
@@ -27,7 +27,10 @@ const Tooltip: FC<TooltipProps> = (props) => {
   return (
     <RcTooltip
       placement={placement}
-      overlayClassName={`${getPrefixCls(prefixCls, 'i-g-rc-tooltip')}`}
+      overlayClassName={`${getPrefixCls(
+        prefixCls,
+        `${imageGallery}-rc-tooltip`,
+      )}`}
       overlay={<span>{text}</span>}
     >
       <div>{children}</div>

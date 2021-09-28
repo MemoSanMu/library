@@ -4,11 +4,11 @@
  * @Author: wangsen
  * @Date: 2021-09-28 10:33:51
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:38:02
+ * @LastEditTime: 2021-09-28 20:11:48
  */
-import React, { FC, useCallback, useRef, useState } from 'react';
+import React, { FC, useCallback, useRef, useState, useMemo } from 'react';
 import { Items, Controller } from '../../interfaces';
-import { getPrefixCls } from '../../config/index';
+import { getPrefixCls, imageGallery } from '../../config/index';
 
 interface ImageSlideProps {
   item: Items;
@@ -28,7 +28,7 @@ const ImageSlide: FC<ImageSlideProps> = (props) => {
 
   const isDown = useRef(false);
 
-  const [GalleryImageStyle, setGalleryImageStyle] = useState({
+  const [dragPos, setDragPos] = useState({
     left: 0,
     top: 0,
   });
@@ -51,7 +51,7 @@ const ImageSlide: FC<ImageSlideProps> = (props) => {
     const cY = e.clientY;
     const cX = e.clientX;
     oriPos.current = {
-      ...GalleryImageStyle,
+      ...dragPos,
       cX,
       cY,
     };
@@ -76,7 +76,7 @@ const ImageSlide: FC<ImageSlideProps> = (props) => {
     // const height = 753;
     // const rect = currentImage.current.getBoundingClientRect();
 
-    setGalleryImageStyle({
+    setDragPos({
       left,
       top,
     });
@@ -85,16 +85,23 @@ const ImageSlide: FC<ImageSlideProps> = (props) => {
   // The mouse is lifted
   const onMouseUp = useCallback(() => {
     isDown.current = false;
-  }, [GalleryImageStyle]);
+  }, [dragPos]);
+
+  // 获取图片样式
+  const getImageStyle = useMemo(
+    () => ({
+      transition: `all ${isDown.current ? 20 : 300}ms ease-in-out 0s`,
+      transform: `scale3d(${controller.scale}, ${controller.scale}, 1) rotate3d(0, 0, 1, ${controller.rotate}deg) translate3d(${dragPos.left}px, ${dragPos.top}px, 0)`,
+    }),
+    [isDown, controller, dragPos],
+  );
 
   return (
-    <div className={getPrefixCls(prefixCls, 'i-g-image-content')}>
+    <div className={getPrefixCls(prefixCls, `${imageGallery}-image-content`)}>
       <img
         // ref={currentImage}
-        style={{
-          transform: `scale3d(${controller.scale}, ${controller.scale}, 1) rotate3d(0, 0, 1, ${controller.rotate}deg) translate3d(${GalleryImageStyle.left}px, ${GalleryImageStyle.top}px, 0)`,
-        }}
-        className={getPrefixCls(prefixCls, 'i-g-image')}
+        style={getImageStyle}
+        className={getPrefixCls(prefixCls, `${imageGallery}-image`)}
         src={item.src}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}

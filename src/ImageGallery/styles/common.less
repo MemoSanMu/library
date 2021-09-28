@@ -1,13 +1,14 @@
 @prefix: lib;
+@image-gallery: image-gallery;
 
 @ig-blue: rgba(60, 122, 247, 1);
 @bgc: #2c2c2c;
 @white: #ffffff;
-@image-gallery-prefix-cls: ~'@{prefix}-image-gallery';
-@image-gallery-rc-tooltip: ~'@{prefix}-i-g-rc-tooltip';
-@image-gallery-loading: ~'@{prefix}-i-g-loading';
-@image-gallery-rc-notification: ~'@{prefix}-i-g-rc-notification';
-@image-gallery-toast: ~'@{prefix}-i-g-toast';
+@image-gallery-prefix-cls: ~'@{prefix}-@{image-gallery}';
+@image-gallery-rc-tooltip: ~'@{prefix}-@{image-gallery}-rc-tooltip';
+@image-gallery-loading: ~'@{prefix}-@{image-gallery}-loading';
+@image-gallery-rc-notification: ~'@{prefix}-@{image-gallery}-rc-notification';
+@image-gallery-toast: ~'@{prefix}-@{image-gallery}-toast';
 
 .h(@value) {
   height: @value;

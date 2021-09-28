@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-17 15:17:27
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-24 20:22:27
+ * @LastEditTime: 2021-09-28 19:48:00
  */
 const rootPrefix = 'lib';
 
@@ -37,3 +37,5 @@ export const defaultController = {
   rotate: 0,
   scale: 1,
 };
+
+export const imageGallery = `image-gallery`;

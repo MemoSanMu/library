@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-26 16:21:32
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-27 17:40:22
+ * @LastEditTime: 2021-09-28 19:50:35
  */
 import React from 'react';
 import RcNotification from 'rc-notification';
@@ -12,7 +12,7 @@ import {
   NotificationInstance as RCNotificationInstance,
   NoticeContent,
 } from 'rc-notification/lib/Notification';
-import { getPrefixCls } from '../../config/index';
+import { getPrefixCls, imageGallery } from '../../config/index';
 
 let messageInstance: RCNotificationInstance | null;
 let key = 1;
@@ -90,14 +90,14 @@ const getRCNoticeProps = (
       <span
         className={`${getPrefixCls(
           prefixCls,
-          'i-g-rc-notification-notice-content',
+          `${imageGallery}-rc-notification-notice-content`,
         )}`}
       >
         {icon}
         <span
           className={`${getPrefixCls(
             prefixCls,
-            'i-g-rc-notification-message',
+            `${imageGallery}-rc-notification-message`,
           )} ${icon ? getPrefixCls(prefixCls, 'p-l') : ''}`}
         >
           {content}
