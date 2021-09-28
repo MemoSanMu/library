@@ -4,6 +4,7 @@ import Toast from './components/Toast';
 import { isEqual } from 'lodash-es';
 import classNames from 'classnames';
 import SliderWrapper from './components/Slider';
+import ImageSlide from './components/ImageSlide';
 import {
   RightOutlined,
   LeftOutlined,
@@ -211,6 +212,7 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
     slidesToShow: 1,
     lazyLoad: true,
     slidesToScroll: 1,
+    draggable: false,
     nextArrow: <RightOutlined />,
     prevArrow: <LeftOutlined />,
     initialSlide, // 第一张幻灯片的索引
@@ -279,6 +281,7 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
   };
 
   const wrapCls = classNames(getPrefixCls(prefixCls), {});
+  const currentGalleryImageStyle = getCurrentGalleryImageStyle();
 
   return (
     <div className={wrapCls}>
@@ -294,20 +297,15 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
       <div className={getPrefixCls(prefixCls, `${wrapperCls}-container`)}>
         <SliderWrapper sliderWrapper={Slider} settings={settings}>
           {imageGalleryItems &&
-            imageGalleryItems.map((i: Items) => {
-              return (
-                <div
-                  key={i.src}
-                  className={getPrefixCls(prefixCls, 'i-g-image-content')}
-                >
-                  <img
-                    style={getCurrentGalleryImageStyle()}
-                    className={getPrefixCls(prefixCls, 'i-g-image')}
-                    src={i.src}
-                  />
-                </div>
-              );
-            })}
+            imageGalleryItems.map((i: Items) => (
+              <ImageSlide
+                item={i}
+                key={i.src}
+                currentGalleryImageStyle={currentGalleryImageStyle}
+                prefixCls={prefixCls}
+                controller={controller}
+              />
+            ))}
         </SliderWrapper>
       </div>
 
