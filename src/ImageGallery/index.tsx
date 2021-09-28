@@ -98,14 +98,6 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
     return maxMore && <Component onClick={() => handleControlMobile(isLeft)} />;
   };
 
-  // 获取当前图片画廊样式
-  const getCurrentGalleryImageStyle = useCallback((): React.CSSProperties => {
-    const { rotate, scale } = controller;
-    return {
-      transform: `scale3d(${scale}, ${scale}, 1) rotate3d(0, 0, 1, ${rotate}deg)`,
-    };
-  }, [controller]);
-
   // 当图片切换前触发钩子
   const beforeChange = (_: number, newIndex: number) => {
     setCurrentIndex(newIndex); // 保存当前newIndex
@@ -281,7 +273,6 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
   };
 
   const wrapCls = classNames(getPrefixCls(prefixCls), {});
-  const currentGalleryImageStyle = getCurrentGalleryImageStyle();
 
   return (
     <div className={wrapCls}>
@@ -301,7 +292,6 @@ const ImageGallery: FC<ImageGalleryProps> = (props) => {
               <ImageSlide
                 item={i}
                 key={i.src}
-                currentGalleryImageStyle={currentGalleryImageStyle}
                 prefixCls={prefixCls}
                 controller={controller}
               />

@@ -4,17 +4,15 @@
  * @Author: wangsen
  * @Date: 2021-09-28 10:33:51
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 15:52:27
+ * @LastEditTime: 2021-09-28 19:38:02
  */
 import React, { FC, useCallback, useRef, useState } from 'react';
-import Message from '../Message';
 import { Items, Controller } from '../../interfaces';
 import { getPrefixCls } from '../../config/index';
 
 interface ImageSlideProps {
   item: Items;
   prefixCls?: string;
-  currentGalleryImageStyle: React.CSSProperties;
   controller: Controller;
 }
 
@@ -23,12 +21,10 @@ interface OriPos {
   top: number;
   cX: number;
   cY: number;
-  scale: number;
-  [name: string]: any;
 }
 
 const ImageSlide: FC<ImageSlideProps> = (props) => {
-  const { item, prefixCls, currentGalleryImageStyle, controller } = props;
+  const { item, prefixCls, controller } = props;
 
   const isDown = useRef(false);
 
@@ -37,16 +33,13 @@ const ImageSlide: FC<ImageSlideProps> = (props) => {
     top: 0,
   });
 
-  const dragBox = useRef<HTMLElement | null>(null);
-  const currentImage = useRef<HTMLImageElement | any>(null);
+  // const currentImage = useRef<HTMLImageElement | any>(null);  // init origin positon
 
-  // init origin positon
   const oriPos = useRef<OriPos>({
-    top: 0, // element position
+    top: 0,
     left: 0,
-    cX: 0, // mouse position
+    cX: 0,
     cY: 0,
-    scale: 0,
   });
 
   // mousedown
@@ -59,7 +52,6 @@ const ImageSlide: FC<ImageSlideProps> = (props) => {
     const cX = e.clientX;
     oriPos.current = {
       ...GalleryImageStyle,
-      scale: controller.scale,
       cX,
       cY,
     };
@@ -70,7 +62,6 @@ const ImageSlide: FC<ImageSlideProps> = (props) => {
     if (!isDown.current) {
       return;
     }
-    e.persist();
 
     // element position and offset
     const style = { ...oriPos.current };
@@ -81,25 +72,9 @@ const ImageSlide: FC<ImageSlideProps> = (props) => {
     const top = offsetY + style.top;
     const left = offsetX + style.left;
 
-    const width = 1684;
-    const height = 753;
-    // console.log(currentImage.current?.width * style.scale);
+    // const width = 1684;
+    // const height = 753;
     // const rect = currentImage.current.getBoundingClientRect();
-    // console.log(rect, 'rect');
-    // console.log(Math.ceil(rect.left), 'Math.ceil(rect.left)');
-
-    // if (offsetX >= 0 && Math.ceil(rect.left) >= 118) {
-    //   Message({
-    //     content: '左边',
-    //     duration: 3,
-    //     className: `${getPrefixCls(prefixCls, 'i-g-rc-notification')}`,
-    //     maxCount: 1,
-    //   });
-    //   return;
-    // }
-    // if (rect.right >= 118) {
-    //   console.log('rect.right >= 118');
-    // }
 
     setGalleryImageStyle({
       left,
@@ -108,20 +83,17 @@ const ImageSlide: FC<ImageSlideProps> = (props) => {
   }, []);
 
   // The mouse is lifted
-  const onMouseUp = useCallback(
-    (e) => {
-      isDown.current = false;
-    },
-    [GalleryImageStyle],
-  );
+  const onMouseUp = useCallback(() => {
+    isDown.current = false;
+  }, [GalleryImageStyle]);
 
   return (
     <div className={getPrefixCls(prefixCls, 'i-g-image-content')}>
       <img
+        // ref={currentImage}
         style={{
-          transform: `${currentGalleryImageStyle.transform} translate3d(${GalleryImageStyle.left}px, ${GalleryImageStyle.top}px, 0)`,
+          transform: `scale3d(${controller.scale}, ${controller.scale}, 1) rotate3d(0, 0, 1, ${controller.rotate}deg) translate3d(${GalleryImageStyle.left}px, ${GalleryImageStyle.top}px, 0)`,
         }}
-        ref={currentImage}
         className={getPrefixCls(prefixCls, 'i-g-image')}
         src={item.src}
         onMouseDown={onMouseDown}
