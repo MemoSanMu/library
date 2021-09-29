@@ -1,6 +1,7 @@
 export type Items = {
   src: string;
 };
+
 export type Direction = string | 'left' | 'right';
 
 export interface ImageGalleryProps {

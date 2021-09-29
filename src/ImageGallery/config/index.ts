@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-17 15:17:27
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:48:00
+ * @LastEditTime: 2021-09-29 17:01:10
  */
 const rootPrefix = 'lib';
 
@@ -39,3 +39,5 @@ export const defaultController = {
 };
 
 export const imageGallery = `image-gallery`;
+
+export const imageGalleryCard = `${imageGallery}-card`;

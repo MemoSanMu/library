@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-20 19:35:54
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:57:56
+ * @LastEditTime: 2021-09-29 20:25:54
 -->
 
 ## Foo
@@ -76,22 +76,32 @@ const items = [
   {
     src: `${PREFIX_URL}${6}t.jpg`,
   },
-  {
-    src: `${PREFIX_URL}${7}t.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${8}t.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${9}t.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${10}t.jpg`,
-  },
+  // {
+  //   src: `${PREFIX_URL}${7}t.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${8}t.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${9}t.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${10}t.jpg`,
+  // },
 ];
 
 export default () => (
   <ImageGallery items={items} thumbnailsSlideMobileCount={3} />
+  // <div
+  //   onClick={() => {
+  //     ImageGallery.browsing({
+  //       items,
+  //       thumbnailsSlideMobileCount: 3,
+  //     });
+  //   }}
+  // >
+  //   browser
+  // </div>
 );
 ```
 

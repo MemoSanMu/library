@@ -1,8 +1,7 @@
 .@{image-gallery-prefix-cls} {
   .pcenter(fixed);
-  .zi(99999);
+  .zi(1000);
   background-color: @bgc;
-
   .@{prefix}-@{image-gallery}-container {
     .h(100%);
     .position(relative);
@@ -38,13 +37,17 @@
       margin: 0;
       display: flex;
       transition: all 450ms ease-out 0s;
+      list-style: none;
       & > li {
         .w(96px);
         .h(72px);
+        .bc(@bgc);
+        .dfcc();
         box-sizing: border-box;
         border: 4px solid transparent;
         min-width: 96px;
         margin: 0 6px;
+        transition: all 300ms ease-out 0s;
       }
       & > li:hover {
         border: 4px solid @ig-blue;
@@ -61,7 +64,6 @@
     }
 
     .@{prefix}-@{image-gallery}-t-c-img {
-      .bc(@bgc);
       .image();
     }
   }
@@ -162,14 +164,14 @@
 }
 
 .@{image-gallery-rc-tooltip} {
-  .zi(100000);
+  .zi(1001);
   .rc-tooltip-inner {
     min-height: auto;
   }
 }
 
 .@{image-gallery-rc-notification} {
-  .zi(100000);
+  .zi(1001);
   transform: translate3d(-50%, 0, 0);
   .@{prefix}-@{image-gallery}-rc-notification-message {
     color: rgba(82, 88, 101, 100);
@@ -188,7 +190,7 @@
 
 .@{image-gallery-loading} {
   .pcenter(fixed);
-  .zi(1000000);
+  .zi(1001);
   .dfcc();
   background-color: rgba(0, 0, 0, 0.1);
   .@{prefix}-loading-clip {
@@ -204,7 +206,7 @@
 .@{image-gallery-toast} {
   .pcenter(fixed);
   .dfcc();
-  .zi(100000);
+  .zi(1001);
   pointer-events: none;
   display: none;
   &.show {

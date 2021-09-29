@@ -1,3 +1,11 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: wangsen
+ * @Date: 2021-09-17 19:18:09
+ * @LastEditors: wangsen
+ * @LastEditTime: 2021-09-29 17:24:30
+ */
 import React, { FC } from 'react';
 import ReactSlick from 'react-slick';
 
@@ -7,15 +15,16 @@ interface Settings {
   className?: string;
   infinite?: boolean;
   speed?: number;
-  slidesToShow: number;
+  slidesToShow?: number;
   lazyLoad?: boolean;
   slidesToScroll?: number;
   nextArrow?: React.ReactNode;
   prevArrow?: React.ReactNode;
-  customPaging: (i: number) => React.ReactNode;
-  appendDots: (dots: React.ReactDOM[]) => React.ReactNode;
-  beforeChange: (oldIndex: number, newIndex: number) => void;
-  onInit: () => void;
+  arrows?: boolean; // 是否展示左右箭头
+  customPaging?: (i: number) => React.ReactNode;
+  appendDots?: (dots: React.ReactDOM[]) => React.ReactNode;
+  beforeChange?: (oldIndex: number, newIndex: number) => void;
+  onInit?: () => void;
 }
 
 interface SliderProps {
