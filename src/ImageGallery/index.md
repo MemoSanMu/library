@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-20 19:35:54
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-29 20:25:54
+ * @LastEditTime: 2021-09-30 17:54:38
 -->
 
 ## Foo
@@ -28,54 +28,54 @@ const items = [
   {
     src: `${PREFIX_URL}${1}.jpg`,
   },
-  {
-    src: 'https://user-images.githubusercontent.com/9554297/83762004-a0761b00-a6a9-11ea-83b4-9c8ff721d4b8.png',
-  },
-  {
-    src: 'http://image.yonghuivip.com/images/comment/e1c964d9-54e2-42ed-ae2e-f516e8257067-13739d330d699218e03cd93d1232bf7ba025fed8.png',
-  },
-  {
-    src: `${PREFIX_URL}${2}.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${3}.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${4}.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${5}.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${6}.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${7}.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${8}.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${9}.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${10}.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${2}t.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${3}t.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${4}t.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${5}t.jpg`,
-  },
-  {
-    src: `${PREFIX_URL}${6}t.jpg`,
-  },
+  // {
+  //   src: 'https://user-images.githubusercontent.com/9554297/83762004-a0761b00-a6a9-11ea-83b4-9c8ff721d4b8.png',
+  // },
+  // {
+  //   src: 'http://image.yonghuivip.com/images/comment/e1c964d9-54e2-42ed-ae2e-f516e8257067-13739d330d699218e03cd93d1232bf7ba025fed8.png',
+  // },
+  // {
+  //   src: `${PREFIX_URL}${2}.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${3}.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${4}.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${5}.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${6}.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${7}.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${8}.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${9}.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${10}.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${2}t.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${3}t.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${4}t.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${5}t.jpg`,
+  // },
+  // {
+  //   src: `${PREFIX_URL}${6}t.jpg`,
+  // },
   // {
   //   src: `${PREFIX_URL}${7}t.jpg`,
   // },
@@ -91,17 +91,23 @@ const items = [
 ];
 
 export default () => (
-  <ImageGallery items={items} thumbnailsSlideMobileCount={3} />
-  // <div
-  //   onClick={() => {
-  //     ImageGallery.browsing({
-  //       items,
-  //       thumbnailsSlideMobileCount: 3,
-  //     });
-  //   }}
-  // >
-  //   browser
-  // </div>
+  <>
+    <ImageGallery items={items} thumbnailsSlideMobileCount={3} />
+    <div
+      style={{
+        marginTop: '20px',
+      }}
+      onClick={() => {
+        ImageGallery.browsing({
+          items,
+          thumbnailsSlideMobileCount: 3,
+          card: true,
+        });
+      }}
+    >
+      触发全屏画廊
+    </div>
+  </>
 );
 ```
 

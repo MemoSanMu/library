@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-29 16:49:08
+ * @LastEditTime: 2021-09-30 14:22:21
  */
 
 /**
@@ -30,16 +30,16 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
   );
 };
 
-// interface forwardedImageGallery  extends GalleryProps{
+// interface ForwardedImageGallery extends GalleryProps {
 //   // coverRef?: null; //   后续在看是否需要传入ref
-//   browsing: (props: ImageGalleryProps) => void;
-//   Browsing: (props: ImageGalleryProps) => void;
+//   browsing?: (props: ImageGalleryProps) => void;
+//   Browsing?: (props: ImageGalleryProps) => void;
 // }
 
 // 常规组件
-const forwardedImageGallery: any = Card;
+const forwardedImageGallery: any = ImageGallery;
 
-// 命令式调用组件
+// 命令式调用全屏画廊
 forwardedImageGallery.browsing = callee;
 forwardedImageGallery.Browsing = callee; // Alias browsing
 export default forwardedImageGallery;

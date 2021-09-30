@@ -1,10 +1,11 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useRef, useState, useMemo } from 'react';
 import Message from '../Message';
 import Toast from '../Toast';
 import { isEqual } from 'lodash-es';
 import classNames from 'classnames';
 import SliderWrapper from '../Slider';
 import ImageSlide from '../ImageSlide';
+import Header from '../Header';
 import {
   RightOutlined,
   LeftOutlined,
@@ -36,6 +37,7 @@ import {
   Direction,
   ImageGalleryProps,
   Controller,
+  ThumbnailsControl,
 } from '../../interfaces';
 
 interface GalleryProps extends ImageGalleryProps {
@@ -43,7 +45,7 @@ interface GalleryProps extends ImageGalleryProps {
   destroyer: () => void;
 }
 
-const ImageGallery: FC<GalleryProps> = (props) => {
+const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
   const {
     thumbnailsSlideMobileCount = 1,
     prefixCls,
@@ -52,6 +54,8 @@ const ImageGallery: FC<GalleryProps> = (props) => {
     delCb,
     outBrowsing,
     destroyer,
+    zIndex,
+    showTitle = true,
   } = props;
   const Slider = useRef<any>(); // Slider.current.slickPrev()
 
@@ -70,15 +74,33 @@ const ImageGallery: FC<GalleryProps> = (props) => {
   const [isDownloading, setIsDownloading] = useState<boolean>(false); // 下载中loading
 
   const [isShowToast, setIsShowToast] = useState<boolean>(false); // 缩放大小
+  const [thumbnailsControl, setThumbnailsControl] = useState<ThumbnailsControl>(
+    {
+      leftDisable: true,
+      rightDisable: false,
+    },
+  ); // 控制缩略图左右按钮禁用
 
   // 当前画廊数据
   const [imageGalleryItems, setImageGalleryItems] = useState<Items[]>(items);
-  const itemsLength = imageGalleryItems.length;
-  const maxXMobileRange = getMaxXMobileRang(itemsLength);
+
+  const itemsLength = useMemo(
+    () => imageGalleryItems.length,
+    imageGalleryItems,
+  );
+
+  const maxXMobileRange = useMemo(
+    () => getMaxXMobileRang(itemsLength),
+    [itemsLength],
+  );
 
   // 处理缩略图左右切换移动按钮 滚动宽度
   const handleControlMobile = (isLeft: boolean) => {
     let transX;
+    setThumbnailsControl({
+      leftDisable: false,
+      rightDisable: false,
+    });
     // 这个位置控制缩略图的滚动方向
     // !isLeft = 点左右移; isLeft = 点左左移;
     if (!isLeft) {
@@ -86,12 +108,20 @@ const ImageGallery: FC<GalleryProps> = (props) => {
         -thumbnailsSlideWidth * thumbnailsSlideMobileCount + thumbnailsMobileW;
       if (Math.abs(transX) > maxXMobileRange) {
         transX = -maxXMobileRange;
+        setThumbnailsControl({
+          leftDisable: false,
+          rightDisable: true,
+        });
       }
     } else {
       transX =
         thumbnailsSlideWidth * thumbnailsSlideMobileCount + thumbnailsMobileW;
       if (transX > 0) {
         transX = 0;
+        setThumbnailsControl({
+          leftDisable: true,
+          rightDisable: false,
+        });
       }
     }
     setThumbnailsMobileW(transX);
@@ -108,7 +138,15 @@ const ImageGallery: FC<GalleryProps> = (props) => {
     const maxMore = dots.length >= thumbnailsMaxLength;
     const isLeft = direction === 'left';
     const Component = isLeft ? CareLeftFilled : CareRightFilled;
-    return maxMore && <Component onClick={() => handleControlMobile(isLeft)} />;
+    return (
+      maxMore && (
+        <Component
+          onClick={() => handleControlMobile(isLeft)}
+          className={getIconCls()}
+          thumbnailsControl={thumbnailsControl}
+        />
+      )
+    );
   };
 
   // 当图片切换前触发钩子
@@ -207,9 +245,38 @@ const ImageGallery: FC<GalleryProps> = (props) => {
       }
     });
 
+    // 删除后 解决缩略图停留在到最后一张时，滚动占位问题。
+    if (thumbnailsControl.rightDisable) {
+      const transX = thumbnailsMobileW + thumbnailsSlideWidth;
+      setThumbnailsMobileW(transX); // 更新滚动距离
+      setThumbnailsStyle({
+        transform: `translate3d(${transX}px, 0px, 0px)`,
+      });
+    }
+
     setImageGalleryItems(filterImageGalleryItems);
     delCb && delCb(filterImageGalleryItems);
   };
+
+  const getIconCls = (cls?: string) => {
+    return classNames([getPrefixCls(prefixCls, `${imageGallery}-icon`)], cls);
+  };
+
+  // 获取当前active数据
+  const getCurrentSlider = useMemo(() => {
+    return imageGalleryItems[currentIndex];
+  }, [currentIndex]);
+
+  const getGalleryRender = useMemo(() => {
+    return imageGalleryItems.map((i: Items) => (
+      <ImageSlide
+        item={i}
+        key={i.src}
+        prefixCls={prefixCls}
+        controller={controller}
+      />
+    ));
+  }, [imageGalleryItems]);
 
   const settings = {
     dots: true,
@@ -217,15 +284,20 @@ const ImageGallery: FC<GalleryProps> = (props) => {
       prefixCls,
       `${imageGallery}-thumbnails`,
     )}`,
-    className: getPrefixCls(prefixCls, 'slick-slider'),
+    className: classNames(getPrefixCls(prefixCls, 'slick-slider'), {
+      [`${getPrefixCls(prefixCls, `${imageGallery}-slick-full-screen`)}`]:
+        itemsLength === 1,
+    }),
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     lazyLoad: true,
+    // fade: true, // fade动画方式切换
     slidesToScroll: 1,
     draggable: false,
-    nextArrow: <RightOutlined />,
-    prevArrow: <LeftOutlined />,
+    nextArrow: <RightOutlined className={getIconCls()} />,
+    prevArrow: <LeftOutlined className={getIconCls()} />,
+    zIndex,
     initialSlide, // 第一张幻灯片的索引
     customPaging: function (i: number) {
       return (
@@ -250,22 +322,37 @@ const ImageGallery: FC<GalleryProps> = (props) => {
             >
               {/* 放大 */}
               <Tooltip text="放大">
-                <ZoomIn onClick={() => handleZoom('ZoomIn')} />
+                <ZoomIn
+                  onClick={() => handleZoom('ZoomIn')}
+                  className={getIconCls()}
+                />
               </Tooltip>
               <Tooltip text="缩小">
-                <ZoomOut onClick={() => handleZoom('ZoomOut')} />
+                <ZoomOut
+                  onClick={() => handleZoom('ZoomOut')}
+                  className={getIconCls()}
+                />
               </Tooltip>
               <Tooltip text="左旋转">
-                <RotateLeft onClick={() => handleRotate('RotateLeft')} />
+                <RotateLeft
+                  onClick={() => handleRotate('RotateLeft')}
+                  className={getIconCls()}
+                />
               </Tooltip>
               <Tooltip text="右旋转">
-                <RotateRight onClick={() => handleRotate('RotateRight')} />
+                <RotateRight
+                  onClick={() => handleRotate('RotateRight')}
+                  className={getIconCls()}
+                />
               </Tooltip>
               <Tooltip text="下载">
-                <Download onClick={handleDownloadImage} />
+                <Download
+                  onClick={handleDownloadImage}
+                  className={getIconCls()}
+                />
               </Tooltip>
               <Tooltip text="删除">
-                <Delate onClick={handleDel} />
+                <Delate onClick={handleDel} className={getIconCls()} />
               </Tooltip>
             </div>
             <div
@@ -287,17 +374,14 @@ const ImageGallery: FC<GalleryProps> = (props) => {
             )}`}
           >
             {/* 待换 scroll 不使用transform */}
-            <div>
-              <ul
-                className={`${getPrefixCls(
-                  prefixCls,
-                  `${imageGallery}-t-c-ul`,
-                )}`}
-                style={thumbnailsStyle}
-              >
-                {dots}
-              </ul>
-            </div>
+            {/* <div> */}
+            <ul
+              className={`${getPrefixCls(prefixCls, `${imageGallery}-t-c-ul`)}`}
+              style={thumbnailsStyle}
+            >
+              {dots}
+            </ul>
+            {/* </div> */}
           </div>
           {/* 缩略图右测滑动按钮 */}
           {getControlMobileBtn(dots, 'right')}
@@ -312,6 +396,17 @@ const ImageGallery: FC<GalleryProps> = (props) => {
 
   return (
     <div className={wrapCls}>
+      {/* header */}
+      <Header currentSlider={getCurrentSlider} showTitle={showTitle}>
+        {/* close */}
+        <Close
+          className={getIconCls(
+            getPrefixCls(prefixCls, `${imageGallery}-close`),
+          )}
+          onClick={outBrowsing}
+        />
+      </Header>
+
       {/* loading */}
       <ClipLoader
         color={'#108ee9'}
@@ -323,26 +418,12 @@ const ImageGallery: FC<GalleryProps> = (props) => {
       {/* slider */}
       <div className={getPrefixCls(prefixCls, `${wrapperCls}-container`)}>
         <SliderWrapper sliderWrapper={Slider} settings={settings}>
-          {imageGalleryItems &&
-            imageGalleryItems.map((i: Items) => (
-              <ImageSlide
-                item={i}
-                key={i.src}
-                prefixCls={prefixCls}
-                controller={controller}
-              />
-            ))}
+          {getGalleryRender}
         </SliderWrapper>
       </div>
 
       {/* sacle Progress Toast */}
       <Toast show={isShowToast} sacleProgress={controller.scale} />
-
-      {/* close */}
-      <Close
-        className={getPrefixCls(prefixCls, `${imageGallery}-close`)}
-        onClick={outBrowsing}
-      />
     </div>
   );
 };

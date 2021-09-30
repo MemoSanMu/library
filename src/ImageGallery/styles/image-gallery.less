@@ -2,6 +2,36 @@
   .pcenter(fixed);
   .zi(1000);
   background-color: @bgc;
+  .@{image-gallery-header} {
+    .zi(1001);
+    .position(absolute);
+    .w(100%);
+    .h(80px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .@{image-gallery-header}-alt {
+      color: rgba(255, 255, 255, 100);
+      font-size: 16px;
+      font-family: PingFangSC-Regular;
+      margin: 0;
+      flex: 1;
+      text-indent: 20px;
+      overflow: hidden;
+      padding-right: 20px;
+      .@{image-gallery-header}-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    // 关闭
+    .@{prefix}-@{image-gallery}-close {
+      margin-right: 48px;
+      flex-basis: 1%;
+    }
+  }
+
   .@{prefix}-@{image-gallery}-container {
     .h(100%);
     .position(relative);
@@ -95,6 +125,7 @@
   .slick-list {
     .h(calc(100vh - 248px));
     .w(calc(100vw - 236px));
+    // .w(560px);
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -114,6 +145,10 @@
     }
   }
 
+  .@{prefix}-@{image-gallery}-slick-full-screen .slick-list {
+    .h(calc(100vh - 160px));
+  }
+
   .@{prefix}-@{image-gallery}-image-content {
     display: flex !important;
     justify-content: center;
@@ -127,6 +162,7 @@
 
   .@{prefix}-@{image-gallery}-image {
     .image();
+    cursor: move;
   }
 
   // 操作控制区域
@@ -153,13 +189,6 @@
     color: rgba(255, 255, 255, 100);
     font-size: 16px;
     font-family: PingFangSC-Regular;
-  }
-
-  // 关闭
-  .@{prefix}-@{image-gallery}-close {
-    .position(absolute);
-    top: 27px;
-    right: 48px;
   }
 }
 
@@ -219,4 +248,8 @@
     color: rgba(255, 255, 255, 100);
     font-size: 24px;
   }
+}
+
+.@{prefix}-@{image-gallery}-icon {
+  cursor: pointer;
 }
