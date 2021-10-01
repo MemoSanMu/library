@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState, useMemo, useEffect } from 'react';
+import React, { FC, useRef, useState, useMemo } from 'react';
 import Message from '../Message';
 import Toast from '../Toast';
 import { isEqual } from 'lodash-es';

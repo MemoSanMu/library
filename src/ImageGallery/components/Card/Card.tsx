@@ -4,9 +4,9 @@
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-29 20:14:06
+ * @LastEditTime: 2021-10-01 22:15:11
  */
-import React, { FC, useState, useRef } from 'react';
+import React, { FC, useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 
 import SliderWrapper from '../Slider';
@@ -21,6 +21,9 @@ const Card: FC<CardProps> = ({ ...props }) => {
   // 当前画廊数据
   const [imageGalleryItems] = useState<Items[]>(items);
   const [currentIndex, setCurrentIndex] = useState<number>(initialSlide); // 当前展示幻灯片索引
+
+  const Slider = useRef<any>(null); // Slider.current.slickPrev()
+  const SliderThumbnails = useRef<any>(null); // Slider.current.slickPrev()
 
   // 当图片切换前触发钩子
   const beforeChange = (_: number, newIndex: number) => {
@@ -41,7 +44,6 @@ const Card: FC<CardProps> = ({ ...props }) => {
     setCurrentIndex(i);
   };
 
-  const Slider = useRef<any>(); // Slider.current.slickPrev()
   const settings = {
     arrows: false,
     beforeChange: beforeChange,
@@ -80,6 +82,7 @@ const Card: FC<CardProps> = ({ ...props }) => {
       >
         <ul
           className={`${getPrefixCls(prefixCls, `${imageGalleryCard}-t-c-ul`)}`}
+          ref={SliderThumbnails}
         >
           {imageGalleryItems &&
             imageGalleryItems.map((i: Items, ind: number) => (
@@ -101,6 +104,38 @@ const Card: FC<CardProps> = ({ ...props }) => {
               </li>
             ))}
         </ul>
+      </div>
+      <div
+        onClick={() => {
+          let add = 0;
+          if (SliderThumbnails.current.scrollLeft % 104 >= 104 / 2) {
+            add += 104 - (SliderThumbnails.current.scrollLeft % 104);
+          } else {
+            add -= SliderThumbnails.current.scrollLeft % 104;
+          }
+
+          SliderThumbnails.current.scrollLeft += 104 * 3 + add;
+          // const setpTo = (104 * 3 + add) / 10;
+          // let count = 0;
+          // let timer: any = null;
+          // function setp() {
+          //   count++;
+          //   if (count <= 10) {
+          //     SliderThumbnails.current.scrollLeft += setpTo;
+          //   } else {
+          //     clearTimeout(timer);
+          //     timer = null;
+          //     return;
+          //   }
+          //   clearTimeout(timer);
+          //   timer = setTimeout(() => {
+          //     setp();
+          //   }, 20);
+          // }
+          // setp();
+        }}
+      >
+        aaa
       </div>
     </div>
   );
