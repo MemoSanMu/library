@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState, useMemo } from 'react';
+import React, { FC, useRef, useState, useMemo, useEffect } from 'react';
 import Message from '../Message';
 import Toast from '../Toast';
 import { isEqual } from 'lodash-es';
@@ -42,7 +42,6 @@ import {
 
 interface GalleryProps extends ImageGalleryProps {
   outBrowsing: () => void;
-  destroyer: () => void;
 }
 
 const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
@@ -53,7 +52,6 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     initialSlide = 0,
     delCb,
     outBrowsing,
-    destroyer,
     zIndex,
     showTitle = true,
   } = props;
@@ -84,10 +82,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
   // 当前画廊数据
   const [imageGalleryItems, setImageGalleryItems] = useState<Items[]>(items);
 
-  const itemsLength = useMemo(
-    () => imageGalleryItems.length,
-    imageGalleryItems,
-  );
+  const itemsLength = imageGalleryItems.length;
 
   const maxXMobileRange = useMemo(
     () => getMaxXMobileRang(itemsLength),
@@ -157,9 +152,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
   };
 
   // 初始化
-  const onInit = () => {
-    destroyer();
-  };
+  const onInit = () => {};
 
   const handleToast = (isShowToast: boolean) => {
     setIsShowToast(isShowToast);
@@ -274,6 +267,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
         key={i.src}
         prefixCls={prefixCls}
         controller={controller}
+        itemsLength={itemsLength}
       />
     ));
   }, [imageGalleryItems]);

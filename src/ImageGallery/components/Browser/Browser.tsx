@@ -1,5 +1,12 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: wangsen
+ * @Date: 2021-09-30 10:20:19
+ * @LastEditors: wangsen
+ * @LastEditTime: 2021-10-01 11:36:02
+ */
 import React, { FC, useState, useEffect } from 'react';
-import Portal from '../Portal';
 import ImageGallery from '../ImageGallery';
 import { ImageGalleryProps } from '../../interfaces';
 
@@ -15,25 +22,18 @@ const Browser: FC<BrowserProp> = ({
 }) => {
   const [mounted, setMounted] = useState<boolean>(false);
 
-  useEffect(() => {
-    browsing === true && setMounted(browsing);
-    return () => setMounted(false);
-  }, []);
-
+  // 卸载
   const outBrowsing = () => {
     setMounted(false);
     destroyer && destroyer();
   };
 
-  return mounted ? (
-    <Portal>
-      <ImageGallery
-        {...props}
-        outBrowsing={outBrowsing}
-        destroyer={destroyer}
-      />
-    </Portal>
-  ) : null;
+  useEffect(() => {
+    browsing === true && setMounted(browsing);
+    return () => outBrowsing();
+  }, []);
+
+  return mounted ? <ImageGallery {...props} outBrowsing={outBrowsing} /> : null;
 };
 
 export default Browser;

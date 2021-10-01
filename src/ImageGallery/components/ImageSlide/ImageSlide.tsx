@@ -4,9 +4,10 @@
  * @Author: wangsen
  * @Date: 2021-09-28 10:33:51
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 20:11:48
+ * @LastEditTime: 2021-10-01 12:10:00
  */
 import React, { FC, useCallback, useRef, useState, useMemo } from 'react';
+import classNames from 'classnames';
 import { Items, Controller } from '../../interfaces';
 import { getPrefixCls, imageGallery } from '../../config/index';
 
@@ -14,6 +15,7 @@ interface ImageSlideProps {
   item: Items;
   prefixCls?: string;
   controller: Controller;
+  itemsLength: number;
 }
 
 interface OriPos {
@@ -23,8 +25,8 @@ interface OriPos {
   cY: number;
 }
 
-const ImageSlide: FC<ImageSlideProps> = (props) => {
-  const { item, prefixCls, controller } = props;
+const ImageSlide: FC<ImageSlideProps> = ({ ...props }) => {
+  const { item, prefixCls, controller, itemsLength } = props;
 
   const isDown = useRef(false);
 
@@ -71,7 +73,6 @@ const ImageSlide: FC<ImageSlideProps> = (props) => {
 
     const top = offsetY + style.top;
     const left = offsetX + style.left;
-
     // const width = 1684;
     // const height = 753;
     // const rect = currentImage.current.getBoundingClientRect();
@@ -83,9 +84,15 @@ const ImageSlide: FC<ImageSlideProps> = (props) => {
   }, []);
 
   // The mouse is lifted
-  const onMouseUp = useCallback(() => {
+  // const onMouseUp = useCallback(() => {
+  //   console.log(isDown.current, 'isDown.current');
+
+  //   isDown.current = false;
+  // }, [dragPos]);
+
+  const onMouseUp = () => {
     isDown.current = false;
-  }, [dragPos]);
+  };
 
   // 获取图片样式
   const getImageStyle = useMemo(
@@ -96,16 +103,28 @@ const ImageSlide: FC<ImageSlideProps> = (props) => {
     [isDown, controller, dragPos],
   );
 
+  const onEvents =
+    itemsLength > 1
+      ? {
+          onMouseDown,
+          onMouseUp,
+          onMouseMove,
+          style: getImageStyle,
+        }
+      : {};
+
   return (
     <div className={getPrefixCls(prefixCls, `${imageGallery}-image-content`)}>
       <img
         // ref={currentImage}
-        style={getImageStyle}
-        className={getPrefixCls(prefixCls, `${imageGallery}-image`)}
+        className={classNames(
+          getPrefixCls(prefixCls, `${imageGallery}-image`),
+          {
+            move: itemsLength > 1,
+          },
+        )}
         src={item.src}
-        onMouseDown={onMouseDown}
-        onMouseUp={onMouseUp}
-        onMouseMove={onMouseMove}
+        {...onEvents}
       />
     </div>
   );
