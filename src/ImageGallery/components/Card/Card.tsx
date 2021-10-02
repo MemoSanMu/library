@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-02 16:45:21
+ * @LastEditTime: 2021-10-02 17:16:06
  */
 import React, { FC, useState, useRef, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
@@ -20,7 +20,9 @@ import {
 } from '../../config';
 // import { browserIeOrSafari } from '../../utils';
 
-interface CardProps extends ImageGalleryProps {}
+interface CardProps extends ImageGalleryProps {
+  isShowCardSwitchBtn?: boolean; // default true 是否显示卡片预览, 缩略图左右切换按钮，注：且同时需要items长度大于4 才生效
+}
 
 const Card: FC<CardProps> = ({ ...props }) => {
   const {
@@ -28,6 +30,7 @@ const Card: FC<CardProps> = ({ ...props }) => {
     items,
     initialSlide = 0,
     thumbnailsSlideMobileCount = 1,
+    isShowCardSwitchBtn = true,
   } = props;
 
   // 当前画廊数据
@@ -133,8 +136,14 @@ const Card: FC<CardProps> = ({ ...props }) => {
     }
   };
 
+  // 是否显示卡片预览 缩略图左右切换按钮
+  const getIsShowCardSwitchBtn = useMemo(
+    () => isShowCardSwitchBtn && itemsLength > 4,
+    [isShowCardSwitchBtn],
+  );
+
   const wrapCls = classNames(getPrefixCls(prefixCls, imageGalleryCard), {
-    control: itemsLength > 4,
+    control: getIsShowCardSwitchBtn,
   });
 
   return (
@@ -165,7 +174,7 @@ const Card: FC<CardProps> = ({ ...props }) => {
           `${imageGalleryCard}-thumbnails-content`,
         )}`}
       >
-        {itemsLength > 4 ? (
+        {getIsShowCardSwitchBtn ? (
           <div
             className={`${getPrefixCls(
               prefixCls,
@@ -204,7 +213,7 @@ const Card: FC<CardProps> = ({ ...props }) => {
               </li>
             ))}
         </ul>
-        {itemsLength > 4 ? (
+        {getIsShowCardSwitchBtn ? (
           <div
             className={`${getPrefixCls(
               prefixCls,
