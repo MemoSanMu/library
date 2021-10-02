@@ -221,7 +221,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
       }
     }
     const sacleProgress = isIn ? scale + 0.25 : scale - 0.25;
-    handleToast(true);
+    !isShowToast && handleToast(true);
     setController({
       ...controller,
       scale: sacleProgress,
