@@ -4,19 +4,31 @@
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-01 22:15:11
+ * @LastEditTime: 2021-10-02 16:45:21
  */
-import React, { FC, useState, useRef, useEffect } from 'react';
+import React, { FC, useState, useRef, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 
 import SliderWrapper from '../Slider';
-import { ImageGalleryProps, Items } from '../../interfaces';
-import { getPrefixCls, imageGalleryCard, wrapperCls } from '../../config';
+import { CareLeftFilled, CareRightFilled } from '../Svg';
+import { ImageGalleryProps, Items, ThumbnailsControl } from '../../interfaces';
+import {
+  getPrefixCls,
+  imageGalleryCard,
+  cardThumbnailsMaxLength,
+  cardThumbnailsSlideWidth,
+} from '../../config';
+// import { browserIeOrSafari } from '../../utils';
 
 interface CardProps extends ImageGalleryProps {}
 
 const Card: FC<CardProps> = ({ ...props }) => {
-  const { prefixCls, items, initialSlide = 0 } = props;
+  const {
+    prefixCls,
+    items,
+    initialSlide = 0,
+    thumbnailsSlideMobileCount = 1,
+  } = props;
 
   // 当前画廊数据
   const [imageGalleryItems] = useState<Items[]>(items);
@@ -24,6 +36,15 @@ const Card: FC<CardProps> = ({ ...props }) => {
 
   const Slider = useRef<any>(null); // Slider.current.slickPrev()
   const SliderThumbnails = useRef<any>(null); // Slider.current.slickPrev()
+
+  const [thumbnailsControl, setThumbnailsControl] = useState<ThumbnailsControl>(
+    {
+      leftDisable: true,
+      rightDisable: false,
+    },
+  ); // 控制缩略图左右按钮禁用
+
+  const itemsLength = imageGalleryItems.length;
 
   // 当图片切换前触发钩子
   const beforeChange = (_: number, newIndex: number) => {
@@ -50,7 +71,71 @@ const Card: FC<CardProps> = ({ ...props }) => {
     onInit: onInit,
   };
 
-  const wrapCls = classNames(getPrefixCls(prefixCls, imageGalleryCard), {});
+  const getIconCls = (cls?: string) => {
+    return classNames(
+      [getPrefixCls(prefixCls, `${imageGalleryCard}-icon`)],
+      cls,
+    );
+  };
+
+  // 缩略图左右切换
+  const handleThumbnailsMove = (direction: string) => {
+    const isLeft = direction === 'left',
+      scrollLeft = SliderThumbnails.current.scrollLeft;
+    let add = 0;
+    const setThumbnails = isLeft
+      ? {
+          ...thumbnailsControl,
+          rightDisable: false,
+        }
+      : {
+          ...thumbnailsControl,
+          leftDisable: false,
+        };
+    setThumbnailsControl(setThumbnails);
+    if (scrollLeft % cardThumbnailsSlideWidth >= cardThumbnailsSlideWidth / 2) {
+      add += cardThumbnailsSlideWidth - (scrollLeft % cardThumbnailsSlideWidth);
+    } else {
+      add -= scrollLeft % cardThumbnailsSlideWidth;
+    }
+    isLeft
+      ? (SliderThumbnails.current.scrollLeft -=
+          cardThumbnailsSlideWidth * thumbnailsSlideMobileCount - add)
+      : (SliderThumbnails.current.scrollLeft +=
+          cardThumbnailsSlideWidth * thumbnailsSlideMobileCount + add);
+  };
+
+  // 缩略图滚监听
+  const handleScroll = (e: any) => {
+    e.persist();
+    const { leftDisable, rightDisable } = thumbnailsControl;
+    if (leftDisable || rightDisable) {
+      setThumbnailsControl({
+        leftDisable: false,
+        rightDisable: false,
+      });
+    }
+
+    if (
+      e.target.scrollLeft >=
+      (itemsLength - cardThumbnailsMaxLength) * cardThumbnailsSlideWidth
+    ) {
+      setThumbnailsControl({
+        leftDisable: false,
+        rightDisable: true,
+      });
+    }
+    if (e.target.scrollLeft === 0) {
+      setThumbnailsControl({
+        leftDisable: true,
+        rightDisable: false,
+      });
+    }
+  };
+
+  const wrapCls = classNames(getPrefixCls(prefixCls, imageGalleryCard), {
+    control: itemsLength > 4,
+  });
 
   return (
     <div className={wrapCls}>
@@ -80,9 +165,24 @@ const Card: FC<CardProps> = ({ ...props }) => {
           `${imageGalleryCard}-thumbnails-content`,
         )}`}
       >
+        {itemsLength > 4 ? (
+          <div
+            className={`${getPrefixCls(
+              prefixCls,
+              `${imageGalleryCard}-thumbnails-control`,
+            )}`}
+            onClick={() => handleThumbnailsMove('left')}
+          >
+            <CareLeftFilled
+              className={getIconCls()}
+              thumbnailsControl={thumbnailsControl}
+            />
+          </div>
+        ) : null}
         <ul
           className={`${getPrefixCls(prefixCls, `${imageGalleryCard}-t-c-ul`)}`}
           ref={SliderThumbnails}
+          onScroll={handleScroll}
         >
           {imageGalleryItems &&
             imageGalleryItems.map((i: Items, ind: number) => (
@@ -104,41 +204,45 @@ const Card: FC<CardProps> = ({ ...props }) => {
               </li>
             ))}
         </ul>
-      </div>
-      <div
-        onClick={() => {
-          let add = 0;
-          if (SliderThumbnails.current.scrollLeft % 104 >= 104 / 2) {
-            add += 104 - (SliderThumbnails.current.scrollLeft % 104);
-          } else {
-            add -= SliderThumbnails.current.scrollLeft % 104;
-          }
-
-          SliderThumbnails.current.scrollLeft += 104 * 3 + add;
-          // const setpTo = (104 * 3 + add) / 10;
-          // let count = 0;
-          // let timer: any = null;
-          // function setp() {
-          //   count++;
-          //   if (count <= 10) {
-          //     SliderThumbnails.current.scrollLeft += setpTo;
-          //   } else {
-          //     clearTimeout(timer);
-          //     timer = null;
-          //     return;
-          //   }
-          //   clearTimeout(timer);
-          //   timer = setTimeout(() => {
-          //     setp();
-          //   }, 20);
-          // }
-          // setp();
-        }}
-      >
-        aaa
+        {itemsLength > 4 ? (
+          <div
+            className={`${getPrefixCls(
+              prefixCls,
+              `${imageGalleryCard}-thumbnails-control`,
+            )}`}
+            onClick={() => handleThumbnailsMove('right')}
+          >
+            <CareRightFilled
+              className={getIconCls()}
+              thumbnailsControl={thumbnailsControl}
+            />
+          </div>
+        ) : null}
       </div>
     </div>
   );
 };
 
 export default Card;
+
+// 解决safari 和ie浏览器不支持  scroll-behavior: smooth;
+// if (browserIeOrSafari()) {
+//   const setpTo = (cardThumbnailsSlideWidth * thumbnailsSlideMobileCount + add) / 10;
+//   let count = 0;
+//   let timer: any = null;
+//   function setp() {
+//     count++;
+//     if (count <= 10) {
+//       SliderThumbnails.current.scrollLeft += setpTo;
+//     } else {
+//       clearTimeout(timer);
+//       timer = null;
+//       return;
+//     }
+//     clearTimeout(timer);
+//     timer = setTimeout(() => {
+//       setp();
+//     }, 20);
+//   }
+//   setp();
+// }

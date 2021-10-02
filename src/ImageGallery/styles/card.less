@@ -3,6 +3,30 @@
   .bc(rgba(255, 255, 255, 1));
   padding: 10px;
   overflow: hidden;
+  &.control {
+    .w(472px);
+    .slick-list {
+      .h(440px);
+    }
+    .@{prefix}-@{image-gallery-card}-t-c-ul {
+      .w(408px);
+    }
+    .@{prefix}-@{image-gallery-card}-thumbnails-content {
+      display: flex;
+      justify-content: space-between;
+    }
+    .@{prefix}-@{image-gallery-card}-thumbnails-control {
+      width: 24px;
+      background-color: #00000073;
+    }
+    .@{prefix}-@{image-gallery-card}-icon.icon {
+      width: 27px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: end;
+    }
+  }
   .zi(1000);
   .slick-list {
     .h(380px);

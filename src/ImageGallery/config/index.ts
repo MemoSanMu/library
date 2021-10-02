@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-17 15:17:27
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-29 17:01:10
+ * @LastEditTime: 2021-10-02 16:29:45
  */
 const rootPrefix = 'lib';
 
@@ -24,9 +24,11 @@ export const getPrefixCls = (
 
 // 索引缩略图最大展示长度
 export const thumbnailsMaxLength = 9;
+export const cardThumbnailsMaxLength = 4;
 
 // 单个缩略图 的宽度 width+margin+border
 export const thumbnailsSlideWidth = 108;
+export const cardThumbnailsSlideWidth = 104;
 
 // 根据传入的 缩略图 可滚动条数 算出最大可滚动范围
 export const getMaxXMobileRang = (itemLength: number) =>

@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-20 19:35:54
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-01 13:35:14
+ * @LastEditTime: 2021-10-02 16:42:03
 -->
 
 ## Foo
@@ -92,7 +92,7 @@ const items = [
 
 export default () => (
   <>
-    <ImageGallery items={items} thumbnailsSlideMobileCount={3} />
+    <ImageGallery items={items} thumbnailsSlideMobileCount={6} />
     <div
       style={{
         marginTop: '20px',
