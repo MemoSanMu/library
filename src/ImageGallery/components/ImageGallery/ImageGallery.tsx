@@ -269,7 +269,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
         itemsLength={itemsLength}
       />
     ));
-  }, [imageGalleryItems]);
+  }, [imageGalleryItems, controller]);
 
   const settings = {
     dots: true,
