@@ -25,7 +25,6 @@ import Tooltip from '../Tooltip';
 import {
   thumbnailsMaxLength,
   thumbnailsSlideWidth,
-  getMaxXMobileRang,
   defaultController,
   imageGallery,
   getPrefixCls,
@@ -56,12 +55,8 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     showTitle = true,
   } = props;
   const Slider = useRef<any>(); // Slider.current.slickPrev()
+  const SliderThumbnails = useRef<any>(null); // Slider.current.slickPrev()
 
-  const [thumbnailsMobileW, setThumbnailsMobileW] = useState(0); // 缩略图 累计滚动的x轴宽度
-  // 缩略图 滚动样式
-  const [thumbnailsStyle, setThumbnailsStyle] = useState<React.CSSProperties>(
-    {},
-  );
   const [currentIndex, setCurrentIndex] = useState<number>(initialSlide); // 当前展示幻灯片索引
   // 操作样式
   const [controller, setController] = useState<Controller>({
@@ -84,45 +79,58 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
 
   const itemsLength = imageGalleryItems.length;
 
-  const maxXMobileRange = useMemo(
-    () => getMaxXMobileRang(itemsLength),
-    [itemsLength],
-  );
-
   // 处理缩略图左右切换移动按钮 滚动宽度
   const handleControlMobile = (isLeft: boolean) => {
-    let transX;
-    setThumbnailsControl({
-      leftDisable: false,
-      rightDisable: false,
-    });
-    // 这个位置控制缩略图的滚动方向
-    // !isLeft = 点左右移; isLeft = 点左左移;
-    if (!isLeft) {
-      transX =
-        -thumbnailsSlideWidth * thumbnailsSlideMobileCount + thumbnailsMobileW;
-      if (Math.abs(transX) > maxXMobileRange) {
-        transX = -maxXMobileRange;
-        setThumbnailsControl({
-          leftDisable: false,
-          rightDisable: true,
-        });
-      }
-    } else {
-      transX =
-        thumbnailsSlideWidth * thumbnailsSlideMobileCount + thumbnailsMobileW;
-      if (transX > 0) {
-        transX = 0;
-        setThumbnailsControl({
-          leftDisable: true,
+    const scrollLeft = SliderThumbnails.current.scrollLeft;
+    let add = 0;
+    const setThumbnails = isLeft
+      ? {
+          ...thumbnailsControl,
           rightDisable: false,
-        });
-      }
+        }
+      : {
+          ...thumbnailsControl,
+          leftDisable: false,
+        };
+    setThumbnailsControl(setThumbnails);
+    if (scrollLeft % thumbnailsSlideWidth >= thumbnailsSlideWidth / 2) {
+      add += thumbnailsSlideWidth - (scrollLeft % thumbnailsSlideWidth);
+    } else {
+      add -= scrollLeft % thumbnailsSlideWidth;
     }
-    setThumbnailsMobileW(transX);
-    setThumbnailsStyle({
-      transform: `translate3d(${transX}px, 0px, 0px)`,
-    });
+    isLeft
+      ? (SliderThumbnails.current.scrollLeft -=
+          thumbnailsSlideWidth * thumbnailsSlideMobileCount - add)
+      : (SliderThumbnails.current.scrollLeft +=
+          thumbnailsSlideWidth * thumbnailsSlideMobileCount + add);
+  };
+
+  // 缩略图滚监听
+  const handleScroll = (e: any) => {
+    e.persist();
+    const { leftDisable, rightDisable } = thumbnailsControl;
+    if (leftDisable || rightDisable) {
+      setThumbnailsControl({
+        leftDisable: false,
+        rightDisable: false,
+      });
+    }
+
+    if (
+      e.target.scrollLeft >=
+      (itemsLength - thumbnailsMaxLength) * thumbnailsSlideWidth
+    ) {
+      setThumbnailsControl({
+        leftDisable: false,
+        rightDisable: true,
+      });
+    }
+    if (e.target.scrollLeft === 0) {
+      setThumbnailsControl({
+        leftDisable: true,
+        rightDisable: false,
+      });
+    }
   };
 
   // 获取缩略图左右切换移动按钮
@@ -237,15 +245,6 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
         return item;
       }
     });
-
-    // 删除后 解决缩略图停留在到最后一张时，滚动占位问题。
-    if (thumbnailsControl.rightDisable) {
-      const transX = thumbnailsMobileW + thumbnailsSlideWidth;
-      setThumbnailsMobileW(transX); // 更新滚动距离
-      setThumbnailsStyle({
-        transform: `translate3d(${transX}px, 0px, 0px)`,
-      });
-    }
 
     setImageGalleryItems(filterImageGalleryItems);
     delCb && delCb(filterImageGalleryItems);
@@ -367,15 +366,13 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
               `${imageGallery}-thumbnails-content`,
             )}`}
           >
-            {/* 待换 scroll 不使用transform */}
-            {/* <div> */}
             <ul
               className={`${getPrefixCls(prefixCls, `${imageGallery}-t-c-ul`)}`}
-              style={thumbnailsStyle}
+              ref={SliderThumbnails}
+              onScroll={handleScroll}
             >
               {dots}
             </ul>
-            {/* </div> */}
           </div>
           {/* 缩略图右测滑动按钮 */}
           {getControlMobileBtn(dots, 'right')}
