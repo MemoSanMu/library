@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState, useMemo } from 'react';
+import React, { FC, useRef, useState, useMemo, useCallback } from 'react';
 import Message from '../Message';
 import Toast from '../Toast';
 import { isEqual } from 'lodash-es';
@@ -51,7 +51,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     initialSlide = 0,
     delCb,
     outBrowsing,
-    zIndex,
+    zIndex = 1000,
     showTitle = true,
   } = props;
   const Slider = useRef<any>(); // Slider.current.slickPrev()
@@ -106,7 +106,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
   };
 
   // 缩略图滚监听
-  const handleScroll = (e: any) => {
+  const handleScroll = useCallback((e: any) => {
     e.persist();
     const { leftDisable, rightDisable } = thumbnailsControl;
     if (leftDisable || rightDisable) {
@@ -131,7 +131,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
         rightDisable: false,
       });
     }
-  };
+  }, []);
 
   // 获取缩略图左右切换移动按钮
   const getControlMobileBtn = (

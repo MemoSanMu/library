@@ -4,9 +4,9 @@
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-02 17:16:06
+ * @LastEditTime: 2021-10-02 21:55:37
  */
-import React, { FC, useState, useRef, useEffect, useMemo } from 'react';
+import React, { FC, useState, useRef, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 
 import SliderWrapper from '../Slider';
@@ -109,7 +109,7 @@ const Card: FC<CardProps> = ({ ...props }) => {
   };
 
   // 缩略图滚监听
-  const handleScroll = (e: any) => {
+  const handleScroll = useCallback((e: any) => {
     e.persist();
     const { leftDisable, rightDisable } = thumbnailsControl;
     if (leftDisable || rightDisable) {
@@ -134,7 +134,7 @@ const Card: FC<CardProps> = ({ ...props }) => {
         rightDisable: false,
       });
     }
-  };
+  }, []);
 
   // 是否显示卡片预览 缩略图左右切换按钮
   const getIsShowCardSwitchBtn = useMemo(

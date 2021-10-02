@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-02 16:49:00
+ * @LastEditTime: 2021-10-02 21:56:01
  */
 
 /**
@@ -37,7 +37,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
 // }
 
 // 常规组件
-const forwardedImageGallery: any = ImageGallery;
+const forwardedImageGallery: any = Card;
 
 // 命令式调用全屏画廊
 forwardedImageGallery.browsing = callee;
