@@ -19,6 +19,7 @@
   },
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
+  "unpkg": "dist/index.umd.js",
   "typings": "dist/index.d.ts",
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -42,9 +43,22 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
-  "dependencies": {
+  "files": [
+    "dist",
+    "lib",
+    "es"
+  ],
+  "peerDependencies": {
     "react": "^16.12.0",
     "react-dom": "16.12.0"
+  },
+  "dependencies": {
+    "rc-notification": "^4.5.7",
+    "rc-tooltip": "^5.1.1",
+    "react-slick": "^0.28.1",
+    "slick-carousel": "^1.8.1",
+    "lodash-es": "^4.17.21",
+    "classnames": "^2.3.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
@@ -57,12 +71,7 @@
     "gh-pages": "^3.0.0",
     "husky": "4.3.8",
     "lint-staged": "^10.0.7",
-    "lodash-es": "^4.17.21",
     "prettier": "^2.2.1",
-    "rc-notification": "^4.5.7",
-    "rc-tooltip": "^5.1.1",
-    "react-slick": "^0.28.1",
-    "slick-carousel": "^1.8.1",
     "standard-version": "^9.3.1",
     "yorkie": "^2.0.0"
   }
