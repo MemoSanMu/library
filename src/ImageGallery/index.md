@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-20 19:35:54
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-02 16:55:29
+ * @LastEditTime: 2021-10-03 17:51:16
 -->
 
 ## Foo
@@ -13,7 +13,7 @@ Demo:
 
 ```tsx
 import React from 'react';
-import { ImageGallery } from 'library';
+import { ImageGallery, ImageGalleryCard } from 'library';
 const PREFIX_URL =
   'https://raw.githubusercontent.com/xiaolin/react-image-gallery/master/static/';
 
@@ -91,23 +91,47 @@ const items = [
 ];
 
 export default () => (
-  <>
-    <ImageGallery items={items} thumbnailsSlideMobileCount={2} />
+  <div>
+    1:卡片调用
+    <ImageGalleryCard
+      items={items}
+      thumbnailsSlideMobileCount={3}
+      initialSlide={2}
+    />
     <div
       style={{
-        marginTop: '20px',
+        margin: '30px 0',
+      }}
+    >
+      2: img
+    </div>
+    <ImageGallery
+      items={items}
+      thumbnailsSlideMobileCount={3}
+      src={`${PREFIX_URL}${1}.jpg`}
+      style={{
+        width: 100,
+        height: 80,
+      }}
+      initialSlide={4}
+      forwardedRef={(ref) => {
+        console.log(ref, 'ref');
+      }}
+    />
+    <div
+      style={{
+        marginTop: '30px',
       }}
       onClick={() => {
         ImageGallery.browsing({
           items,
           thumbnailsSlideMobileCount: 3,
-          card: true,
         });
       }}
     >
-      触发全屏画廊
+      3:触发全屏画廊
     </div>
-  </>
+  </div>
 );
 ```
 
