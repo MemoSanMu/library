@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-28 10:33:51
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-02 21:48:06
+ * @LastEditTime: 2021-10-03 13:46:44
  */
 import React, {
   FC,
@@ -25,12 +25,20 @@ interface ImageSlideProps {
   itemsLength: number;
 }
 
-interface OriPos {
+interface Direction {
   left: number;
   top: number;
+}
+
+interface OriPos extends Direction {
   cX: number;
   cY: number;
 }
+
+const defaultDragPos = {
+  left: 0,
+  top: 0,
+};
 
 const ImageSlide: FC<ImageSlideProps> = ({ ...props }) => {
   const { item, prefixCls, controller, itemsLength } = props;
@@ -39,21 +47,17 @@ const ImageSlide: FC<ImageSlideProps> = ({ ...props }) => {
   const isDown = useRef(false);
 
   // 拖动距离
-  const [dragPos, setDragPos] = useState({
-    left: 0,
-    top: 0,
-  });
+  const [dragPos, setDragPos] = useState<Direction>(defaultDragPos);
 
   // 记录拖动值
   const oriPos = useRef<OriPos>({
-    top: 0,
-    left: 0,
+    ...defaultDragPos,
     cX: 0,
     cY: 0,
   });
 
-  const [imageClientRect, setImageClientRect] = useState<any>({});
-  const [contentClientRect, setContentClientRect] = useState<any>({});
+  const [imageClientRect, setImageClientRect] = useState<DOMRect>();
+  const [contentClientRect, setContentClientRect] = useState<DOMRect>();
 
   const currentImage = useCallback((node) => {
     if (node !== null) {
@@ -70,39 +74,34 @@ const ImageSlide: FC<ImageSlideProps> = ({ ...props }) => {
   useEffect(() => {
     // 当图片被拖动过，并且缩放小于等于一倍，还原拖动为初始值；
     if ((dragPos.left !== 0 || dragPos.top !== 0) && controller.scale <= 1) {
-      setDragPos({
-        left: 0,
-        top: 0,
-      });
+      setDragPos(defaultDragPos);
     }
     return () => {};
   }, [controller.scale, dragPos]);
 
   /**
    * @name: onEvents
-   * @msg:判断是否可以拖动，条件：图片大于父容器宽或者高，
+   * @msg:判断是否可以拖动，前置条件：1:scale缩放大于1倍 ；2:图片大于父容器宽或者高，
    * @param {*} useMemo
    * @return {拖拽绑定函数}
    */
   const isDrag = useMemo(() => {
-    const contentWidth = contentClientRect.width;
-    const contentHeight = contentClientRect.height;
-    if (
-      imageClientRect.width &&
-      imageClientRect.height &&
-      contentWidth &&
-      contentHeight
-    ) {
-      const scaleWidth = (imageClientRect.width * controller.scale).toFixed(2);
-      const scaleHeight = (imageClientRect.height * controller.scale).toFixed(
-        2,
-      );
-      if (scaleWidth > contentWidth || scaleHeight > contentHeight) {
+    const { width: contentWidth, height: contentHeight } =
+        contentClientRect || {},
+      { width: imageWidth, height: imageHeight } = imageClientRect || {},
+      { scale } = controller;
+    if (imageWidth && imageHeight && contentWidth && contentHeight) {
+      const scaleWidth = Number((imageWidth * scale).toFixed(2)),
+        scaleHeight = Number((imageHeight * scale).toFixed(2));
+      if (
+        controller.scale > 1 &&
+        (scaleWidth > contentWidth || scaleHeight > contentHeight)
+      ) {
         return true;
       }
     }
     return false;
-  }, [controller.scale]);
+  }, [controller.scale, imageClientRect]);
 
   // mousedown
   const onMouseDown = (e: React.MouseEvent<HTMLElement>) => {
