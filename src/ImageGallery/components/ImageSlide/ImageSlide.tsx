@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-28 10:33:51
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-03 14:23:32
+ * @LastEditTime: 2021-10-03 15:53:29
  */
 import React, {
   FC,
@@ -156,13 +156,51 @@ const ImageSlide: FC<ImageSlideProps> = ({ ...props }) => {
   }, [isDrag]);
 
   // 获取图片样式
-  const getImageStyle = useMemo(
-    () => ({
+  const getImageStyle = useMemo(() => {
+    const { rotate: r, scale } = controller,
+      { left, top } = dragPos;
+    let x = left,
+      y = top;
+
+    //若是旋转度数大于360，即将大于数%360后便于判断调整拖动方向；
+    const rotate = r > 360 || r < -360 ? r % 360 : r;
+
+    // +-90度
+    if ((rotate / 90) % 1 === 0) {
+      if (rotate < 0) {
+        x = -top;
+        y = left;
+      } else {
+        x = top;
+        y = -left;
+      }
+    }
+    // +-180度
+    if ((rotate / 90) % 2 === 0) {
+      x = -left;
+      y = -top;
+    }
+    // +-270度
+    if ((rotate / 90) % 3 === 0) {
+      if (rotate < 0) {
+        x = top;
+        y = -left;
+      } else {
+        x = -top;
+        y = left;
+      }
+    }
+    // +-360 | 0度
+    if ((rotate / 90) % 4 === 0) {
+      x = left;
+      y = top;
+    }
+
+    return {
       transition: `all ${isDown.current ? 20 : 300}ms ease-in-out 0s`,
-      transform: `scale3d(${controller.scale}, ${controller.scale}, 1) rotate3d(0, 0, 1, ${controller.rotate}deg) translate3d(${dragPos.left}px, ${dragPos.top}px, 0)`,
-    }),
-    [isDown, controller, dragPos],
-  );
+      transform: `scale3d(${scale}, ${scale}, 1) rotate3d(0, 0, 1, ${r}deg) translate3d(${x}px, ${y}px, 0)`,
+    };
+  }, [isDown, controller, dragPos]);
 
   const propsOps =
     itemsLength > 1
