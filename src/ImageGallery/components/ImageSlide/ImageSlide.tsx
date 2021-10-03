@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-28 10:33:51
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-03 13:46:44
+ * @LastEditTime: 2021-10-03 14:23:32
  */
 import React, {
   FC,
@@ -105,6 +105,7 @@ const ImageSlide: FC<ImageSlideProps> = ({ ...props }) => {
 
   // mousedown
   const onMouseDown = (e: React.MouseEvent<HTMLElement>) => {
+    // 前置判断 是否满足拖动条件，否则直接返回
     if (!isDrag) {
       return;
     }
@@ -147,6 +148,13 @@ const ImageSlide: FC<ImageSlideProps> = ({ ...props }) => {
     isDown.current = false;
   }, [dragPos]);
 
+  // 鼠标移出元素 若是满足拖动条件 且 isDown已按下 将其改为未按下
+  const onMouseOut = useCallback(() => {
+    if (isDrag && isDown.current) {
+      isDown.current = false;
+    }
+  }, [isDrag]);
+
   // 获取图片样式
   const getImageStyle = useMemo(
     () => ({
@@ -180,6 +188,7 @@ const ImageSlide: FC<ImageSlideProps> = ({ ...props }) => {
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onMouseMove={onMouseMove}
+        onMouseOut={onMouseOut}
         {...propsOps}
       />
     </div>
