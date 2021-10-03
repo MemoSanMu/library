@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-30 10:20:19
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-01 11:36:02
+ * @LastEditTime: 2021-10-03 16:32:24
  */
 import React, { FC, useState, useEffect } from 'react';
 import ImageGallery from '../ImageGallery';
@@ -30,7 +30,6 @@ const Browser: FC<BrowserProp> = ({
 
   useEffect(() => {
     browsing === true && setMounted(browsing);
-    return () => outBrowsing();
   }, []);
 
   return mounted ? <ImageGallery {...props} outBrowsing={outBrowsing} /> : null;
