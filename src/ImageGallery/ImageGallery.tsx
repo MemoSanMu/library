@@ -4,14 +4,14 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-04 19:40:30
+ * @LastEditTime: 2021-10-04 19:59:29
  */
 
 /**
  * 常规组件入口
  **/
 
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useState, useMemo } from 'react';
 // Components
 import Browser from './components/Browser';
 import callee from './ImageGallery.callee';
@@ -25,13 +25,29 @@ interface GalleryProps extends ImageGalleryProps {
   alt?: string;
   onClick?: React.MouseEventHandler<HTMLImageElement>;
   forwardedRef?: (node: HTMLImageElement) => void;
+  browsing?: boolean; // 受控属性 -- 控制是否进入查看模式 传此参数 必传onBrowsing函数主动控制预览
+  onBrowsing?: (flag: boolean) => void; // 在显示/隐藏时调用, 会回传显示状态
 }
 
 const GalleryPreview: FC<GalleryProps> = ({ ...props }) => {
-  const { className, style = {}, src, alt = '', onClick, forwardedRef } = props;
+  const {
+    className,
+    style = {},
+    src,
+    alt = '',
+    onClick,
+    forwardedRef,
+    onBrowsing,
+  } = props;
 
   const [currentImage, setCurrentImage] = useState<HTMLImageElement>();
   const [browsing, setBrowsing] = useState<boolean>(false);
+
+  // 是否是调用方 控制预览
+  const isBrowsingControlled = useMemo<boolean>(
+    () => props.hasOwnProperty('browsing'),
+    [],
+  );
 
   const imageRef = useCallback((node) => {
     if (node !== undefined) {
@@ -42,10 +58,14 @@ const GalleryPreview: FC<GalleryProps> = ({ ...props }) => {
 
   /* 切换查看状态 */
   const inBrowsing = () => {
-    setBrowsing(true);
+    isBrowsingControlled
+      ? typeof onBrowsing === 'function' && onBrowsing(true)
+      : setBrowsing(true);
   };
   const outBrowsing = () => {
-    setBrowsing(false);
+    isBrowsingControlled
+      ? typeof onBrowsing === 'function' && onBrowsing(false)
+      : setBrowsing(false);
   };
   return (
     <>
@@ -65,7 +85,7 @@ const GalleryPreview: FC<GalleryProps> = ({ ...props }) => {
 
       {/* 预览画廊 */}
       <Browser
-        browsing={browsing}
+        browsing={isBrowsingControlled ? !!props.browsing : browsing}
         isPortal={true}
         destroyer={outBrowsing}
         {...props}
