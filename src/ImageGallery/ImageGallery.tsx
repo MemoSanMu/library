@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-03 21:18:54
+ * @LastEditTime: 2021-10-04 12:13:43
  */
 
 /**
@@ -65,7 +65,12 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
       />
 
       {/* 预览画廊 */}
-      <Browser browsing={browsing} destroyer={outBrowsing} {...props} />
+      <Browser
+        browsing={browsing}
+        isPortal={true}
+        destroyer={outBrowsing}
+        {...props}
+      />
     </>
   );
 };
