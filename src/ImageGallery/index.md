@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-20 19:35:54
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-04 18:11:04
+ * @LastEditTime: 2021-10-04 19:42:19
 -->
 
 ## Foo
@@ -13,7 +13,9 @@ Demo:
 
 ```tsx
 import React from 'react';
-import { ImageGallery, ImageGalleryCard } from 'library';
+import { ImageGallery } from 'library';
+const { ImageGalleryCard } = ImageGallery; // 卡片
+
 const PREFIX_URL =
   'https://raw.githubusercontent.com/xiaolin/react-image-gallery/master/static/';
 

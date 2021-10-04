@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-04 17:46:38
+ * @LastEditTime: 2021-10-04 19:40:30
  */
 
 /**
@@ -27,7 +27,7 @@ interface GalleryProps extends ImageGalleryProps {
   forwardedRef?: (node: HTMLImageElement) => void;
 }
 
-const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
+const GalleryPreview: FC<GalleryProps> = ({ ...props }) => {
   const { className, style = {}, src, alt = '', onClick, forwardedRef } = props;
 
   const [currentImage, setCurrentImage] = useState<HTMLImageElement>();
@@ -74,19 +74,20 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
   );
 };
 
-// interface ForwardedImageGallery extends GalleryProps {
-//   // coverRef?: null; //   后续在看是否需要传入ref
-//   browsing?: (props: ImageGalleryProps) => void;
-//   Browsing?: (props: ImageGalleryProps) => void;
-// }
+type ImageGalleryType = typeof GalleryPreview & {
+  browsing: (props: GalleryProps) => void;
+  Browsing: (props: GalleryProps) => void;
+  ImageGalleryCard: typeof Card;
+};
 
-// 常规组件
-const forwardedImageGallery: any = ImageGallery;
-// const forwardedImageGallery: any = Card;
+// 常规组件 image展示触发后调用
+const ImageGallery = GalleryPreview as ImageGalleryType;
 
 // 命令式调用全屏画廊
-forwardedImageGallery.browsing = callee;
-forwardedImageGallery.Browsing = callee; // Alias browsing
+ImageGallery.browsing = callee;
+ImageGallery.Browsing = callee; // 大写别名
 
-export { Card as ImageGalleryCard };
-export default forwardedImageGallery;
+// 卡片画廊
+ImageGallery.ImageGalleryCard = Card;
+
+export default ImageGallery;

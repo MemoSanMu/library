@@ -8,7 +8,7 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-04 17:46:38
+ * @LastEditTime: 2021-10-04 19:40:30
  */
 
 /**
@@ -20,7 +20,7 @@ import Browser from './components/Browser';
 import callee from './ImageGallery.callee';
 import Card from './components/Card';
 
-var ImageGallery = function ImageGallery(_ref) {
+var GalleryPreview = function GalleryPreview(_ref) {
   var props = _extends({}, _ref);
 
   var className = props.className,
@@ -89,18 +89,13 @@ var ImageGallery = function ImageGallery(_ref) {
       )
     )
   );
-}; // interface ForwardedImageGallery extends GalleryProps {
-//   // coverRef?: null; //   后续在看是否需要传入ref
-//   browsing?: (props: ImageGalleryProps) => void;
-//   Browsing?: (props: ImageGalleryProps) => void;
-// }
-// 常规组件
+}; // 常规组件 image展示触发后调用
 
-var forwardedImageGallery = ImageGallery; // const forwardedImageGallery: any = Card;
-// 命令式调用全屏画廊
+var ImageGallery = GalleryPreview; // 命令式调用全屏画廊
 
-forwardedImageGallery.browsing = callee;
-forwardedImageGallery.Browsing = callee; // Alias browsing
+ImageGallery.browsing = callee;
+ImageGallery.Browsing = callee; // 大写别名
+// 卡片画廊
 
-export { Card as ImageGalleryCard };
-export default forwardedImageGallery;
+ImageGallery.ImageGalleryCard = Card;
+export default ImageGallery;
