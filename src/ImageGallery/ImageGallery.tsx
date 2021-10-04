@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-04 12:13:43
+ * @LastEditTime: 2021-10-04 17:46:38
  */
 
 /**
@@ -17,7 +17,6 @@ import Browser from './components/Browser';
 import callee from './ImageGallery.callee';
 import { ImageGalleryProps } from './interfaces';
 import Card from './components/Card';
-import './style/index.less';
 
 interface GalleryProps extends ImageGalleryProps {
   className?: string;

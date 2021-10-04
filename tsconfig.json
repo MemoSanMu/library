@@ -6,6 +6,7 @@
     "importHelpers": true,
     "jsx": "react",
     "esModuleInterop": true,
+    "declaration": true,
     "sourceMap": true,
     "baseUrl": "./",
     "strict": true,
@@ -13,7 +14,8 @@
       "@/*": ["src/*"],
       "@@/*": ["src/.umi/*"]
     },
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["./typings", "./node_modules/@types"]
   },
   "exclude": [
     "node_modules",
