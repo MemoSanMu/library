@@ -4,6 +4,7 @@
   .pcenter(fixed);
   .zi(1000);
   background-color: @bgc;
+  line-height: initial;
   .@{image-gallery-header} {
     .zi(1001);
     .position(absolute);
@@ -25,6 +26,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        margin: 0;
       }
     }
     // 关闭
@@ -129,12 +131,13 @@
   .slick-list {
     .h(calc(100vh - 248px));
     .w(calc(100vw - 236px));
-    // .w(560px);
+    // .w(560px); 最小建议宽度
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding-top: 80px;
+    box-sizing: initial;
     .slick-slide {
       .dfcc();
       .bc(@bgc);
