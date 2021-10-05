@@ -11,6 +11,8 @@ interface GalleryProps extends ImageGalleryProps {
   alt?: string;
   onClick?: React.MouseEventHandler<HTMLImageElement>;
   forwardedRef?: (node: HTMLImageElement) => void;
+  browsing?: boolean;
+  onBrowsing?: (flag: boolean) => void;
 }
 declare const GalleryPreview: FC<GalleryProps>;
 declare type ImageGalleryType = typeof GalleryPreview & {

@@ -23,6 +23,7 @@
   bottom: 0;
   z-index: 1000;
   background-color: #2c2c2c;
+  line-height: initial;
 }
 .lib-image-gallery .lib-image-gallery-header {
   z-index: 1001;
@@ -50,6 +51,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 0;
 }
 .lib-image-gallery .lib-image-gallery-header .lib-image-gallery-close {
   margin-right: 48px;
@@ -169,6 +171,7 @@
   flex-direction: column;
   justify-content: center;
   padding-top: 80px;
+  box-sizing: initial;
 }
 .lib-image-gallery .slick-list .slick-slide {
   display: flex;
@@ -307,7 +310,7 @@
 .lib-image-gallery-card {
   width: 408px;
   background-color: #ffffff;
-  padding: 10px;
+  margin: 10px;
   overflow: hidden;
   z-index: 1000;
 }

@@ -12,7 +12,7 @@
 .lib-image-gallery-card {
   width: 408px;
   background-color: #ffffff;
-  padding: 10px;
+  margin: 10px;
   overflow: hidden;
   z-index: 1000;
 }

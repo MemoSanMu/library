@@ -6,7 +6,7 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  * @Author: wangsen
  * @Date: 2021-09-30 11:53:54
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-30 15:43:43
+ * @LastEditTime: 2021-10-05 12:17:35
  */
 import React from 'react';
 import Tooltip from '../Tooltip';
@@ -37,6 +37,7 @@ var Header = function Header(_ref) {
           Tooltip,
           {
             text: currentSlider.alt || currentSlider.src,
+            placement: 'bottom',
           },
           /*#__PURE__*/ React.createElement(
             'p',
