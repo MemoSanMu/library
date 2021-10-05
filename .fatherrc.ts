@@ -15,6 +15,9 @@ const config: IBundleOptions = {
       'react-dom': 'ReactDOM',
     },
   },
+  extraBabelPlugins: [
+    ['transform-remove-console', { exclude: ['error', 'warn', 'info'] }],
+  ],
   extraRollupPlugins: [typescriptPaths({ tsConfigPath: './tsconfig.json' })],
 };
 
