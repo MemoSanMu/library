@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-28 10:33:51
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-03 15:53:29
+ * @LastEditTime: 2021-10-05 10:38:20
  */
 import React, {
   FC,
@@ -15,8 +15,8 @@ import React, {
   useEffect,
 } from 'react';
 import classNames from 'classnames';
-import { Items, Controller } from '../../interfaces';
-import { getPrefixCls, imageGallery } from '../../config/index';
+import { Items, Controller } from '@/ImageGallery/interfaces';
+import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
 
 interface ImageSlideProps {
   item: Items;

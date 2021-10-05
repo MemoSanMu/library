@@ -1,11 +1,13 @@
 import React, { FC, useRef, useState, useMemo, useCallback } from 'react';
-import Message from '../Message';
-import Toast from '../Toast';
 import { isEqual } from 'lodash-es';
 import classNames from 'classnames';
-import SliderWrapper from '../Slider';
-import ImageSlide from '../ImageSlide';
-import Header from '../Header';
+import Message from '@/ImageGallery/components/Message';
+import Toast from '@/ImageGallery/components/Toast';
+import SliderWrapper from '@/ImageGallery/components/Slider';
+import ImageSlide from '@/ImageGallery/components/ImageSlide';
+import Header from '@/ImageGallery/components/Header';
+import ClipLoader from '@/ImageGallery/components/Loading/ClipLoader';
+import Tooltip from '@/ImageGallery/components/Tooltip';
 import {
   RightOutlined,
   LeftOutlined,
@@ -19,9 +21,7 @@ import {
   Delate,
   Warning,
   Close,
-} from '../Svg';
-import ClipLoader from '../Loading/ClipLoader';
-import Tooltip from '../Tooltip';
+} from '@/ImageGallery/components/Svg';
 import {
   thumbnailsMaxLength,
   thumbnailsSlideWidth,
@@ -29,15 +29,15 @@ import {
   imageGallery,
   getPrefixCls,
   wrapperCls,
-} from '../../config';
-import { handleDownload } from '../../utils';
+} from '@/ImageGallery/config';
+import { handleDownload } from '@/ImageGallery/utils';
 import {
   Items,
   Direction,
   ImageGalleryProps,
   Controller,
   ThumbnailsControl,
-} from '../../interfaces';
+} from '@/ImageGallery/interfaces';
 
 interface GalleryProps extends ImageGalleryProps {
   outBrowsing: () => void;

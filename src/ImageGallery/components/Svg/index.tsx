@@ -1,7 +1,7 @@
 import React from 'react';
 import Svg from './Svg';
 import classNames from 'classnames';
-import { ThumbnailsControl as Thumbnails } from '../../interfaces';
+import { ThumbnailsControl as Thumbnails } from '@/ImageGallery/interfaces';
 
 export const RightOutlined = (props: any) => {
   const { className, style, onClick } = props;

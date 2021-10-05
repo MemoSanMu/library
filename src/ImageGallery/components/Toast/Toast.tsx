@@ -4,11 +4,11 @@
  * @Author: wangsen
  * @Date: 2021-09-27 16:13:57
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:50:49
+ * @LastEditTime: 2021-10-05 10:40:10
  */
 import React, { FC, useCallback } from 'react';
 import classNames from 'classnames';
-import { getPrefixCls, imageGallery } from '../../config/index';
+import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
 
 interface ToastProps {
   prefixCls?: string;

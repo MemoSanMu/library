@@ -4,14 +4,14 @@
  * @Author: wangsen
  * @Date: 2021-09-24 16:40:06
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:50:08
+ * @LastEditTime: 2021-10-05 10:50:49
  */
 import React, { FC } from 'react';
 import { LoaderSizeProps } from './interfaces';
-import { getPrefixCls, imageGallery } from '../../config/index';
-import Portals from '../Portal';
+import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
+import Portals from '@/ImageGallery/components/Portal';
 
-const Loader: FC<LoaderSizeProps> = ({
+const ClipLoader: FC<LoaderSizeProps> = ({
   loading = false,
   size = '35px',
   color = '#000000',
@@ -39,4 +39,4 @@ const Loader: FC<LoaderSizeProps> = ({
   ) : null;
 };
 
-export default Loader;
+export default ClipLoader;

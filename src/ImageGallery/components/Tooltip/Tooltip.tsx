@@ -4,12 +4,12 @@
  * @Author: wangsen
  * @Date: 2021-09-26 16:21:32
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:56:01
+ * @LastEditTime: 2021-10-05 10:40:25
  */
 import React, { FC } from 'react';
 import RcTooltip from 'rc-tooltip';
-import { getPrefixCls, imageGallery } from '../../config/index';
-import { TooltipPlacement } from '../../interfaces';
+import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
+import { TooltipPlacement } from '@/ImageGallery/interfaces';
 
 interface TooltipProps {
   prefixCls?: string;

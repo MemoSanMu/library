@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-04 19:59:29
+ * @LastEditTime: 2021-10-05 10:41:54
  */
 
 /**
@@ -13,10 +13,10 @@
 
 import React, { FC, useCallback, useState, useMemo } from 'react';
 // Components
-import Browser from './components/Browser';
-import callee from './ImageGallery.callee';
-import { ImageGalleryProps } from './interfaces';
-import Card from './components/Card';
+import Browser from '@/ImageGallery/components/Browser';
+import callee from '@/ImageGallery/ImageGallery.callee';
+import { ImageGalleryProps } from '@/ImageGallery/interfaces';
+import Card from '@/ImageGallery/components/Card';
 
 interface GalleryProps extends ImageGalleryProps {
   className?: string;

@@ -4,21 +4,24 @@
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-03 17:40:20
+ * @LastEditTime: 2021-10-05 10:33:29
  */
 import React, { FC, useState, useRef, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
-
-import SliderWrapper from '../Slider';
-import { CareLeftFilled, CareRightFilled } from '../Svg';
-import { ImageGalleryProps, Items, ThumbnailsControl } from '../../interfaces';
+import SliderWrapper from '@/ImageGallery/components/Slider';
+import { CareLeftFilled, CareRightFilled } from '@/ImageGallery/components/Svg';
+import {
+  ImageGalleryProps,
+  Items,
+  ThumbnailsControl,
+} from '@/ImageGallery/interfaces';
 import {
   getPrefixCls,
   imageGalleryCard,
   cardThumbnailsMaxLength,
   cardThumbnailsSlideWidth,
-} from '../../config';
-// import { browserIeOrSafari } from '../../utils';
+} from '@/ImageGallery/config';
+// import { browserIeOrSafari } from '@/ImageGallery/utils';
 
 interface CardProps extends ImageGalleryProps {
   isShowCardSwitchBtn?: boolean; // default true 是否显示卡片预览, 缩略图左右切换按钮，注：且同时需要items长度大于4 才生效

@@ -4,12 +4,12 @@
  * @Author: wangsen
  * @Date: 2021-09-30 11:53:54
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-30 15:43:43
+ * @LastEditTime: 2021-10-05 10:35:14
  */
 import React, { FC } from 'react';
-import Tooltip from '../Tooltip';
-import { getPrefixCls, imageGallery } from '../../config/index';
-import { Items } from '../../interfaces';
+import Tooltip from '@/ImageGallery/components/Tooltip';
+import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
+import { Items } from '@/ImageGallery/interfaces';
 
 interface HeaderProps {
   prefixCls?: string;
