@@ -8,7 +8,7 @@
  */
 import React from 'react';
 import RcTooltip from 'rc-tooltip';
-import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
+import { getPrefixCls, imageGallery } from '../../config';
 
 var Tooltip = function Tooltip(props) {
   var children = props.children,

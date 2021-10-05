@@ -13,14 +13,14 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  */
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
-import SliderWrapper from '@/ImageGallery/components/Slider';
-import { CareLeftFilled, CareRightFilled } from '@/ImageGallery/components/Svg';
+import SliderWrapper from '../Slider';
+import { CareLeftFilled, CareRightFilled } from '../Svg';
 import {
   getPrefixCls,
   imageGalleryCard,
   cardThumbnailsMaxLength,
   cardThumbnailsSlideWidth,
-} from '@/ImageGallery/config';
+} from '../../config';
 
 var Card = function Card(_ref) {
   var props = _extends({}, _ref);

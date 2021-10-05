@@ -15,7 +15,7 @@ import _objectSpread from '@babel/runtime/helpers/esm/objectSpread2';
 import React from 'react';
 import ReactDOM, { createPortal } from 'react-dom'; // Components
 
-import Browser from '@/ImageGallery/components/Browser'; // 弹窗对象
+import Browser from './components/Browser'; // 弹窗对象
 
 var RENDER = {
   CONTAINER: document.body,

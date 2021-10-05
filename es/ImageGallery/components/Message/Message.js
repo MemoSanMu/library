@@ -10,7 +10,7 @@ import _objectSpread from '@babel/runtime/helpers/esm/objectSpread2';
  */
 import React from 'react';
 import RcNotification from 'rc-notification';
-import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
+import { getPrefixCls, imageGallery } from '../../config';
 var messageInstance;
 var key = 1;
 

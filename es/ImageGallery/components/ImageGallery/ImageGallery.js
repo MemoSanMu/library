@@ -7,13 +7,13 @@ import _extends from '@babel/runtime/helpers/esm/extends';
 import React, { useRef, useState, useMemo, useCallback } from 'react';
 import { isEqual } from 'lodash-es';
 import classNames from 'classnames';
-import Message from '@/ImageGallery/components/Message';
-import Toast from '@/ImageGallery/components/Toast';
-import SliderWrapper from '@/ImageGallery/components/Slider';
-import ImageSlide from '@/ImageGallery/components/ImageSlide';
-import Header from '@/ImageGallery/components/Header';
-import ClipLoader from '@/ImageGallery/components/Loading/ClipLoader';
-import Tooltip from '@/ImageGallery/components/Tooltip';
+import Message from '../Message';
+import Toast from '../Toast';
+import SliderWrapper from '../Slider';
+import ImageSlide from '../ImageSlide';
+import Header from '../Header';
+import ClipLoader from '../Loading/ClipLoader';
+import Tooltip from '../Tooltip';
 import {
   RightOutlined,
   LeftOutlined,
@@ -27,7 +27,7 @@ import {
   Delate,
   Warning,
   Close,
-} from '@/ImageGallery/components/Svg';
+} from '../Svg';
 import {
   thumbnailsMaxLength,
   thumbnailsSlideWidth,
@@ -35,8 +35,8 @@ import {
   imageGallery,
   getPrefixCls,
   wrapperCls,
-} from '@/ImageGallery/config';
-import { handleDownload } from '@/ImageGallery/utils';
+} from '../../config';
+import { handleDownload } from '../../utils';
 
 var ImageGallery = function ImageGallery(_ref) {
   var props = _extends({}, _ref);
@@ -207,18 +207,17 @@ var ImageGallery = function ImageGallery(_ref) {
                   return handleDownload(imageGalleryItems[currentIndex].src);
 
                 case 4:
-                  _context.next = 9;
+                  _context.next = 8;
                   break;
 
                 case 6:
                   _context.prev = 6;
                   _context.t0 = _context['catch'](0);
-                  console.log(_context.t0, 'error');
 
-                case 9:
+                case 8:
                   setIsDownloading(false);
 
-                case 10:
+                case 9:
                 case 'end':
                   return _context.stop();
               }

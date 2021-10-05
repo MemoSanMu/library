@@ -18,7 +18,7 @@ import React, {
   useEffect,
 } from 'react';
 import classNames from 'classnames';
-import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
+import { getPrefixCls, imageGallery } from '../../config';
 var defaultDragPos = {
   left: 0,
   top: 0,

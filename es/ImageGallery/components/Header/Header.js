@@ -9,8 +9,8 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  * @LastEditTime: 2021-10-05 10:35:14
  */
 import React from 'react';
-import Tooltip from '@/ImageGallery/components/Tooltip';
-import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
+import Tooltip from '../Tooltip';
+import { getPrefixCls, imageGallery } from '../../config';
 
 var Header = function Header(_ref) {
   var props = _extends({}, _ref);

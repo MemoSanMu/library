@@ -15,6 +15,19 @@ const config: IBundleOptions = {
       'react-dom': 'ReactDOM',
     },
   },
+  extraBabelPlugins: [
+    ['transform-remove-console', { exclude: ['error', 'warn', 'info'] }],
+    [
+      'module-resolver',
+      {
+        root: ['.'],
+        alias: {
+          '@': './src',
+          '@@': './src/.umi',
+        },
+      },
+    ],
+  ],
   extraRollupPlugins: [typescriptPaths({ tsConfigPath: './tsconfig.json' })],
 };
 

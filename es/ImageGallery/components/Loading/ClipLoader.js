@@ -7,8 +7,8 @@
  * @LastEditTime: 2021-10-05 10:50:49
  */
 import React from 'react';
-import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
-import Portals from '@/ImageGallery/components/Portal';
+import { getPrefixCls, imageGallery } from '../../config';
+import Portals from '../Portal';
 
 var ClipLoader = function ClipLoader(_ref) {
   var _ref$loading = _ref.loading,

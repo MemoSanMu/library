@@ -16,9 +16,9 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  **/
 import React, { useCallback, useState, useMemo } from 'react'; // Components
 
-import Browser from '@/ImageGallery/components/Browser';
-import callee from '@/ImageGallery/ImageGallery.callee';
-import Card from '@/ImageGallery/components/Card';
+import Browser from './components/Browser';
+import callee from './ImageGallery.callee';
+import Card from './components/Card';
 
 var GalleryPreview = function GalleryPreview(_ref) {
   var props = _extends({}, _ref);

@@ -6,4 +6,4 @@
  * @LastEditors: wangsen
  * @LastEditTime: 2021-10-05 10:29:11
  */
-export { default as ImageGallery } from '@/ImageGallery';
+export { default as ImageGallery } from './ImageGallery';

@@ -12,8 +12,8 @@ var _excluded = ['destroyer', 'browsing', 'isPortal'];
  * @LastEditTime: 2021-10-05 10:32:16
  */
 import React, { useState, useEffect } from 'react';
-import ImageGallery from '@/ImageGallery/components/ImageGallery';
-import Portal from '@/ImageGallery/components/Portal';
+import ImageGallery from '../ImageGallery';
+import Portal from '../Portal';
 
 var Browser = function Browser(_ref) {
   var _ref$destroyer = _ref.destroyer,

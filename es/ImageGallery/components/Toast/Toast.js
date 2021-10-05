@@ -8,7 +8,7 @@
  */
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
+import { getPrefixCls, imageGallery } from '../../config';
 
 var Toast = function Toast(props) {
   var prefixCls = props.prefixCls,
