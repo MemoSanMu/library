@@ -4,11 +4,11 @@
  * @Author: wangsen
  * @Date: 2021-09-26 16:21:32
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:56:01
+ * @LastEditTime: 2021-10-05 10:40:25
  */
 import React from 'react';
 import RcTooltip from 'rc-tooltip';
-import { getPrefixCls, imageGallery } from '../../config/index';
+import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
 
 var Tooltip = function Tooltip(props) {
   var children = props.children,

@@ -6,11 +6,11 @@ import _objectSpread from '@babel/runtime/helpers/esm/objectSpread2';
  * @Author: wangsen
  * @Date: 2021-09-26 16:21:32
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:50:35
+ * @LastEditTime: 2021-10-05 10:39:26
  */
 import React from 'react';
 import RcNotification from 'rc-notification';
-import { getPrefixCls, imageGallery } from '../../config/index';
+import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
 var messageInstance;
 var key = 1;
 

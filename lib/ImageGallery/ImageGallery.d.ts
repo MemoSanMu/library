@@ -2,8 +2,8 @@
  * 常规组件入口
  **/
 import React, { FC } from 'react';
-import { ImageGalleryProps } from './interfaces';
-import Card from './components/Card';
+import { ImageGalleryProps } from '@/ImageGallery/interfaces';
+import Card from '@/ImageGallery/components/Card';
 interface GalleryProps extends ImageGalleryProps {
   className?: string;
   style?: React.CSSProperties;
@@ -11,6 +11,8 @@ interface GalleryProps extends ImageGalleryProps {
   alt?: string;
   onClick?: React.MouseEventHandler<HTMLImageElement>;
   forwardedRef?: (node: HTMLImageElement) => void;
+  browsing?: boolean;
+  onBrowsing?: (flag: boolean) => void;
 }
 declare const GalleryPreview: FC<GalleryProps>;
 declare type ImageGalleryType = typeof GalleryPreview & {

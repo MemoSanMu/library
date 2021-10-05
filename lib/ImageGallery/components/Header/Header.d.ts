@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Items } from '../../interfaces';
+import { Items } from '@/ImageGallery/interfaces';
 interface HeaderProps {
   prefixCls?: string;
   showTitle?: boolean;

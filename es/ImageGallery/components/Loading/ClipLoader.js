@@ -4,13 +4,13 @@
  * @Author: wangsen
  * @Date: 2021-09-24 16:40:06
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:50:08
+ * @LastEditTime: 2021-10-05 10:50:49
  */
 import React from 'react';
-import { getPrefixCls, imageGallery } from '../../config/index';
-import Portals from '../Portal';
+import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
+import Portals from '@/ImageGallery/components/Portal';
 
-var Loader = function Loader(_ref) {
+var ClipLoader = function ClipLoader(_ref) {
   var _ref$loading = _ref.loading,
     loading = _ref$loading === void 0 ? false : _ref$loading,
     _ref$size = _ref.size,
@@ -46,4 +46,4 @@ var Loader = function Loader(_ref) {
     : null;
 };
 
-export default Loader;
+export default ClipLoader;

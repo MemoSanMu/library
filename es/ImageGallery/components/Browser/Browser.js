@@ -9,11 +9,11 @@ var _excluded = ['destroyer', 'browsing', 'isPortal'];
  * @Author: wangsen
  * @Date: 2021-09-30 10:20:19
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-04 12:13:30
+ * @LastEditTime: 2021-10-05 10:32:16
  */
 import React, { useState, useEffect } from 'react';
-import ImageGallery from '../ImageGallery';
-import Portal from '../Portal';
+import ImageGallery from '@/ImageGallery/components/ImageGallery';
+import Portal from '@/ImageGallery/components/Portal';
 
 var Browser = function Browser(_ref) {
   var _ref$destroyer = _ref.destroyer,

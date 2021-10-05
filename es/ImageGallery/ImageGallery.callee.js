@@ -6,7 +6,7 @@ import _objectSpread from '@babel/runtime/helpers/esm/objectSpread2';
  * @Author: wangsen
  * @Date: 2021-09-29 10:26:07
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-01 11:34:51
+ * @LastEditTime: 2021-10-05 10:40:58
  */
 
 /**
@@ -15,7 +15,7 @@ import _objectSpread from '@babel/runtime/helpers/esm/objectSpread2';
 import React from 'react';
 import ReactDOM, { createPortal } from 'react-dom'; // Components
 
-import Browser from './components/Browser'; // 弹窗对象
+import Browser from '@/ImageGallery/components/Browser'; // 弹窗对象
 
 var RENDER = {
   CONTAINER: document.body,

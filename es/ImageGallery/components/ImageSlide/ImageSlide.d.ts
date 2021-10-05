@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Items, Controller } from '../../interfaces';
+import { Items, Controller } from '@/ImageGallery/interfaces';
 interface ImageSlideProps {
   item: Items;
   prefixCls?: string;

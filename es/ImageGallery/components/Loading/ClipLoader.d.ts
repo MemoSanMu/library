@@ -1,4 +1,4 @@
 import { FC } from 'react';
 import { LoaderSizeProps } from './interfaces';
-declare const Loader: FC<LoaderSizeProps>;
-export default Loader;
+declare const ClipLoader: FC<LoaderSizeProps>;
+export default ClipLoader;

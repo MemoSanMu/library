@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ImageGalleryProps } from '../../interfaces';
+import { ImageGalleryProps } from '@/ImageGallery/interfaces';
 interface BrowserProp extends ImageGalleryProps {
   destroyer?: () => void;
   isPortal?: boolean;

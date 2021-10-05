@@ -1,4 +1,4 @@
-import { ImageGalleryProps } from './interfaces';
+import { ImageGalleryProps } from '@/ImageGallery/interfaces';
 interface CalleeProps extends ImageGalleryProps {
   coverRef?: null;
 }

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { TooltipPlacement } from '../../interfaces';
+import { TooltipPlacement } from '@/ImageGallery/interfaces';
 interface TooltipProps {
   prefixCls?: string;
   text: string;

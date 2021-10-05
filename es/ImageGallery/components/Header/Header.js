@@ -6,11 +6,11 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  * @Author: wangsen
  * @Date: 2021-09-30 11:53:54
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-30 15:43:43
+ * @LastEditTime: 2021-10-05 10:35:14
  */
 import React from 'react';
-import Tooltip from '../Tooltip';
-import { getPrefixCls, imageGallery } from '../../config/index';
+import Tooltip from '@/ImageGallery/components/Tooltip';
+import { getPrefixCls, imageGallery } from '@/ImageGallery/config';
 
 var Header = function Header(_ref) {
   var props = _extends({}, _ref);

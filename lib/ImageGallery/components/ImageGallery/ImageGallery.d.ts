@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ImageGalleryProps } from '../../interfaces';
+import { ImageGalleryProps } from '@/ImageGallery/interfaces';
 interface GalleryProps extends ImageGalleryProps {
   outBrowsing: () => void;
 }

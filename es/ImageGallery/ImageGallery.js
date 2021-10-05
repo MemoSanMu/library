@@ -8,17 +8,17 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-04 19:40:30
+ * @LastEditTime: 2021-10-05 10:41:54
  */
 
 /**
  * 常规组件入口
  **/
-import React, { useCallback, useState } from 'react'; // Components
+import React, { useCallback, useState, useMemo } from 'react'; // Components
 
-import Browser from './components/Browser';
-import callee from './ImageGallery.callee';
-import Card from './components/Card';
+import Browser from '@/ImageGallery/components/Browser';
+import callee from '@/ImageGallery/ImageGallery.callee';
+import Card from '@/ImageGallery/components/Card';
 
 var GalleryPreview = function GalleryPreview(_ref) {
   var props = _extends({}, _ref);
@@ -30,7 +30,8 @@ var GalleryPreview = function GalleryPreview(_ref) {
     _props$alt = props.alt,
     alt = _props$alt === void 0 ? '' : _props$alt,
     _onClick = props.onClick,
-    forwardedRef = props.forwardedRef;
+    forwardedRef = props.forwardedRef,
+    onBrowsing = props.onBrowsing;
 
   var _useState = useState(),
     _useState2 = _slicedToArray(_useState, 2),
@@ -40,8 +41,11 @@ var GalleryPreview = function GalleryPreview(_ref) {
   var _useState3 = useState(false),
     _useState4 = _slicedToArray(_useState3, 2),
     browsing = _useState4[0],
-    setBrowsing = _useState4[1];
+    setBrowsing = _useState4[1]; // 是否是调用方 控制预览
 
+  var isBrowsingControlled = useMemo(function () {
+    return props.hasOwnProperty('browsing');
+  }, []);
   var imageRef = useCallback(function (node) {
     if (node !== undefined) {
       setCurrentImage(node);
@@ -51,11 +55,15 @@ var GalleryPreview = function GalleryPreview(_ref) {
   /* 切换查看状态 */
 
   var inBrowsing = function inBrowsing() {
-    setBrowsing(true);
+    isBrowsingControlled
+      ? typeof onBrowsing === 'function' && onBrowsing(true)
+      : setBrowsing(true);
   };
 
   var outBrowsing = function outBrowsing() {
-    setBrowsing(false);
+    isBrowsingControlled
+      ? typeof onBrowsing === 'function' && onBrowsing(false)
+      : setBrowsing(false);
   };
 
   return /*#__PURE__*/ React.createElement(
@@ -81,7 +89,7 @@ var GalleryPreview = function GalleryPreview(_ref) {
       Browser,
       _objectSpread(
         {
-          browsing: browsing,
+          browsing: isBrowsingControlled ? !!props.browsing : browsing,
           isPortal: true,
           destroyer: outBrowsing,
         },

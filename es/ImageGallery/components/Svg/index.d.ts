@@ -1,4 +1,4 @@
-import { ThumbnailsControl as Thumbnails } from '../../interfaces';
+import { ThumbnailsControl as Thumbnails } from '@/ImageGallery/interfaces';
 export declare const RightOutlined: (props: any) => JSX.Element;
 export declare const LeftOutlined: (props: any) => JSX.Element;
 interface ThumbnailsSlick {

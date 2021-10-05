@@ -9,18 +9,18 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-03 17:40:20
+ * @LastEditTime: 2021-10-05 10:33:29
  */
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
-import SliderWrapper from '../Slider';
-import { CareLeftFilled, CareRightFilled } from '../Svg';
+import SliderWrapper from '@/ImageGallery/components/Slider';
+import { CareLeftFilled, CareRightFilled } from '@/ImageGallery/components/Svg';
 import {
   getPrefixCls,
   imageGalleryCard,
   cardThumbnailsMaxLength,
   cardThumbnailsSlideWidth,
-} from '../../config';
+} from '@/ImageGallery/config';
 
 var Card = function Card(_ref) {
   var props = _extends({}, _ref);
