@@ -3,8 +3,8 @@
  * @version:
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
- * @LastEditors: wangsen
- * @LastEditTime: 2021-10-08 15:20:58
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-08 21:17:49
  */
 import React, { FC, useState, useRef, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
@@ -15,13 +15,14 @@ import { ImageGalleryProps, Items, ThumbnailsControl } from '../../interfaces';
 import {
   getPrefixCls,
   imageGalleryCard,
-  cardThumbnailsMaxLength,
+  cardThumbnailsMaxLength as cardThumbnailsMaxLen,
   cardThumbnailsSlideWidth,
 } from '../../config';
 // import { browserIeOrSafari } from '../../utils';
 
 interface CardProps extends ImageGalleryProps {
   isShowCardSwitchBtn?: boolean; // default true 是否显示卡片预览, 缩略图左右切换按钮，注：且同时需要items长度大于4 才生效
+  cardThumbnailsMaxLength?: number; // 默认4，卡片形式若是需要增加宽度，需要传此字段（ps:缩略图最多展示个数）配合添加classname类 覆盖样式调整即可；样式需要根据缩略图宽倍数调整+margin，96的倍数；
 }
 
 const Card: FC<CardProps> = ({ ...props }) => {
@@ -32,6 +33,7 @@ const Card: FC<CardProps> = ({ ...props }) => {
     isShowCardSwitchBtn = true,
     className,
     configurations,
+    cardThumbnailsMaxLength,
   } = props;
 
   // 当前画廊数据
@@ -128,7 +130,8 @@ const Card: FC<CardProps> = ({ ...props }) => {
 
     if (
       e.target.scrollLeft >=
-      (itemsLength - cardThumbnailsMaxLength) * cardThumbnailsSlideWidth
+      (itemsLength - (cardThumbnailsMaxLength || cardThumbnailsMaxLen)) *
+        cardThumbnailsSlideWidth
     ) {
       setThumbnailsControl({
         leftDisable: false,
