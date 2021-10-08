@@ -18,12 +18,13 @@
       justify-content: space-between;
     }
     .@{prefix}-@{image-gallery-card}-thumbnails-control {
-      width: 24px;
+      .h(72px);
+      .w(24px);
       background-color: #00000073;
     }
     .@{prefix}-@{image-gallery-card}-icon.icon {
-      width: 27px;
-      height: 72px;
+      .w(27px);
+      .h(72px);
       display: flex;
       align-items: center;
       justify-content: end;
@@ -74,6 +75,7 @@
     overflow-x: auto;
     list-style: none;
     scroll-behavior: smooth; // 此属性safari和ie不兼容(不支持)，所以这2浏览器没有滚动动画效果
+    .scrollbar();
     &.center {
       justify-content: center;
     }
@@ -94,7 +96,7 @@
     }
 
     & > li:last-child {
-      margin: 0;
+      margin-right: 0;
     }
 
     .@{image-gallery-card}-active {

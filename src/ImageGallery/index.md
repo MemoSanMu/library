@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-20 19:35:54
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-08 15:51:09
+ * @LastEditTime: 2021-10-08 19:16:41
 -->
 
 ## Foo
@@ -72,27 +72,27 @@ const items = [
   {
     src: `${PREFIX_URL}${3}t.jpg`,
   },
-  // {
-  //   src: `${PREFIX_URL}${4}t.jpg`,
-  // },
-  // {
-  //   src: `${PREFIX_URL}${5}t.jpg`,
-  // },
-  // {
-  //   src: `${PREFIX_URL}${6}t.jpg`,
-  // },
-  // {
-  //   src: `${PREFIX_URL}${7}t.jpg`,
-  // },
-  // {
-  //   src: `${PREFIX_URL}${8}t.jpg`,
-  // },
-  // {
-  //   src: `${PREFIX_URL}${9}t.jpg`,
-  // },
-  // {
-  //   src: `${PREFIX_URL}${10}t.jpg`,
-  // },
+  {
+    src: `${PREFIX_URL}${4}t.jpg`,
+  },
+  {
+    src: `${PREFIX_URL}${5}t.jpg`,
+  },
+  {
+    src: `${PREFIX_URL}${6}t.jpg`,
+  },
+  {
+    src: `${PREFIX_URL}${7}t.jpg`,
+  },
+  {
+    src: `${PREFIX_URL}${8}t.jpg`,
+  },
+  {
+    src: `${PREFIX_URL}${9}t.jpg`,
+  },
+  {
+    src: `${PREFIX_URL}${10}t.jpg`,
+  },
 ];
 
 export default () => (

@@ -118,9 +118,10 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
       });
     }
 
+    // 滚动左边的距离大于等于可滚动宽度即到最终滚动点（ps：减去12是因为margin-right：12)
     if (
       e.target.scrollLeft >=
-      (itemsLength - thumbnailsMaxLength) * thumbnailsSlideWidth
+      (itemsLength - thumbnailsMaxLength) * thumbnailsSlideWidth - 12
     ) {
       setThumbnailsControl({
         leftDisable: false,
