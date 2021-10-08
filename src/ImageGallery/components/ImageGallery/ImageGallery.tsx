@@ -1,5 +1,5 @@
 import React, { FC, useRef, useState, useMemo, useCallback } from 'react';
-import Message from '../Message';
+import { message } from '../Message';
 import Toast from '../Toast';
 import { isEqual } from 'lodash-es';
 import classNames from 'classnames';
@@ -175,6 +175,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
       setIsDownloading(true);
       await handleDownload(imageGalleryItems[currentIndex].src);
     } catch (error) {
+      error?.type && message.warning(error.type, prefixCls);
       console.log(error, 'error');
     }
     setIsDownloading(false);
@@ -187,36 +188,12 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     // 放大
     if (isIn) {
       if (scale >= 2) {
-        Message({
-          content: '不能再放大了',
-          icon: (
-            <span>
-              <Warning />
-            </span>
-          ),
-          duration: 3,
-          className: `${getPrefixCls(
-            prefixCls,
-            `${imageGallery}-rc-notification`,
-          )}`,
-        });
+        message.warning('不能再放大了', prefixCls);
         return;
       }
     } else {
       if (scale <= 0.25) {
-        Message({
-          content: '不能再缩小了',
-          icon: (
-            <span>
-              <Warning />
-            </span>
-          ),
-          duration: 3,
-          className: `${getPrefixCls(
-            prefixCls,
-            `${imageGallery}-rc-notification`,
-          )}`,
-        });
+        message.warning('不能再缩小了', prefixCls);
         return;
       }
     }

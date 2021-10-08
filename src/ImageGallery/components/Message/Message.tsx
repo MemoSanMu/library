@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-26 16:21:32
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:50:35
+ * @LastEditTime: 2021-10-08 10:53:08
  */
 import React from 'react';
 import RcNotification from 'rc-notification';
@@ -12,6 +12,7 @@ import {
   NotificationInstance as RCNotificationInstance,
   NoticeContent,
 } from 'rc-notification/lib/Notification';
+import { Warning } from '../Svg';
 import { getPrefixCls, imageGallery } from '../../config/index';
 
 let messageInstance: RCNotificationInstance | null;
@@ -123,6 +124,29 @@ const Message = (props: NotificationProps) => {
       instance.notice(getRCNoticeProps(ops, onClose));
     },
   );
+};
+
+/**
+ * @name: message
+ * @msg: message 调用对象，目前只用到warning；
+ * @param {*}
+ * @return {*}
+ */
+export const message = {
+  warning: (content: string, prefixCls?: string) =>
+    Message({
+      content,
+      icon: (
+        <span>
+          <Warning />
+        </span>
+      ),
+      duration: 3,
+      className: `${getPrefixCls(
+        prefixCls,
+        `${imageGallery}-rc-notification`,
+      )}`,
+    }),
 };
 
 export default Message;
