@@ -5,7 +5,7 @@ import _objectSpread from '@babel/runtime/helpers/esm/objectSpread2';
 import _slicedToArray from '@babel/runtime/helpers/esm/slicedToArray';
 import _extends from '@babel/runtime/helpers/esm/extends';
 import React, { useRef, useState, useMemo, useCallback } from 'react';
-import Message from '../Message';
+import { message } from '../Message';
 import Toast from '../Toast';
 import { isEqual } from 'lodash-es';
 import classNames from 'classnames';
@@ -23,7 +23,6 @@ import {
   RotateRight,
   Download,
   Delate,
-  Warning,
   Close,
 } from '../Svg';
 import ClipLoader from '../Loading/ClipLoader';
@@ -46,19 +45,23 @@ var ImageGallery = function ImageGallery(_ref) {
       _props$thumbnailsSlid === void 0 ? 1 : _props$thumbnailsSlid,
     prefixCls = props.prefixCls,
     items = props.items,
-    _props$initialSlide = props.initialSlide,
-    initialSlide = _props$initialSlide === void 0 ? 0 : _props$initialSlide,
     delCb = props.delCb,
     outBrowsing = props.outBrowsing,
     _props$zIndex = props.zIndex,
     zIndex = _props$zIndex === void 0 ? 1000 : _props$zIndex,
     _props$showTitle = props.showTitle,
-    showTitle = _props$showTitle === void 0 ? true : _props$showTitle;
+    showTitle = _props$showTitle === void 0 ? true : _props$showTitle,
+    className = props.className,
+    configurations = props.configurations;
   var Slider = useRef(); // Slider.current.slickPrev()
 
   var SliderThumbnails = useRef(null); // Slider.current.slickPrev()
 
-  var _useState = useState(initialSlide),
+  var _useState = useState(
+      (configurations === null || configurations === void 0
+        ? void 0
+        : configurations.initialSlide) || 0
+    ),
     _useState2 = _slicedToArray(_useState, 2),
     currentIndex = _useState2[0],
     setCurrentIndex = _useState2[1]; // 当前展示幻灯片索引
@@ -141,11 +144,11 @@ var ImageGallery = function ImageGallery(_ref) {
         leftDisable: false,
         rightDisable: false,
       });
-    }
+    } // 滚动左边的距离大于等于可滚动宽度即到最终滚动点（ps：减去12是因为margin-right：12)
 
     if (
       e.target.scrollLeft >=
-      (itemsLength - thumbnailsMaxLength) * thumbnailsSlideWidth
+      (itemsLength - thumbnailsMaxLength) * thumbnailsSlideWidth - 12
     ) {
       setThumbnailsControl({
         leftDisable: false,
@@ -177,21 +180,30 @@ var ImageGallery = function ImageGallery(_ref) {
     );
   }; // 当图片切换前触发钩子
 
-  var beforeChange = function beforeChange(_, newIndex) {
+  var _beforeChange = function beforeChange(newIndex) {
     setCurrentIndex(newIndex); // 保存当前newIndex
     // 当控制旋转和缩放的值不同时 将恢复默认值
 
     !isEqual(defaultController, controller) && setController(defaultController);
-  }; // 初始化
-
-  var onInit = function onInit() {};
+  };
 
   var handleToast = function handleToast(isShowToast) {
     setIsShowToast(isShowToast);
     setTimeout(function () {
       setIsShowToast(false);
     }, 2000);
-  }; // 下载图片
+  };
+
+  var getZindex = useMemo(function () {
+    return {
+      zIndex: zIndex,
+    };
+  }, []);
+  var getZindexAdd = useMemo(function () {
+    return {
+      zIndex: zIndex + 1,
+    };
+  }, []); // 下载图片
 
   var handleDownloadImage = /*#__PURE__*/ (function () {
     var _ref2 = _asyncToGenerator(
@@ -207,17 +219,26 @@ var ImageGallery = function ImageGallery(_ref) {
                   return handleDownload(imageGalleryItems[currentIndex].src);
 
                 case 4:
-                  _context.next = 8;
+                  _context.next = 9;
                   break;
 
                 case 6:
                   _context.prev = 6;
                   _context.t0 = _context['catch'](0);
-
-                case 8:
-                  setIsDownloading(false);
+                  _context.t0 &&
+                    (_context.t0 === null || _context.t0 === void 0
+                      ? void 0
+                      : _context.t0.type) &&
+                    message.warning({
+                      content: _context.t0.type,
+                      prefixCls: prefixCls,
+                      style: getZindexAdd,
+                    });
 
                 case 9:
+                  setIsDownloading(false);
+
+                case 10:
                 case 'end':
                   return _context.stop();
               }
@@ -241,33 +262,19 @@ var ImageGallery = function ImageGallery(_ref) {
 
     if (isIn) {
       if (scale >= 2) {
-        Message({
+        message.warning({
           content: '不能再放大了',
-          icon: /*#__PURE__*/ React.createElement(
-            'span',
-            null,
-            /*#__PURE__*/ React.createElement(Warning, null)
-          ),
-          duration: 3,
-          className: ''.concat(
-            getPrefixCls(prefixCls, ''.concat(imageGallery, '-rc-notification'))
-          ),
+          prefixCls: prefixCls,
+          style: getZindexAdd,
         });
         return;
       }
     } else {
       if (scale <= 0.25) {
-        Message({
+        message.warning({
           content: '不能再缩小了',
-          icon: /*#__PURE__*/ React.createElement(
-            'span',
-            null,
-            /*#__PURE__*/ React.createElement(Warning, null)
-          ),
-          duration: 3,
-          className: ''.concat(
-            getPrefixCls(prefixCls, ''.concat(imageGallery, '-rc-notification'))
-          ),
+          prefixCls: prefixCls,
+          style: getZindexAdd,
         });
         return;
       }
@@ -337,193 +344,226 @@ var ImageGallery = function ImageGallery(_ref) {
     },
     [imageGalleryItems, controller]
   );
-  var settings = {
-    dots: true,
-    dotsClass: 'slick-dots slick-thumb '.concat(
-      getPrefixCls(prefixCls, ''.concat(imageGallery, '-thumbnails'))
-    ),
-    className: classNames(
-      getPrefixCls(prefixCls, 'slick-slider'),
-      _defineProperty(
-        {},
-        ''.concat(
-          getPrefixCls(prefixCls, ''.concat(imageGallery, '-slick-full-screen'))
-        ),
-        itemsLength === 1
-      )
-    ),
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    lazyLoad: true,
-    // fade: true, // fade动画方式切换
-    slidesToScroll: 1,
-    draggable: false,
-    nextArrow: /*#__PURE__*/ React.createElement(RightOutlined, {
-      className: getIconCls(),
-    }),
-    prevArrow: /*#__PURE__*/ React.createElement(LeftOutlined, {
-      className: getIconCls(),
-    }),
-    zIndex: zIndex,
-    initialSlide: initialSlide,
-    customPaging: function customPaging(i) {
-      var _imageGalleryItems$i;
 
-      return /*#__PURE__*/ React.createElement('img', {
-        className: ''.concat(
-          getPrefixCls(prefixCls, ''.concat(imageGallery, '-t-c-img'))
+  var settings = _objectSpread(
+    _objectSpread(
+      {
+        dots: true,
+        dotsClass: 'slick-dots slick-thumb '.concat(
+          getPrefixCls(prefixCls, ''.concat(imageGallery, '-thumbnails'))
         ),
-        src:
-          (_imageGalleryItems$i = imageGalleryItems[i]) === null ||
-          _imageGalleryItems$i === void 0
-            ? void 0
-            : _imageGalleryItems$i.src,
-      });
-    },
-    appendDots: function appendDots(dots) {
-      return /*#__PURE__*/ React.createElement(
-        'div',
-        null,
-        /*#__PURE__*/ React.createElement(
-          'div',
-          {
-            className: ''.concat(
-              getPrefixCls(prefixCls, ''.concat(imageGallery, '-control'))
-            ),
-          },
-          /*#__PURE__*/ React.createElement(
-            'div',
-            {
-              className: ''.concat(
-                getPrefixCls(
-                  prefixCls,
-                  ''.concat(imageGallery, '-control-icon')
-                )
-              ),
-            },
-            /*#__PURE__*/ React.createElement(
-              Tooltip,
-              {
-                text: '\u653E\u5927',
-              },
-              /*#__PURE__*/ React.createElement(ZoomIn, {
-                onClick: function onClick() {
-                  return handleZoom('ZoomIn');
-                },
-                className: getIconCls(),
-              })
-            ),
-            /*#__PURE__*/ React.createElement(
-              Tooltip,
-              {
-                text: '\u7F29\u5C0F',
-              },
-              /*#__PURE__*/ React.createElement(ZoomOut, {
-                onClick: function onClick() {
-                  return handleZoom('ZoomOut');
-                },
-                className: getIconCls(),
-              })
-            ),
-            /*#__PURE__*/ React.createElement(
-              Tooltip,
-              {
-                text: '\u5DE6\u65CB\u8F6C',
-              },
-              /*#__PURE__*/ React.createElement(RotateLeft, {
-                onClick: function onClick() {
-                  return handleRotate('RotateLeft');
-                },
-                className: getIconCls(),
-              })
-            ),
-            /*#__PURE__*/ React.createElement(
-              Tooltip,
-              {
-                text: '\u53F3\u65CB\u8F6C',
-              },
-              /*#__PURE__*/ React.createElement(RotateRight, {
-                onClick: function onClick() {
-                  return handleRotate('RotateRight');
-                },
-                className: getIconCls(),
-              })
-            ),
-            /*#__PURE__*/ React.createElement(
-              Tooltip,
-              {
-                text: '\u4E0B\u8F7D',
-              },
-              /*#__PURE__*/ React.createElement(Download, {
-                onClick: handleDownloadImage,
-                className: getIconCls(),
-              })
-            ),
-            /*#__PURE__*/ React.createElement(
-              Tooltip,
-              {
-                text: '\u5220\u9664',
-              },
-              /*#__PURE__*/ React.createElement(Delate, {
-                onClick: handleDel,
-                className: getIconCls(),
-              })
-            )
-          ),
-          /*#__PURE__*/ React.createElement(
-            'div',
-            {
-              className: ''.concat(
-                getPrefixCls(
-                  prefixCls,
-                  ''.concat(imageGallery, '-control-pagination')
-                )
-              ),
-            },
-            ''.concat(currentIndex + 1, '/').concat(itemsLength)
-          )
-        ),
-        getControlMobileBtn(dots, 'left'),
-        /*#__PURE__*/ React.createElement(
-          'div',
-          {
-            className: ''.concat(
+        className: classNames(
+          getPrefixCls(prefixCls, 'slick-slider'),
+          _defineProperty(
+            {},
+            ''.concat(
               getPrefixCls(
                 prefixCls,
-                ''.concat(imageGallery, '-thumbnails-content')
+                ''.concat(imageGallery, '-slick-full-screen')
               )
             ),
-          },
-          /*#__PURE__*/ React.createElement(
-            'ul',
-            {
-              className: ''.concat(
-                getPrefixCls(prefixCls, ''.concat(imageGallery, '-t-c-ul'))
-              ),
-              ref: SliderThumbnails,
-              onScroll: handleScroll,
-            },
-            dots
+            itemsLength === 1
           )
         ),
-        getControlMobileBtn(dots, 'right')
-      );
-    },
-    beforeChange: beforeChange,
-    onInit: onInit,
-  };
-  var wrapCls = classNames(getPrefixCls(prefixCls), {});
+        draggable: false,
+        nextArrow: /*#__PURE__*/ React.createElement(RightOutlined, {
+          className: getIconCls(),
+        }),
+        prevArrow: /*#__PURE__*/ React.createElement(LeftOutlined, {
+          className: getIconCls(),
+        }),
+        fade: false,
+        customPaging: function customPaging(i) {
+          var _imageGalleryItems$i, _imageGalleryItems$i2;
+
+          return /*#__PURE__*/ React.createElement('img', {
+            className: ''.concat(
+              getPrefixCls(prefixCls, ''.concat(imageGallery, '-t-c-img'))
+            ),
+            src:
+              (_imageGalleryItems$i = imageGalleryItems[i]) === null ||
+              _imageGalleryItems$i === void 0
+                ? void 0
+                : _imageGalleryItems$i.src,
+            alt:
+              (_imageGalleryItems$i2 = imageGalleryItems[i]) === null ||
+              _imageGalleryItems$i2 === void 0
+                ? void 0
+                : _imageGalleryItems$i2.alt,
+          });
+        },
+        appendDots: function appendDots(dots) {
+          return /*#__PURE__*/ React.createElement(
+            'div',
+            null,
+            /*#__PURE__*/ React.createElement(
+              'div',
+              {
+                className: ''.concat(
+                  getPrefixCls(prefixCls, ''.concat(imageGallery, '-control'))
+                ),
+              },
+              /*#__PURE__*/ React.createElement(
+                'div',
+                {
+                  className: ''.concat(
+                    getPrefixCls(
+                      prefixCls,
+                      ''.concat(imageGallery, '-control-icon')
+                    )
+                  ),
+                },
+                /*#__PURE__*/ React.createElement(
+                  Tooltip,
+                  {
+                    text: '\u653E\u5927',
+                    style: getZindexAdd,
+                  },
+                  /*#__PURE__*/ React.createElement(ZoomIn, {
+                    onClick: function onClick() {
+                      return handleZoom('ZoomIn');
+                    },
+                    className: getIconCls(),
+                  })
+                ),
+                /*#__PURE__*/ React.createElement(
+                  Tooltip,
+                  {
+                    text: '\u7F29\u5C0F',
+                    style: getZindexAdd,
+                  },
+                  /*#__PURE__*/ React.createElement(ZoomOut, {
+                    onClick: function onClick() {
+                      return handleZoom('ZoomOut');
+                    },
+                    className: getIconCls(),
+                  })
+                ),
+                /*#__PURE__*/ React.createElement(
+                  Tooltip,
+                  {
+                    text: '\u5DE6\u65CB\u8F6C',
+                    style: getZindexAdd,
+                  },
+                  /*#__PURE__*/ React.createElement(RotateLeft, {
+                    onClick: function onClick() {
+                      return handleRotate('RotateLeft');
+                    },
+                    className: getIconCls(),
+                  })
+                ),
+                /*#__PURE__*/ React.createElement(
+                  Tooltip,
+                  {
+                    text: '\u53F3\u65CB\u8F6C',
+                    style: getZindexAdd,
+                  },
+                  /*#__PURE__*/ React.createElement(RotateRight, {
+                    onClick: function onClick() {
+                      return handleRotate('RotateRight');
+                    },
+                    className: getIconCls(),
+                  })
+                ),
+                /*#__PURE__*/ React.createElement(
+                  Tooltip,
+                  {
+                    text: '\u4E0B\u8F7D',
+                    style: getZindexAdd,
+                  },
+                  /*#__PURE__*/ React.createElement(Download, {
+                    onClick: handleDownloadImage,
+                    className: getIconCls(),
+                  })
+                ),
+                /*#__PURE__*/ React.createElement(
+                  Tooltip,
+                  {
+                    text: '\u5220\u9664',
+                    style: getZindexAdd,
+                  },
+                  /*#__PURE__*/ React.createElement(Delate, {
+                    onClick: handleDel,
+                    className: getIconCls(),
+                  })
+                )
+              ),
+              /*#__PURE__*/ React.createElement(
+                'div',
+                {
+                  className: ''.concat(
+                    getPrefixCls(
+                      prefixCls,
+                      ''.concat(imageGallery, '-control-pagination')
+                    )
+                  ),
+                },
+                ''.concat(currentIndex + 1, '/').concat(itemsLength)
+              )
+            ),
+            getControlMobileBtn(dots, 'left'),
+            /*#__PURE__*/ React.createElement(
+              'div',
+              {
+                className: ''.concat(
+                  getPrefixCls(
+                    prefixCls,
+                    ''.concat(imageGallery, '-thumbnails-content')
+                  )
+                ),
+              },
+              /*#__PURE__*/ React.createElement(
+                'ul',
+                {
+                  className: ''.concat(
+                    getPrefixCls(prefixCls, ''.concat(imageGallery, '-t-c-ul'))
+                  ),
+                  ref: SliderThumbnails,
+                  onScroll: handleScroll,
+                },
+                dots
+              )
+            ),
+            getControlMobileBtn(dots, 'right')
+          );
+        },
+      },
+      configurations
+    ),
+    {},
+    {
+      beforeChange: function beforeChange(oldIndex, newIndex) {
+        _beforeChange(newIndex);
+
+        typeof (configurations === null || configurations === void 0
+          ? void 0
+          : configurations.beforeChange) === 'function' &&
+          configurations.beforeChange(oldIndex, newIndex);
+      },
+      onInit: function onInit() {
+        typeof (configurations === null || configurations === void 0
+          ? void 0
+          : configurations.onInit) === 'function' && configurations.onInit();
+      },
+    }
+  );
+
+  var wrapCls = classNames(
+    getPrefixCls(prefixCls),
+    _defineProperty({}, ''.concat(className), className)
+  );
   return /*#__PURE__*/ React.createElement(
     'div',
     {
       className: wrapCls,
+      style: getZindex,
     },
     /*#__PURE__*/ React.createElement(
       Header,
       {
         currentSlider: getCurrentSlider,
         showTitle: showTitle,
+        style: getZindexAdd,
       },
       /*#__PURE__*/ React.createElement(Close, {
         className: getIconCls(
@@ -537,6 +577,7 @@ var ImageGallery = function ImageGallery(_ref) {
       size: 40,
       prefixCls: prefixCls,
       loading: isDownloading,
+      zIndex: getZindexAdd.zIndex,
     }),
     /*#__PURE__*/ React.createElement(
       'div',
@@ -555,6 +596,7 @@ var ImageGallery = function ImageGallery(_ref) {
     /*#__PURE__*/ React.createElement(Toast, {
       show: isShowToast,
       sacleProgress: controller.scale,
+      style: getZindexAdd,
     })
   );
 };

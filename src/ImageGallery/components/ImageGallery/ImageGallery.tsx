@@ -188,8 +188,9 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     try {
       setIsDownloading(true);
       await handleDownload(imageGalleryItems[currentIndex].src);
-    } catch (error) {
-      error?.type &&
+    } catch (error: any) {
+      error &&
+        error?.type &&
         message.warning({
           content: error.type,
           prefixCls,

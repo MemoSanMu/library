@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-17 15:17:27
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-02 17:01:53
+ * @LastEditTime: 2021-10-08 11:51:28
  */
 var rootPrefix = 'lib';
 export var wrapperCls = 'image-gallery';

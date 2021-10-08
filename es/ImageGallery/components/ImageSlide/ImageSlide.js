@@ -8,7 +8,7 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  * @Author: wangsen
  * @Date: 2021-09-28 10:33:51
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-03 15:53:29
+ * @LastEditTime: 2021-10-08 15:23:40
  */
 import React, {
   useCallback,
@@ -253,6 +253,7 @@ var ImageSlide = function ImageSlide(_ref) {
             }
           ),
           src: item.src,
+          alt: item.alt,
           onMouseDown: onMouseDown,
           onMouseUp: onMouseUp,
           onMouseMove: onMouseMove,

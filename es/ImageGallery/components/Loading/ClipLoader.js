@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-24 16:40:06
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:50:08
+ * @LastEditTime: 2021-10-08 14:26:29
  */
 import React from 'react';
 import { getPrefixCls, imageGallery } from '../../config/index';
@@ -17,9 +17,10 @@ var Loader = function Loader(_ref) {
     size = _ref$size === void 0 ? '35px' : _ref$size,
     _ref$color = _ref.color,
     color = _ref$color === void 0 ? '#000000' : _ref$color,
-    prefixCls = _ref.prefixCls;
+    prefixCls = _ref.prefixCls,
+    zIndex = _ref.zIndex;
 
-  var style = function style() {
+  var clipStyle = function clipStyle() {
     return {
       width: size,
       height: size,
@@ -37,9 +38,10 @@ var Loader = function Loader(_ref) {
             ''.concat(imageGallery, '-loading')
           ),
           elementType: 'div',
+          zIndex: zIndex,
         },
         /*#__PURE__*/ React.createElement('span', {
-          style: style(),
+          style: clipStyle(),
           className: getPrefixCls(prefixCls, 'loading-clip'),
         })
       )

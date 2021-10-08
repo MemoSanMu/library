@@ -4,6 +4,7 @@ export interface CommonProps {
   css?: string;
   speedMultiplier?: number;
   prefixCls?: string;
+  zIndex?: number;
 }
 export declare type LengthType = number | string;
 export interface LoaderSizeProps extends CommonProps {

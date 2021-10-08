@@ -9,7 +9,7 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-03 17:40:20
+ * @LastEditTime: 2021-10-08 15:20:58
  */
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
@@ -27,20 +27,24 @@ var Card = function Card(_ref) {
 
   var prefixCls = props.prefixCls,
     items = props.items,
-    _props$initialSlide = props.initialSlide,
-    initialSlide = _props$initialSlide === void 0 ? 0 : _props$initialSlide,
     _props$thumbnailsSlid = props.thumbnailsSlideMobileCount,
     thumbnailsSlideMobileCount =
       _props$thumbnailsSlid === void 0 ? 1 : _props$thumbnailsSlid,
     _props$isShowCardSwit = props.isShowCardSwitchBtn,
     isShowCardSwitchBtn =
-      _props$isShowCardSwit === void 0 ? true : _props$isShowCardSwit; // 当前画廊数据
+      _props$isShowCardSwit === void 0 ? true : _props$isShowCardSwit,
+    className = props.className,
+    configurations = props.configurations; // 当前画廊数据
 
   var _useState = useState(items),
     _useState2 = _slicedToArray(_useState, 1),
     imageGalleryItems = _useState2[0];
 
-  var _useState3 = useState(initialSlide),
+  var _useState3 = useState(
+      (configurations === null || configurations === void 0
+        ? void 0
+        : configurations.initialSlide) || 0
+    ),
     _useState4 = _slicedToArray(_useState3, 2),
     currentIndex = _useState4[0],
     setCurrentIndex = _useState4[1]; // 当前展示幻灯片索引
@@ -59,11 +63,9 @@ var Card = function Card(_ref) {
 
   var itemsLength = imageGalleryItems.length; // 当图片切换前触发钩子
 
-  var beforeChange = function beforeChange(_, newIndex) {
+  var _beforeChange = function beforeChange(newIndex) {
     setCurrentIndex(newIndex); // 保存当前newIndex
-  }; // 初始化
-
-  var onInit = function onInit() {};
+  };
   /**
    * @name: slickGoTo
    * @msg: Description: Go to slide index, if dontAnimate=true, it happens without animation
@@ -76,12 +78,30 @@ var Card = function Card(_ref) {
     setCurrentIndex(i);
   };
 
-  var settings = {
-    arrows: false,
-    initialSlide: initialSlide,
-    beforeChange: beforeChange,
-    onInit: onInit,
-  };
+  var settings = _objectSpread(
+    _objectSpread(
+      {
+        arrows: false,
+      },
+      configurations
+    ),
+    {},
+    {
+      beforeChange: function beforeChange(oldIndex, newIndex) {
+        _beforeChange(newIndex);
+
+        typeof (configurations === null || configurations === void 0
+          ? void 0
+          : configurations.beforeChange) === 'function' &&
+          configurations.beforeChange(oldIndex, newIndex);
+      },
+      onInit: function onInit() {
+        typeof (configurations === null || configurations === void 0
+          ? void 0
+          : configurations.onInit) === 'function' && configurations.onInit();
+      },
+    }
+  );
 
   var getIconCls = function getIconCls(cls) {
     return classNames(
@@ -160,9 +180,16 @@ var Card = function Card(_ref) {
     },
     [isShowCardSwitchBtn]
   );
-  var wrapCls = classNames(getPrefixCls(prefixCls, imageGalleryCard), {
-    control: getIsShowCardSwitchBtn,
-  });
+  var wrapCls = classNames(
+    getPrefixCls(prefixCls, imageGalleryCard),
+    _defineProperty(
+      {
+        control: getIsShowCardSwitchBtn,
+      },
+      ''.concat(className),
+      className
+    )
+  );
   return /*#__PURE__*/ React.createElement(
     'div',
     {
@@ -187,6 +214,7 @@ var Card = function Card(_ref) {
             },
             /*#__PURE__*/ React.createElement('img', {
               src: i.src,
+              alt: i.alt,
               className: getPrefixCls(
                 prefixCls,
                 ''.concat(imageGalleryCard, '-image')
@@ -228,8 +256,13 @@ var Card = function Card(_ref) {
       /*#__PURE__*/ React.createElement(
         'ul',
         {
-          className: ''.concat(
-            getPrefixCls(prefixCls, ''.concat(imageGalleryCard, '-t-c-ul'))
+          className: classNames(
+            ''.concat(
+              getPrefixCls(prefixCls, ''.concat(imageGalleryCard, '-t-c-ul'))
+            ),
+            {
+              center: itemsLength < 4,
+            }
           ),
           ref: SliderThumbnails,
           onScroll: handleScroll,
@@ -263,6 +296,7 @@ var Card = function Card(_ref) {
                   )
                 ),
                 src: i.src,
+                alt: i.alt,
               })
             );
           })

@@ -6,10 +6,11 @@ import _objectSpread from '@babel/runtime/helpers/esm/objectSpread2';
  * @Author: wangsen
  * @Date: 2021-09-26 16:21:32
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:50:35
+ * @LastEditTime: 2021-10-08 14:15:05
  */
 import React from 'react';
 import RcNotification from 'rc-notification';
+import { Warning } from '../Svg';
 import { getPrefixCls, imageGallery } from '../../config/index';
 var messageInstance;
 var key = 1;
@@ -19,7 +20,8 @@ var getRCNotificationInstance = function getRCNotificationInstance(
   callback
 ) {
   var className = props.className,
-    maxCount = props.maxCount;
+    maxCount = props.maxCount,
+    style = props.style;
   var target = props.key || key++; // called when notice close
 
   var destroy = function destroy(messageKey) {
@@ -57,6 +59,16 @@ var getRCNotificationInstance = function getRCNotificationInstance(
     {
       className: className,
       maxCount: maxCount,
+      style: _objectSpread(
+        _objectSpread(
+          {},
+          {
+            top: 65,
+            left: '50%',
+          }
+        ),
+        style
+      ),
     },
     function (notification) {
       messageInstance = notification; // 保存notification
@@ -129,5 +141,31 @@ var Message = function Message(props) {
     instance.notice(getRCNoticeProps(ops, onClose));
   });
 };
+/**
+ * @name: message
+ * @msg: message 调用对象，目前只用到warning；
+ * @param {*}
+ * @return {*}
+ */
 
+export var message = {
+  warning: function warning(_ref2) {
+    var content = _ref2.content,
+      prefixCls = _ref2.prefixCls,
+      style = _ref2.style;
+    return Message({
+      content: content,
+      icon: /*#__PURE__*/ React.createElement(
+        'span',
+        null,
+        /*#__PURE__*/ React.createElement(Warning, null)
+      ),
+      duration: 3,
+      style: style,
+      className: ''.concat(
+        getPrefixCls(prefixCls, ''.concat(imageGallery, '-rc-notification'))
+      ),
+    });
+  },
+};
 export default Message;

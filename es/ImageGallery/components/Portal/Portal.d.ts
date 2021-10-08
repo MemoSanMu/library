@@ -2,7 +2,7 @@ import { FC } from 'react';
 interface PortalsProps {
   id?: string;
   className?: string;
-  zIndex?: string;
+  zIndex?: number;
   target?: HTMLElement;
   elementType?: string;
 }

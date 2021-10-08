@@ -8,7 +8,7 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-04 19:59:29
+ * @LastEditTime: 2021-10-08 15:28:37
  */
 
 /**
@@ -19,6 +19,11 @@ import React, { useCallback, useState, useMemo } from 'react'; // Components
 import Browser from './components/Browser';
 import callee from './ImageGallery.callee';
 import Card from './components/Card';
+var defaultStyle = {
+  cursor: 'pointer',
+  width: 100,
+  height: 80,
+};
 
 var GalleryPreview = function GalleryPreview(_ref) {
   var props = _extends({}, _ref);
@@ -71,12 +76,7 @@ var GalleryPreview = function GalleryPreview(_ref) {
     null,
     /*#__PURE__*/ React.createElement('img', {
       className: className,
-      style: _objectSpread(
-        {
-          cursor: 'pointer',
-        },
-        style
-      ),
+      style: _objectSpread(_objectSpread({}, defaultStyle), style),
       src: src,
       alt: alt,
       onClick: function onClick(e) {
