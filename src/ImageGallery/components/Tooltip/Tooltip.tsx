@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-26 16:21:32
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:56:01
+ * @LastEditTime: 2021-10-08 13:55:53
  */
 import React, { FC } from 'react';
 import RcTooltip from 'rc-tooltip';
@@ -15,6 +15,7 @@ interface TooltipProps {
   prefixCls?: string;
   text: string;
   placement?: TooltipPlacement;
+  style?: React.CSSProperties;
 }
 
 const Tooltip: FC<TooltipProps> = (props) => {
@@ -23,6 +24,7 @@ const Tooltip: FC<TooltipProps> = (props) => {
     prefixCls,
     text,
     placement = 'top' as TooltipPlacement,
+    style = {},
   } = props;
   return (
     <RcTooltip
@@ -32,6 +34,7 @@ const Tooltip: FC<TooltipProps> = (props) => {
         `${imageGallery}-rc-tooltip`,
       )}`}
       overlay={<span>{text}</span>}
+      overlayStyle={style}
     >
       <div>{children}</div>
     </RcTooltip>

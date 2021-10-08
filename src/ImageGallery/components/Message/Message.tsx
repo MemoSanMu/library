@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-26 16:21:32
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-08 10:53:08
+ * @LastEditTime: 2021-10-08 14:15:05
  */
 import React from 'react';
 import RcNotification from 'rc-notification';
@@ -32,13 +32,14 @@ interface NotificationProps {
   prefixCls?: string;
   content: string | React.ReactNode;
   key?: number | string;
+  style?: React.CSSProperties;
 }
 
 const getRCNotificationInstance = (
   props: NotificationProps,
   callback: CallBack,
 ) => {
-  const { className, maxCount } = props;
+  const { className, maxCount, style } = props;
   const target = props.key || key++;
 
   // called when notice close
@@ -72,6 +73,10 @@ const getRCNotificationInstance = (
     {
       className,
       maxCount,
+      style: {
+        ...{ top: 65, left: '50%' }, // default
+        ...style,
+      },
     },
     (notification) => {
       messageInstance = notification; // 保存notification
@@ -133,7 +138,15 @@ const Message = (props: NotificationProps) => {
  * @return {*}
  */
 export const message = {
-  warning: (content: string, prefixCls?: string) =>
+  warning: ({
+    content,
+    prefixCls,
+    style,
+  }: {
+    content: string;
+    prefixCls?: string;
+    style?: React.CSSProperties;
+  }) =>
     Message({
       content,
       icon: (
@@ -142,6 +155,7 @@ export const message = {
         </span>
       ),
       duration: 3,
+      style,
       className: `${getPrefixCls(
         prefixCls,
         `${imageGallery}-rc-notification`,

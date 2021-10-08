@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-24 16:40:49
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-24 17:42:44
+ * @LastEditTime: 2021-10-08 14:28:14
  */
 export interface CommonProps {
   color?: string;
@@ -12,6 +12,7 @@ export interface CommonProps {
   css?: string;
   speedMultiplier?: number;
   prefixCls?: string;
+  zIndex?: number;
 }
 
 export type LengthType = number | string;

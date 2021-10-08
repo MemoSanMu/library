@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-04 19:59:29
+ * @LastEditTime: 2021-10-08 15:28:37
  */
 
 /**
@@ -18,9 +18,15 @@ import callee from './ImageGallery.callee';
 import { ImageGalleryProps } from './interfaces';
 import Card from './components/Card';
 
+const defaultStyle = {
+  cursor: 'pointer',
+  width: 100,
+  height: 80,
+};
+
 interface GalleryProps extends ImageGalleryProps {
   className?: string;
-  style?: React.CSSProperties;
+  style?: React.CSSProperties; // defaultStyle
   src: string;
   alt?: string;
   onClick?: React.MouseEventHandler<HTMLImageElement>;
@@ -72,7 +78,7 @@ const GalleryPreview: FC<GalleryProps> = ({ ...props }) => {
       {/*图片*/}
       <img
         className={className}
-        style={{ cursor: 'pointer', ...style }}
+        style={{ ...defaultStyle, ...style }}
         src={src}
         alt={alt}
         onClick={(e) => {
@@ -80,7 +86,6 @@ const GalleryPreview: FC<GalleryProps> = ({ ...props }) => {
           typeof onClick === 'function' && onClick(e);
         }}
         ref={imageRef}
-        // {...restProps}
       />
 
       {/* 预览画廊 */}

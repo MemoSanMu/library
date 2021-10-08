@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-28 10:33:51
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-03 15:53:29
+ * @LastEditTime: 2021-10-08 15:23:40
  */
 import React, {
   FC,
@@ -223,6 +223,7 @@ const ImageSlide: FC<ImageSlideProps> = ({ ...props }) => {
           },
         )}
         src={item.src}
+        alt={item.alt}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onMouseMove={onMouseMove}

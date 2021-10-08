@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-24 16:40:06
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:50:08
+ * @LastEditTime: 2021-10-08 14:26:29
  */
 import React, { FC } from 'react';
 import { LoaderSizeProps } from './interfaces';
@@ -16,8 +16,9 @@ const Loader: FC<LoaderSizeProps> = ({
   size = '35px',
   color = '#000000',
   prefixCls,
+  zIndex,
 }) => {
-  const style = () => {
+  const clipStyle = () => {
     return {
       width: size,
       height: size,
@@ -30,9 +31,10 @@ const Loader: FC<LoaderSizeProps> = ({
     <Portals
       className={getPrefixCls(prefixCls, `${imageGallery}-loading`)}
       elementType="div"
+      zIndex={zIndex}
     >
       <span
-        style={style()}
+        style={clipStyle()}
         className={getPrefixCls(prefixCls, 'loading-clip')}
       ></span>
     </Portals>

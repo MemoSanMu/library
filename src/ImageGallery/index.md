@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-20 19:35:54
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-04 19:42:19
+ * @LastEditTime: 2021-10-08 15:51:09
 -->
 
 ## Foo
@@ -29,6 +29,8 @@ const PREFIX_URL =
 const items = [
   {
     src: `${PREFIX_URL}${1}.jpg`,
+    alt: 'PREFIX_URL',
+    title: 'PREFIX_URL_titlle',
   },
   {
     src: 'https://user-images.githubusercontent.com/9554297/83762004-a0761b00-a6a9-11ea-83b4-9c8ff721d4b8.png',
@@ -41,6 +43,7 @@ const items = [
   },
   {
     src: `${PREFIX_URL}${3}.jpg`,
+    alt: 'PREFIX_URL',
   },
   {
     src: `${PREFIX_URL}${4}.jpg`,
@@ -98,7 +101,9 @@ export default () => (
     <ImageGalleryCard
       items={items}
       thumbnailsSlideMobileCount={3}
-      initialSlide={2}
+      configurations={{
+        initialSlide: 2,
+      }}
     />
     <div
       style={{
@@ -111,13 +116,13 @@ export default () => (
       items={items}
       thumbnailsSlideMobileCount={3}
       src={`${PREFIX_URL}${1}.jpg`}
-      style={{
-        width: 100,
-        height: 80,
-      }}
-      initialSlide={4}
       forwardedRef={(ref) => {
         console.log(ref, 'ref');
+      }}
+      configurations={{
+        initialSlide: 4,
+        // fade: true,
+        draggable: true,
       }}
     />
     <div
@@ -128,6 +133,9 @@ export default () => (
         ImageGallery.browsing({
           items,
           thumbnailsSlideMobileCount: 3,
+          configurations: {
+            initialSlide: 3,
+          },
         });
       }}
     >

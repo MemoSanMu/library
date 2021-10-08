@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-27 16:13:57
  * @LastEditors: wangsen
- * @LastEditTime: 2021-09-28 19:50:49
+ * @LastEditTime: 2021-10-08 14:32:01
  */
 import React, { FC, useCallback } from 'react';
 import classNames from 'classnames';
@@ -14,10 +14,11 @@ interface ToastProps {
   prefixCls?: string;
   show: boolean;
   sacleProgress: number;
+  style?: React.CSSProperties;
 }
 
 const Toast: FC<ToastProps> = (props) => {
-  const { prefixCls, show, sacleProgress } = props;
+  const { prefixCls, show, sacleProgress, style = {} } = props;
 
   const toastContent = useCallback(() => {
     return (
@@ -34,7 +35,11 @@ const Toast: FC<ToastProps> = (props) => {
     },
   );
 
-  return <div className={messageCls}>{toastContent()}</div>;
+  return (
+    <div className={messageCls} style={style}>
+      {toastContent()}
+    </div>
+  );
 };
 
 export default Toast;

@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-08 10:12:22
+ * @LastEditTime: 2021-10-08 15:20:58
  */
 import React, { FC, useState, useRef, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
@@ -28,14 +28,17 @@ const Card: FC<CardProps> = ({ ...props }) => {
   const {
     prefixCls,
     items,
-    initialSlide = 0,
     thumbnailsSlideMobileCount = 1,
     isShowCardSwitchBtn = true,
+    className,
+    configurations,
   } = props;
 
   // 当前画廊数据
   const [imageGalleryItems] = useState<Items[]>(items);
-  const [currentIndex, setCurrentIndex] = useState<number>(initialSlide); // 当前展示幻灯片索引
+  const [currentIndex, setCurrentIndex] = useState<number>(
+    configurations?.initialSlide || 0,
+  ); // 当前展示幻灯片索引
 
   const Slider = useRef<any>(null); // Slider.current.slickPrev()
   const SliderThumbnails = useRef<any>(null); // Slider.current.slickPrev()
@@ -50,12 +53,9 @@ const Card: FC<CardProps> = ({ ...props }) => {
   const itemsLength = imageGalleryItems.length;
 
   // 当图片切换前触发钩子
-  const beforeChange = (_: number, newIndex: number) => {
+  const beforeChange = (newIndex: number) => {
     setCurrentIndex(newIndex); // 保存当前newIndex
   };
-
-  // 初始化
-  const onInit = () => {};
 
   /**
    * @name: slickGoTo
@@ -70,9 +70,15 @@ const Card: FC<CardProps> = ({ ...props }) => {
 
   const settings = {
     arrows: false,
-    initialSlide,
-    beforeChange: beforeChange,
-    onInit: onInit,
+    ...configurations,
+    beforeChange: (oldIndex: number, newIndex: number) => {
+      beforeChange(newIndex);
+      typeof configurations?.beforeChange === 'function' &&
+        configurations.beforeChange(oldIndex, newIndex);
+    },
+    onInit: () => {
+      typeof configurations?.onInit === 'function' && configurations.onInit();
+    },
   };
 
   const getIconCls = (cls?: string) => {
@@ -145,6 +151,7 @@ const Card: FC<CardProps> = ({ ...props }) => {
 
   const wrapCls = classNames(getPrefixCls(prefixCls, imageGalleryCard), {
     control: getIsShowCardSwitchBtn,
+    [`${className}`]: className,
   });
 
   return (
@@ -162,6 +169,7 @@ const Card: FC<CardProps> = ({ ...props }) => {
             >
               <img
                 src={i.src}
+                alt={i.alt}
                 className={getPrefixCls(prefixCls, `${imageGalleryCard}-image`)}
               />
             </div>
@@ -215,6 +223,7 @@ const Card: FC<CardProps> = ({ ...props }) => {
                     `${imageGalleryCard}-t-c-img`,
                   )}`}
                   src={i.src}
+                  alt={i.alt}
                 />
               </li>
             ))}

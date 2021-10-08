@@ -17,7 +17,6 @@ import {
   RotateRight,
   Download,
   Delate,
-  Warning,
   Close,
 } from '../Svg';
 import ClipLoader from '../Loading/ClipLoader';
@@ -48,16 +47,19 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     thumbnailsSlideMobileCount = 1,
     prefixCls,
     items,
-    initialSlide = 0,
     delCb,
     outBrowsing,
     zIndex = 1000,
     showTitle = true,
+    className,
+    configurations,
   } = props;
   const Slider = useRef<any>(); // Slider.current.slickPrev()
   const SliderThumbnails = useRef<any>(null); // Slider.current.slickPrev()
 
-  const [currentIndex, setCurrentIndex] = useState<number>(initialSlide); // 当前展示幻灯片索引
+  const [currentIndex, setCurrentIndex] = useState<number>(
+    configurations?.initialSlide || 0,
+  ); // 当前展示幻灯片索引
   // 操作样式
   const [controller, setController] = useState<Controller>({
     rotate: 0,
@@ -153,14 +155,11 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
   };
 
   // 当图片切换前触发钩子
-  const beforeChange = (_: number, newIndex: number) => {
+  const beforeChange = (newIndex: number) => {
     setCurrentIndex(newIndex); // 保存当前newIndex
     // 当控制旋转和缩放的值不同时 将恢复默认值
     !isEqual(defaultController, controller) && setController(defaultController);
   };
-
-  // 初始化
-  const onInit = () => {};
 
   const handleToast = (isShowToast: boolean) => {
     setIsShowToast(isShowToast);
@@ -169,13 +168,32 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     }, 2000);
   };
 
+  const getZindex = useMemo(
+    () => ({
+      zIndex,
+    }),
+    [],
+  );
+
+  const getZindexAdd = useMemo(
+    () => ({
+      zIndex: zIndex + 1,
+    }),
+    [],
+  );
+
   // 下载图片
   const handleDownloadImage = async () => {
     try {
       setIsDownloading(true);
       await handleDownload(imageGalleryItems[currentIndex].src);
     } catch (error) {
-      error?.type && message.warning(error.type, prefixCls);
+      error?.type &&
+        message.warning({
+          content: error.type,
+          prefixCls,
+          style: getZindexAdd,
+        });
       console.log(error, 'error');
     }
     setIsDownloading(false);
@@ -188,12 +206,20 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     // 放大
     if (isIn) {
       if (scale >= 2) {
-        message.warning('不能再放大了', prefixCls);
+        message.warning({
+          content: '不能再放大了',
+          prefixCls,
+          style: getZindexAdd,
+        });
         return;
       }
     } else {
       if (scale <= 0.25) {
-        message.warning('不能再缩小了', prefixCls);
+        message.warning({
+          content: '不能再缩小了',
+          prefixCls,
+          style: getZindexAdd,
+        });
         return;
       }
     }
@@ -258,22 +284,16 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
       [`${getPrefixCls(prefixCls, `${imageGallery}-slick-full-screen`)}`]:
         itemsLength === 1,
     }),
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    lazyLoad: true,
-    // fade: true, // fade动画方式切换
-    slidesToScroll: 1,
     draggable: false,
     nextArrow: <RightOutlined className={getIconCls()} />,
     prevArrow: <LeftOutlined className={getIconCls()} />,
-    zIndex,
-    initialSlide, // 第一张幻灯片的索引
+    fade: false,
     customPaging: function (i: number) {
       return (
         <img
           className={`${getPrefixCls(prefixCls, `${imageGallery}-t-c-img`)}`}
           src={imageGalleryItems[i]?.src}
+          alt={imageGalleryItems[i]?.alt}
         />
       );
     },
@@ -291,37 +311,37 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
               )}`}
             >
               {/* 放大 */}
-              <Tooltip text="放大">
+              <Tooltip text="放大" style={getZindexAdd}>
                 <ZoomIn
                   onClick={() => handleZoom('ZoomIn')}
                   className={getIconCls()}
                 />
               </Tooltip>
-              <Tooltip text="缩小">
+              <Tooltip text="缩小" style={getZindexAdd}>
                 <ZoomOut
                   onClick={() => handleZoom('ZoomOut')}
                   className={getIconCls()}
                 />
               </Tooltip>
-              <Tooltip text="左旋转">
+              <Tooltip text="左旋转" style={getZindexAdd}>
                 <RotateLeft
                   onClick={() => handleRotate('RotateLeft')}
                   className={getIconCls()}
                 />
               </Tooltip>
-              <Tooltip text="右旋转">
+              <Tooltip text="右旋转" style={getZindexAdd}>
                 <RotateRight
                   onClick={() => handleRotate('RotateRight')}
                   className={getIconCls()}
                 />
               </Tooltip>
-              <Tooltip text="下载">
+              <Tooltip text="下载" style={getZindexAdd}>
                 <Download
                   onClick={handleDownloadImage}
                   className={getIconCls()}
                 />
               </Tooltip>
-              <Tooltip text="删除">
+              <Tooltip text="删除" style={getZindexAdd}>
                 <Delate onClick={handleDel} className={getIconCls()} />
               </Tooltip>
             </div>
@@ -356,16 +376,29 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
         </div>
       );
     },
-    beforeChange: beforeChange,
-    onInit: onInit,
+    ...configurations,
+    beforeChange: (oldIndex: number, newIndex: number) => {
+      beforeChange(newIndex);
+      typeof configurations?.beforeChange === 'function' &&
+        configurations.beforeChange(oldIndex, newIndex);
+    },
+    onInit: () => {
+      typeof configurations?.onInit === 'function' && configurations.onInit();
+    },
   };
 
-  const wrapCls = classNames(getPrefixCls(prefixCls), {});
+  const wrapCls = classNames(getPrefixCls(prefixCls), {
+    [`${className}`]: className,
+  });
 
   return (
-    <div className={wrapCls}>
+    <div className={wrapCls} style={getZindex}>
       {/* header */}
-      <Header currentSlider={getCurrentSlider} showTitle={showTitle}>
+      <Header
+        currentSlider={getCurrentSlider}
+        showTitle={showTitle}
+        style={getZindexAdd}
+      >
         {/* close */}
         <Close
           className={getIconCls(
@@ -381,6 +414,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
         size={40}
         prefixCls={prefixCls}
         loading={isDownloading}
+        zIndex={getZindexAdd.zIndex}
       />
 
       {/* slider */}
@@ -391,7 +425,11 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
       </div>
 
       {/* sacle Progress Toast */}
-      <Toast show={isShowToast} sacleProgress={controller.scale} />
+      <Toast
+        show={isShowToast}
+        sacleProgress={controller.scale}
+        style={getZindexAdd}
+      />
     </div>
   );
 };
