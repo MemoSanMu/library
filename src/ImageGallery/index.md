@@ -3,8 +3,8 @@
  * @version:
  * @Author: wangsen
  * @Date: 2021-09-20 19:35:54
- * @LastEditors: wangsen
- * @LastEditTime: 2021-10-08 19:16:41
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-08 21:19:56
 -->
 
 ## Foo
@@ -104,6 +104,7 @@ export default () => (
       configurations={{
         initialSlide: 2,
       }}
+      // cardThumbnailsMaxLength={10} // 传此参数必须添加样式覆盖容器和slick宽度
     />
     <div
       style={{
