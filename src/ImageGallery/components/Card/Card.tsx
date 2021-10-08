@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-03 17:40:20
+ * @LastEditTime: 2021-10-08 10:12:22
  */
 import React, { FC, useState, useRef, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
@@ -190,7 +190,12 @@ const Card: FC<CardProps> = ({ ...props }) => {
           </div>
         ) : null}
         <ul
-          className={`${getPrefixCls(prefixCls, `${imageGalleryCard}-t-c-ul`)}`}
+          className={classNames(
+            `${getPrefixCls(prefixCls, `${imageGalleryCard}-t-c-ul`)}`,
+            {
+              center: itemsLength < 4,
+            },
+          )}
           ref={SliderThumbnails}
           onScroll={handleScroll}
         >

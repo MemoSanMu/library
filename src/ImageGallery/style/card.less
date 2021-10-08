@@ -73,7 +73,10 @@
     white-space: nowrap;
     overflow-x: auto;
     list-style: none;
-    scroll-behavior: smooth;
+    scroll-behavior: smooth; // 此属性safari和ie不兼容(不支持)，所以这2浏览器没有滚动动画效果
+    &.center {
+      justify-content: center;
+    }
     & > li {
       .w(96px);
       .h(72px);
