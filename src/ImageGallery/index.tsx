@@ -4,8 +4,9 @@
  * @Author: wangsen
  * @Date: 2021-09-27 17:23:26
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-09 11:18:15
+ * @LastEditTime: 2021-10-09 12:47:54
  */
 export { default } from './ImageGallery';
-export { GalleryProps as ImageGalleryProps } from './ImageGallery';
-export { CardProps } from './components/Card';
+export type { GalleryProps as ImageGalleryProps } from './ImageGallery';
+export type { CardProps } from './components/Card';
+export type { CalleeProps } from './ImageGallery.callee';

@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:26:07
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-09 11:08:28
+ * @LastEditTime: 2021-10-09 12:44:58
  */
 
 /**
@@ -31,7 +31,7 @@ const RENDER: RENDER = {
   CONTENT: null,
 };
 
-interface CalleeProps extends ImageGalleryProps {}
+export interface CalleeProps extends ImageGalleryProps {}
 
 // 主动触发 调用函数
 const callee = (props: CalleeProps) => {
