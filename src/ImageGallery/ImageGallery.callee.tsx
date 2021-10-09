@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:26:07
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-01 11:34:51
+ * @LastEditTime: 2021-10-09 11:08:28
  */
 
 /**
@@ -31,9 +31,7 @@ const RENDER: RENDER = {
   CONTENT: null,
 };
 
-interface CalleeProps extends ImageGalleryProps {
-  coverRef?: null; //   后续在看是否需要传入ref
-}
+interface CalleeProps extends ImageGalleryProps {}
 
 // 主动触发 调用函数
 const callee = (props: CalleeProps) => {

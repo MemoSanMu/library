@@ -201,7 +201,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
           prefixCls,
           style: getZindexAdd,
         });
-      console.log(error, 'error');
+      console.error(error, 'error');
     }
     setIsDownloading(false);
   };

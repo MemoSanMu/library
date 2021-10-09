@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-08 15:28:37
+ * @LastEditTime: 2021-10-09 11:10:51
  */
 
 /**
@@ -24,7 +24,7 @@ const defaultStyle = {
   height: 80,
 };
 
-interface GalleryProps extends ImageGalleryProps {
+export interface GalleryProps extends ImageGalleryProps {
   className?: string;
   style?: React.CSSProperties; // defaultStyle
   src: string;
