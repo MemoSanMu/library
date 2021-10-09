@@ -67,10 +67,7 @@ var ImageGallery = function ImageGallery(_ref) {
     setCurrentIndex = _useState2[1]; // 当前展示幻灯片索引
   // 操作样式
 
-  var _useState3 = useState({
-      rotate: 0,
-      scale: 1,
-    }),
+  var _useState3 = useState(defaultController),
     _useState4 = _slicedToArray(_useState3, 2),
     controller = _useState4[0],
     setController = _useState4[1];
@@ -99,7 +96,12 @@ var ImageGallery = function ImageGallery(_ref) {
     imageGalleryItems = _useState12[0],
     setImageGalleryItems = _useState12[1];
 
-  var itemsLength = imageGalleryItems.length; // 处理缩略图左右切换移动按钮 滚动宽度
+  var itemsLength = useMemo(
+    function () {
+      return imageGalleryItems.length;
+    },
+    [imageGalleryItems]
+  ); // 处理缩略图左右切换移动按钮 滚动宽度
 
   var handleControlMobile = function handleControlMobile(isLeft) {
     var scrollLeft = SliderThumbnails.current.scrollLeft;
@@ -134,38 +136,41 @@ var ImageGallery = function ImageGallery(_ref) {
           thumbnailsSlideWidth * thumbnailsSlideMobileCount + add);
   }; // 缩略图滚监听
 
-  var handleScroll = useCallback(function (e) {
-    e.persist();
-    var leftDisable = thumbnailsControl.leftDisable,
-      rightDisable = thumbnailsControl.rightDisable;
+  var handleScroll = useCallback(
+    function (e) {
+      e.persist();
+      var leftDisable = thumbnailsControl.leftDisable,
+        rightDisable = thumbnailsControl.rightDisable;
 
-    if (leftDisable || rightDisable) {
-      setThumbnailsControl({
-        leftDisable: false,
-        rightDisable: false,
-      });
-    } // 滚动左边的距离大于等于可滚动宽度即到最终滚动点（ps：减去12是因为margin-right：12)
+      if (leftDisable || rightDisable) {
+        setThumbnailsControl({
+          leftDisable: false,
+          rightDisable: false,
+        });
+      } // 滚动左边的距离大于等于可滚动宽度即到最终滚动点（ps：减去12是因为margin-right：12)
 
-    if (
-      e.target.scrollLeft >=
-      (itemsLength - thumbnailsMaxLength) * thumbnailsSlideWidth - 12
-    ) {
-      setThumbnailsControl({
-        leftDisable: false,
-        rightDisable: true,
-      });
-    }
+      if (
+        e.target.scrollLeft >=
+        (itemsLength - thumbnailsMaxLength) * thumbnailsSlideWidth - 12
+      ) {
+        setThumbnailsControl({
+          leftDisable: false,
+          rightDisable: true,
+        });
+      }
 
-    if (e.target.scrollLeft === 0) {
-      setThumbnailsControl({
-        leftDisable: true,
-        rightDisable: false,
-      });
-    }
-  }, []); // 获取缩略图左右切换移动按钮
+      if (e.target.scrollLeft === 0) {
+        setThumbnailsControl({
+          leftDisable: true,
+          rightDisable: false,
+        });
+      }
+    },
+    [itemsLength]
+  ); // 获取缩略图左右切换移动按钮
 
   var getControlMobileBtn = function getControlMobileBtn(dots, direction) {
-    var maxMore = dots.length >= thumbnailsMaxLength;
+    var maxMore = dots.length > thumbnailsMaxLength;
     var isLeft = direction === 'left';
     var Component = isLeft ? CareLeftFilled : CareRightFilled;
     return (
@@ -178,13 +183,29 @@ var ImageGallery = function ImageGallery(_ref) {
         thumbnailsControl: thumbnailsControl,
       })
     );
+  }; // 当控制旋转和缩放的值不同时 将恢复默认值
+
+  var resetController = function resetController() {
+    return (
+      !isEqual(defaultController, controller) &&
+      setController(defaultController)
+    );
   }; // 当图片切换前触发钩子
 
   var _beforeChange = function beforeChange(newIndex) {
-    setCurrentIndex(newIndex); // 保存当前newIndex
-    // 当控制旋转和缩放的值不同时 将恢复默认值
+    var _SliderThumbnails$cur;
 
-    !isEqual(defaultController, controller) && setController(defaultController);
+    //  缩略图跟随滚动
+    (_SliderThumbnails$cur = SliderThumbnails.current) === null ||
+    _SliderThumbnails$cur === void 0
+      ? void 0
+      : _SliderThumbnails$cur.scrollTo({
+          left: thumbnailsSlideWidth * newIndex - thumbnailsSlideWidth,
+          behavior: 'smooth',
+        });
+    setCurrentIndex(newIndex); // 保存当前newIndex
+
+    resetController();
   };
 
   var handleToast = function handleToast(isShowToast) {
@@ -219,7 +240,7 @@ var ImageGallery = function ImageGallery(_ref) {
                   return handleDownload(imageGalleryItems[currentIndex].src);
 
                 case 4:
-                  _context.next = 9;
+                  _context.next = 10;
                   break;
 
                 case 6:
@@ -234,11 +255,12 @@ var ImageGallery = function ImageGallery(_ref) {
                       prefixCls: prefixCls,
                       style: getZindexAdd,
                     });
-
-                case 9:
-                  setIsDownloading(false);
+                  console.error(_context.t0, 'error');
 
                 case 10:
+                  setIsDownloading(false);
+
+                case 11:
                 case 'end':
                   return _context.stop();
               }
@@ -314,6 +336,7 @@ var ImageGallery = function ImageGallery(_ref) {
       }
     });
     setImageGalleryItems(filterImageGalleryItems);
+    resetController();
     delCb && delCb(filterImageGalleryItems);
   };
 

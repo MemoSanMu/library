@@ -1,6 +1,4 @@
 import { ImageGalleryProps } from './interfaces';
-interface CalleeProps extends ImageGalleryProps {
-  coverRef?: null;
-}
+export interface CalleeProps extends ImageGalleryProps {}
 declare const callee: (props: CalleeProps) => void;
 export default callee;

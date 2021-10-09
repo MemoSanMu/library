@@ -4,7 +4,7 @@
 import React, { FC } from 'react';
 import { ImageGalleryProps } from './interfaces';
 import Card from './components/Card';
-interface GalleryProps extends ImageGalleryProps {
+export interface GalleryProps extends ImageGalleryProps {
   className?: string;
   style?: React.CSSProperties;
   src: string;

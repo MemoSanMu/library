@@ -9,7 +9,7 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-08 15:20:58
+ * @LastEditTime: 2021-10-09 11:10:18
  */
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
@@ -18,7 +18,7 @@ import { CareLeftFilled, CareRightFilled } from '../Svg';
 import {
   getPrefixCls,
   imageGalleryCard,
-  cardThumbnailsMaxLength,
+  cardThumbnailsMaxLength as cardThumbnailsMaxLen,
   cardThumbnailsSlideWidth,
 } from '../../config';
 
@@ -34,7 +34,8 @@ var Card = function Card(_ref) {
     isShowCardSwitchBtn =
       _props$isShowCardSwit === void 0 ? true : _props$isShowCardSwit,
     className = props.className,
-    configurations = props.configurations; // 当前画廊数据
+    configurations = props.configurations,
+    cardThumbnailsMaxLength = props.cardThumbnailsMaxLength; // 当前画廊数据
 
   var _useState = useState(items),
     _useState2 = _slicedToArray(_useState, 1),
@@ -64,6 +65,16 @@ var Card = function Card(_ref) {
   var itemsLength = imageGalleryItems.length; // 当图片切换前触发钩子
 
   var _beforeChange = function beforeChange(newIndex) {
+    var _SliderThumbnails$cur;
+
+    //  缩略图跟随滚动
+    (_SliderThumbnails$cur = SliderThumbnails.current) === null ||
+    _SliderThumbnails$cur === void 0
+      ? void 0
+      : _SliderThumbnails$cur.scrollTo({
+          left: cardThumbnailsSlideWidth * newIndex - cardThumbnailsSlideWidth,
+          behavior: 'smooth',
+        });
     setCurrentIndex(newIndex); // 保存当前newIndex
   };
   /**
@@ -158,7 +169,8 @@ var Card = function Card(_ref) {
 
     if (
       e.target.scrollLeft >=
-      (itemsLength - cardThumbnailsMaxLength) * cardThumbnailsSlideWidth
+      (itemsLength - (cardThumbnailsMaxLength || cardThumbnailsMaxLen)) *
+        cardThumbnailsSlideWidth
     ) {
       setThumbnailsControl({
         leftDisable: false,
