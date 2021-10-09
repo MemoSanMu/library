@@ -3,8 +3,8 @@
  * @version:
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-10-08 21:17:49
+ * @LastEditors: wangsen
+ * @LastEditTime: 2021-10-09 10:49:01
  */
 import React, { FC, useState, useRef, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
@@ -56,6 +56,11 @@ const Card: FC<CardProps> = ({ ...props }) => {
 
   // 当图片切换前触发钩子
   const beforeChange = (newIndex: number) => {
+    //  缩略图跟随滚动
+    SliderThumbnails.current?.scrollTo({
+      left: cardThumbnailsSlideWidth * newIndex - cardThumbnailsSlideWidth,
+      behavior: 'smooth',
+    });
     setCurrentIndex(newIndex); // 保存当前newIndex
   };
 

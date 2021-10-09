@@ -157,6 +157,11 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
 
   // 当图片切换前触发钩子
   const beforeChange = (newIndex: number) => {
+    //  缩略图跟随滚动
+    SliderThumbnails.current?.scrollTo({
+      left: thumbnailsSlideWidth * newIndex - thumbnailsSlideWidth,
+      behavior: 'smooth',
+    });
     setCurrentIndex(newIndex); // 保存当前newIndex
     // 当控制旋转和缩放的值不同时 将恢复默认值
     !isEqual(defaultController, controller) && setController(defaultController);
