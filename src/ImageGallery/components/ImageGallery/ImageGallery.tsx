@@ -61,10 +61,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     configurations?.initialSlide || 0,
   ); // 当前展示幻灯片索引
   // 操作样式
-  const [controller, setController] = useState<Controller>({
-    rotate: 0,
-    scale: 1,
-  });
+  const [controller, setController] = useState<Controller>(defaultController);
 
   const [isDownloading, setIsDownloading] = useState<boolean>(false); // 下载中loading
 
@@ -155,6 +152,10 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     );
   };
 
+  // 当控制旋转和缩放的值不同时 将恢复默认值
+  const resetController = () =>
+    !isEqual(defaultController, controller) && setController(defaultController);
+
   // 当图片切换前触发钩子
   const beforeChange = (newIndex: number) => {
     //  缩略图跟随滚动
@@ -163,8 +164,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
       behavior: 'smooth',
     });
     setCurrentIndex(newIndex); // 保存当前newIndex
-    // 当控制旋转和缩放的值不同时 将恢复默认值
-    !isEqual(defaultController, controller) && setController(defaultController);
+    resetController();
   };
 
   const handleToast = (isShowToast: boolean) => {
@@ -257,6 +257,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     });
 
     setImageGalleryItems(filterImageGalleryItems);
+    resetController();
     delCb && delCb(filterImageGalleryItems);
   };
 
