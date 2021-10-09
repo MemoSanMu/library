@@ -76,7 +76,10 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
   // 当前画廊数据
   const [imageGalleryItems, setImageGalleryItems] = useState<Items[]>(items);
 
-  const itemsLength = imageGalleryItems.length;
+  const itemsLength = useMemo(
+    () => imageGalleryItems.length,
+    [imageGalleryItems],
+  );
 
   // 处理缩略图左右切换移动按钮 滚动宽度
   const handleControlMobile = (isLeft: boolean) => {
@@ -105,40 +108,43 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
   };
 
   // 缩略图滚监听
-  const handleScroll = useCallback((e: any) => {
-    e.persist();
-    const { leftDisable, rightDisable } = thumbnailsControl;
-    if (leftDisable || rightDisable) {
-      setThumbnailsControl({
-        leftDisable: false,
-        rightDisable: false,
-      });
-    }
+  const handleScroll = useCallback(
+    (e: any) => {
+      e.persist();
+      const { leftDisable, rightDisable } = thumbnailsControl;
+      if (leftDisable || rightDisable) {
+        setThumbnailsControl({
+          leftDisable: false,
+          rightDisable: false,
+        });
+      }
 
-    // 滚动左边的距离大于等于可滚动宽度即到最终滚动点（ps：减去12是因为margin-right：12)
-    if (
-      e.target.scrollLeft >=
-      (itemsLength - thumbnailsMaxLength) * thumbnailsSlideWidth - 12
-    ) {
-      setThumbnailsControl({
-        leftDisable: false,
-        rightDisable: true,
-      });
-    }
-    if (e.target.scrollLeft === 0) {
-      setThumbnailsControl({
-        leftDisable: true,
-        rightDisable: false,
-      });
-    }
-  }, []);
+      // 滚动左边的距离大于等于可滚动宽度即到最终滚动点（ps：减去12是因为margin-right：12)
+      if (
+        e.target.scrollLeft >=
+        (itemsLength - thumbnailsMaxLength) * thumbnailsSlideWidth - 12
+      ) {
+        setThumbnailsControl({
+          leftDisable: false,
+          rightDisable: true,
+        });
+      }
+      if (e.target.scrollLeft === 0) {
+        setThumbnailsControl({
+          leftDisable: true,
+          rightDisable: false,
+        });
+      }
+    },
+    [itemsLength],
+  );
 
   // 获取缩略图左右切换移动按钮
   const getControlMobileBtn = (
     dots: React.ReactDOM[],
     direction: Direction,
   ) => {
-    const maxMore = dots.length >= thumbnailsMaxLength;
+    const maxMore = dots.length > thumbnailsMaxLength;
     const isLeft = direction === 'left';
     const Component = isLeft ? CareLeftFilled : CareRightFilled;
     return (
