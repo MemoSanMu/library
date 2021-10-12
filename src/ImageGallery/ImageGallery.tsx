@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-12 14:24:20
+ * @LastEditTime: 2021-10-12 14:51:37
  */
 
 /**
@@ -89,12 +89,14 @@ const GalleryPreview: FC<GalleryProps> = ({ ...props }) => {
       />
 
       {/* 预览画廊 */}
-      <Browser
-        browsing={isBrowsingControlled ? !!props.browsing : browsing}
-        isPortal={true}
-        destroyer={outBrowsing}
-        {...props}
-      />
+      {props?.items && Array.isArray(props.items) && props.items.length ? (
+        <Browser
+          browsing={isBrowsingControlled ? !!props.browsing : browsing}
+          isPortal={true}
+          destroyer={outBrowsing}
+          {...props}
+        />
+      ) : null}
     </>
   );
 };
