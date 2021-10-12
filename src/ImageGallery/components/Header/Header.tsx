@@ -26,7 +26,7 @@ const Header: FC<HeaderProps> = ({ ...props }) => {
       style={style}
     >
       <div className={getPrefixCls(prefixCls, `${imageGallery}-header-alt`)}>
-        {showTitle && (
+        {showTitle && currentSlider ? (
           <Tooltip
             text={currentSlider.alt || currentSlider.src}
             placement="bottom"
@@ -41,7 +41,7 @@ const Header: FC<HeaderProps> = ({ ...props }) => {
               {currentSlider.title || currentSlider.src}
             </p>
           </Tooltip>
-        )}
+        ) : null}
       </div>
       {children}
     </header>

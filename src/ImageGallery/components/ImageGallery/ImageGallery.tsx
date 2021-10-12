@@ -1,4 +1,11 @@
-import React, { FC, useRef, useState, useMemo, useCallback } from 'react';
+import React, {
+  FC,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+} from 'react';
 import { message } from '../Message';
 import Toast from '../Toast';
 import { isEqual } from 'lodash-es';
@@ -80,6 +87,18 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     () => imageGalleryItems.length,
     [imageGalleryItems],
   );
+
+  useEffect(() => {
+    // 初始化传入initialSlide 在大于0和小于itemsLength的区间内
+    if (currentIndex > 0 && currentIndex < itemsLength) {
+      //  初始化缩略图跟随滚动
+      SliderThumbnails?.current?.scrollTo({
+        left: thumbnailsSlideWidth * currentIndex - thumbnailsSlideWidth,
+        behavior: 'smooth',
+      });
+    }
+    return () => {};
+  }, []);
 
   // 处理缩略图左右切换移动按钮 滚动宽度
   const handleControlMobile = (isLeft: boolean) => {
@@ -198,7 +217,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
   const handleDownloadImage = async () => {
     try {
       setIsDownloading(true);
-      await handleDownload(imageGalleryItems[currentIndex].src);
+      await handleDownload(imageGalleryItems[currentIndex]?.src);
     } catch (error: any) {
       error &&
         error?.type &&

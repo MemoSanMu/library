@@ -3,8 +3,8 @@
  * @version:
  * @Author: wangsen
  * @Date: 2021-09-20 19:35:54
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-10-08 21:19:56
+ * @LastEditors: wangsen
+ * @LastEditTime: 2021-10-12 15:24:15
 -->
 
 ## Foo
@@ -102,7 +102,7 @@ export default () => (
       items={items}
       thumbnailsSlideMobileCount={3}
       configurations={{
-        initialSlide: 2,
+        initialSlide: 8,
       }}
       // cardThumbnailsMaxLength={10} // 传此参数必须添加样式覆盖容器和slick宽度
     />
@@ -113,19 +113,22 @@ export default () => (
     >
       2: img
     </div>
-    <ImageGallery
-      items={items}
-      thumbnailsSlideMobileCount={3}
-      src={`${PREFIX_URL}${1}.jpg`}
-      forwardedRef={(ref) => {
-        console.log(ref, 'ref');
-      }}
-      configurations={{
-        initialSlide: 4,
-        // fade: true,
-        draggable: true,
-      }}
-    />
+    {items.map((i, ind) => {
+      return (
+        <ImageGallery
+          key={`${i}${ind}`}
+          items={items}
+          thumbnailsSlideMobileCount={3}
+          src={i.src}
+          configurations={{
+            initialSlide: ind + 1,
+          }}
+          style={{
+            marginRight: 10,
+          }}
+        />
+      );
+    })}
     <div
       style={{
         marginTop: '30px',

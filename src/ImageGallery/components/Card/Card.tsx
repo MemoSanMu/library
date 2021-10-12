@@ -4,9 +4,16 @@
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-12 14:30:08
+ * @LastEditTime: 2021-10-12 15:21:59
  */
-import React, { FC, useState, useRef, useCallback, useMemo } from 'react';
+import React, {
+  FC,
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+  useEffect,
+} from 'react';
 import classNames from 'classnames';
 
 import SliderWrapper from '../Slider';
@@ -53,6 +60,19 @@ const Card: FC<CardProps> = ({ ...props }) => {
   ); // 控制缩略图左右按钮禁用
 
   const itemsLength = imageGalleryItems.length;
+
+  useEffect(() => {
+    // 初始化传入initialSlide 在大于0和小于itemsLength的区间内
+    if (currentIndex > 0 && currentIndex < itemsLength) {
+      //  缩略图跟随滚动
+      SliderThumbnails?.current?.scrollTo({
+        left:
+          cardThumbnailsSlideWidth * currentIndex - cardThumbnailsSlideWidth,
+        behavior: 'smooth',
+      });
+    }
+    return () => {};
+  }, []);
 
   // 当图片切换前触发钩子
   const beforeChange = (newIndex: number) => {
