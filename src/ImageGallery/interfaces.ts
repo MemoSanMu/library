@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-30 10:20:02
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-08 15:52:40
+ * @LastEditTime: 2021-10-12 10:56:09
  */
 export type Items = {
   src: string; // 图片 Url，与 img 标签的 src 属性相同
@@ -15,7 +15,6 @@ export type Items = {
 export type Direction = string | 'left' | 'right';
 
 export interface Configurations {
-  zIndex?: number; // 优先级
   initialSlide?: number; // 第一张幻灯片的索引,用于指定打开后的默认页
   fade?: boolean; // 切换动画方式 default false,卡片模式可使用，全屏模式谨慎使用（使用后将无法使用图片拖拽功能）
   draggable?: boolean; // 禁止拖动swipe 切换， card 默认true；全屏预览默认false

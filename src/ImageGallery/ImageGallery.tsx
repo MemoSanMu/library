@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-09 11:10:51
+ * @LastEditTime: 2021-10-11 15:07:21
  */
 
 /**
@@ -100,8 +100,8 @@ const GalleryPreview: FC<GalleryProps> = ({ ...props }) => {
 };
 
 type ImageGalleryType = typeof GalleryPreview & {
-  browsing: (props: GalleryProps) => void;
-  Browsing: (props: GalleryProps) => void;
+  browsing: (props: ImageGalleryProps) => void;
+  Browsing: (props: ImageGalleryProps) => void;
   ImageGalleryCard: typeof Card;
 };
 
