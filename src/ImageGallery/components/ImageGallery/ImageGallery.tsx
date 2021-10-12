@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { message } from '../Message';
 import Toast from '../Toast';
-import { isEqual } from 'lodash-es';
+import { isEqual, debounce } from 'lodash-es';
 import classNames from 'classnames';
 import SliderWrapper from '../Slider';
 import ImageSlide from '../ImageSlide';
@@ -375,7 +375,13 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
                 />
               </Tooltip>
               <Tooltip text="删除" style={getZindexAdd}>
-                <Delate onClick={handleDel} className={getIconCls()} />
+                <Delate
+                  onClick={debounce(handleDel, 300, {
+                    leading: false,
+                    trailing: true,
+                  })}
+                  className={getIconCls()}
+                />
               </Tooltip>
             </div>
             <div
