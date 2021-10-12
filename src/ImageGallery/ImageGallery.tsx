@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-11 15:07:21
+ * @LastEditTime: 2021-10-12 14:24:20
  */
 
 /**
@@ -19,7 +19,7 @@ import { ImageGalleryProps } from './interfaces';
 import Card from './components/Card';
 
 const defaultStyle = {
-  cursor: 'pointer',
+  cursor: 'zoom-in',
   width: 100,
   height: 80,
 };

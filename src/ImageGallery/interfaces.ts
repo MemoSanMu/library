@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-30 10:20:02
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-12 10:56:09
+ * @LastEditTime: 2021-10-12 14:24:32
  */
 export type Items = {
   src: string; // 图片 Url，与 img 标签的 src 属性相同
@@ -25,7 +25,6 @@ export interface Configurations {
 }
 
 export interface ImageGalleryProps {
-  prefixCls?: string;
   thumbnailsSlideMobileCount?: number; // 缩略图可滚动条数 默认一条
   items: Items[];
   zIndex?: number; // 优先级

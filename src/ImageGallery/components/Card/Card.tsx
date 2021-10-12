@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-09 11:10:18
+ * @LastEditTime: 2021-10-12 14:30:08
  */
 import React, { FC, useState, useRef, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
@@ -17,6 +17,7 @@ import {
   imageGalleryCard,
   cardThumbnailsMaxLength as cardThumbnailsMaxLen,
   cardThumbnailsSlideWidth,
+  rootPrefix,
 } from '../../config';
 // import { browserIeOrSafari } from '../../utils';
 
@@ -27,7 +28,6 @@ export interface CardProps extends ImageGalleryProps {
 
 const Card: FC<CardProps> = ({ ...props }) => {
   const {
-    prefixCls,
     items,
     thumbnailsSlideMobileCount = 1,
     isShowCardSwitchBtn = true,
@@ -90,7 +90,7 @@ const Card: FC<CardProps> = ({ ...props }) => {
 
   const getIconCls = (cls?: string) => {
     return classNames(
-      [getPrefixCls(prefixCls, `${imageGalleryCard}-icon`)],
+      [getPrefixCls(rootPrefix, `${imageGalleryCard}-icon`)],
       cls,
     );
   };
@@ -157,101 +157,108 @@ const Card: FC<CardProps> = ({ ...props }) => {
     [isShowCardSwitchBtn],
   );
 
-  const wrapCls = classNames(getPrefixCls(prefixCls, imageGalleryCard), {
+  const wrapCls = classNames(getPrefixCls(rootPrefix, imageGalleryCard), {
     control: getIsShowCardSwitchBtn,
     [`${className}`]: className,
   });
 
   return (
-    <div className={wrapCls}>
-      {/* slider */}
-      <SliderWrapper sliderWrapper={Slider} settings={settings}>
-        {imageGalleryItems &&
-          imageGalleryItems.map((i: Items) => (
-            <div
-              key={i.src}
-              className={getPrefixCls(
-                prefixCls,
-                `${imageGalleryCard}-image-content`,
-              )}
-            >
-              <img
-                src={i.src}
-                alt={i.alt}
-                className={getPrefixCls(prefixCls, `${imageGalleryCard}-image`)}
-              />
-            </div>
-          ))}
-      </SliderWrapper>
+    <>
+      {itemsLength ? (
+        <div className={wrapCls}>
+          {/* slider */}
+          <SliderWrapper sliderWrapper={Slider} settings={settings}>
+            {imageGalleryItems &&
+              imageGalleryItems.map((i: Items) => (
+                <div
+                  key={i.src}
+                  className={getPrefixCls(
+                    rootPrefix,
+                    `${imageGalleryCard}-image-content`,
+                  )}
+                >
+                  <img
+                    src={i.src}
+                    alt={i.alt}
+                    className={getPrefixCls(
+                      rootPrefix,
+                      `${imageGalleryCard}-image`,
+                    )}
+                  />
+                </div>
+              ))}
+          </SliderWrapper>
 
-      {/* 底部缩略图 */}
-      <div
-        className={`${getPrefixCls(
-          prefixCls,
-          `${imageGalleryCard}-thumbnails-content`,
-        )}`}
-      >
-        {getIsShowCardSwitchBtn ? (
+          {/* 底部缩略图 */}
           <div
             className={`${getPrefixCls(
-              prefixCls,
-              `${imageGalleryCard}-thumbnails-control`,
+              rootPrefix,
+              `${imageGalleryCard}-thumbnails-content`,
             )}`}
-            onClick={() => handleThumbnailsMove('left')}
           >
-            <CareLeftFilled
-              className={getIconCls()}
-              thumbnailsControl={thumbnailsControl}
-            />
-          </div>
-        ) : null}
-        <ul
-          className={classNames(
-            `${getPrefixCls(prefixCls, `${imageGalleryCard}-t-c-ul`)}`,
-            {
-              center: itemsLength < 4,
-            },
-          )}
-          ref={SliderThumbnails}
-          onScroll={handleScroll}
-        >
-          {imageGalleryItems &&
-            imageGalleryItems.map((i: Items, ind: number) => (
-              <li
-                key={i.src}
-                className={classNames(
-                  getPrefixCls(prefixCls, `${imageGalleryCard}-image`),
-                  { [`${imageGalleryCard}-active`]: currentIndex === ind },
-                )}
-                onClick={() => handleSlickGoTo(ind)}
+            {getIsShowCardSwitchBtn ? (
+              <div
+                className={`${getPrefixCls(
+                  rootPrefix,
+                  `${imageGalleryCard}-thumbnails-control`,
+                )}`}
+                onClick={() => handleThumbnailsMove('left')}
               >
-                <img
-                  className={`${getPrefixCls(
-                    prefixCls,
-                    `${imageGalleryCard}-t-c-img`,
-                  )}`}
-                  src={i.src}
-                  alt={i.alt}
+                <CareLeftFilled
+                  className={getIconCls()}
+                  thumbnailsControl={thumbnailsControl}
                 />
-              </li>
-            ))}
-        </ul>
-        {getIsShowCardSwitchBtn ? (
-          <div
-            className={`${getPrefixCls(
-              prefixCls,
-              `${imageGalleryCard}-thumbnails-control`,
-            )}`}
-            onClick={() => handleThumbnailsMove('right')}
-          >
-            <CareRightFilled
-              className={getIconCls()}
-              thumbnailsControl={thumbnailsControl}
-            />
+              </div>
+            ) : null}
+            <ul
+              className={classNames(
+                `${getPrefixCls(rootPrefix, `${imageGalleryCard}-t-c-ul`)}`,
+                {
+                  center: itemsLength < 4,
+                },
+              )}
+              ref={SliderThumbnails}
+              onScroll={handleScroll}
+            >
+              {imageGalleryItems &&
+                imageGalleryItems.map((i: Items, ind: number) => (
+                  <li
+                    key={i.src}
+                    className={classNames(
+                      getPrefixCls(rootPrefix, `${imageGalleryCard}-image`),
+                      { [`${imageGalleryCard}-active`]: currentIndex === ind },
+                    )}
+                    onClick={() => handleSlickGoTo(ind)}
+                  >
+                    <img
+                      className={`${getPrefixCls(
+                        rootPrefix,
+                        `${imageGalleryCard}-t-c-img`,
+                      )}`}
+                      src={i.src}
+                      alt={i.alt}
+                    />
+                  </li>
+                ))}
+            </ul>
+            {getIsShowCardSwitchBtn ? (
+              <div
+                className={`${getPrefixCls(
+                  rootPrefix,
+                  `${imageGalleryCard}-thumbnails-control`,
+                )}`}
+                onClick={() => handleThumbnailsMove('right')}
+              >
+                <CareRightFilled
+                  className={getIconCls()}
+                  thumbnailsControl={thumbnailsControl}
+                />
+              </div>
+            ) : null}
           </div>
-        ) : null}
-      </div>
-    </div>
+        </div>
+      ) : null}
+    </>
   );
 };
 

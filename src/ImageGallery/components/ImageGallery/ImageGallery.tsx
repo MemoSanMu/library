@@ -28,6 +28,7 @@ import {
   imageGallery,
   getPrefixCls,
   wrapperCls,
+  rootPrefix,
 } from '../../config';
 import { handleDownload } from '../../utils';
 import {
@@ -45,7 +46,6 @@ interface GalleryProps extends ImageGalleryProps {
 const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
   const {
     thumbnailsSlideMobileCount = 1,
-    prefixCls,
     items,
     delCb,
     outBrowsing,
@@ -204,7 +204,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
         error?.type &&
         message.warning({
           content: error.type,
-          prefixCls,
+          prefixCls: rootPrefix,
           style: getZindexAdd,
         });
       console.error(error, 'error');
@@ -221,7 +221,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
       if (scale >= 2) {
         message.warning({
           content: '不能再放大了',
-          prefixCls,
+          prefixCls: rootPrefix,
           style: getZindexAdd,
         });
         return;
@@ -230,7 +230,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
       if (scale <= 0.25) {
         message.warning({
           content: '不能再缩小了',
-          prefixCls,
+          prefixCls: rootPrefix,
           style: getZindexAdd,
         });
         return;
@@ -268,7 +268,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
   };
 
   const getIconCls = (cls?: string) => {
-    return classNames([getPrefixCls(prefixCls, `${imageGallery}-icon`)], cls);
+    return classNames([getPrefixCls(rootPrefix, `${imageGallery}-icon`)], cls);
   };
 
   // 获取当前active数据
@@ -281,7 +281,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
       <ImageSlide
         item={i}
         key={i.src}
-        prefixCls={prefixCls}
+        prefixCls={rootPrefix}
         controller={controller}
         itemsLength={itemsLength}
       />
@@ -291,11 +291,11 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
   const settings = {
     dots: true,
     dotsClass: `slick-dots slick-thumb ${getPrefixCls(
-      prefixCls,
+      rootPrefix,
       `${imageGallery}-thumbnails`,
     )}`,
-    className: classNames(getPrefixCls(prefixCls, 'slick-slider'), {
-      [`${getPrefixCls(prefixCls, `${imageGallery}-slick-full-screen`)}`]:
+    className: classNames(getPrefixCls(rootPrefix, 'slick-slider'), {
+      [`${getPrefixCls(rootPrefix, `${imageGallery}-slick-full-screen`)}`]:
         itemsLength === 1,
     }),
     draggable: false,
@@ -305,7 +305,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     customPaging: function (i: number) {
       return (
         <img
-          className={`${getPrefixCls(prefixCls, `${imageGallery}-t-c-img`)}`}
+          className={`${getPrefixCls(rootPrefix, `${imageGallery}-t-c-img`)}`}
           src={imageGalleryItems[i]?.src}
           alt={imageGalleryItems[i]?.alt}
         />
@@ -316,11 +316,11 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
         <div>
           {/* 控制区域 */}
           <div
-            className={`${getPrefixCls(prefixCls, `${imageGallery}-control`)}`}
+            className={`${getPrefixCls(rootPrefix, `${imageGallery}-control`)}`}
           >
             <div
               className={`${getPrefixCls(
-                prefixCls,
+                rootPrefix,
                 `${imageGallery}-control-icon`,
               )}`}
             >
@@ -361,7 +361,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
             </div>
             <div
               className={`${getPrefixCls(
-                prefixCls,
+                rootPrefix,
                 `${imageGallery}-control-pagination`,
               )}`}
             >
@@ -373,12 +373,15 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
           {/* 缩略图区域 */}
           <div
             className={`${getPrefixCls(
-              prefixCls,
+              rootPrefix,
               `${imageGallery}-thumbnails-content`,
             )}`}
           >
             <ul
-              className={`${getPrefixCls(prefixCls, `${imageGallery}-t-c-ul`)}`}
+              className={`${getPrefixCls(
+                rootPrefix,
+                `${imageGallery}-t-c-ul`,
+              )}`}
               ref={SliderThumbnails}
               onScroll={handleScroll}
             >
@@ -401,50 +404,54 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     },
   };
 
-  const wrapCls = classNames(getPrefixCls(prefixCls), {
+  const wrapCls = classNames(getPrefixCls(rootPrefix), {
     [`${className}`]: className,
   });
 
   return (
-    <div className={wrapCls} style={getZindex}>
-      {/* header */}
-      <Header
-        currentSlider={getCurrentSlider}
-        showTitle={showTitle}
-        style={getZindexAdd}
-      >
-        {/* close */}
-        <Close
-          className={getIconCls(
-            getPrefixCls(prefixCls, `${imageGallery}-close`),
-          )}
-          onClick={outBrowsing}
-        />
-      </Header>
+    <>
+      {itemsLength ? (
+        <div className={wrapCls} style={getZindex}>
+          {/* header */}
+          <Header
+            currentSlider={getCurrentSlider}
+            showTitle={showTitle}
+            style={getZindexAdd}
+          >
+            {/* close */}
+            <Close
+              className={getIconCls(
+                getPrefixCls(rootPrefix, `${imageGallery}-close`),
+              )}
+              onClick={outBrowsing}
+            />
+          </Header>
 
-      {/* loading */}
-      <ClipLoader
-        color={'#108ee9'}
-        size={40}
-        prefixCls={prefixCls}
-        loading={isDownloading}
-        zIndex={getZindexAdd.zIndex}
-      />
+          {/* loading */}
+          <ClipLoader
+            color={'#108ee9'}
+            size={40}
+            prefixCls={rootPrefix}
+            loading={isDownloading}
+            zIndex={getZindexAdd.zIndex}
+          />
 
-      {/* slider */}
-      <div className={getPrefixCls(prefixCls, `${wrapperCls}-container`)}>
-        <SliderWrapper sliderWrapper={Slider} settings={settings}>
-          {getGalleryRender}
-        </SliderWrapper>
-      </div>
+          {/* slider */}
+          <div className={getPrefixCls(rootPrefix, `${wrapperCls}-container`)}>
+            <SliderWrapper sliderWrapper={Slider} settings={settings}>
+              {getGalleryRender}
+            </SliderWrapper>
+          </div>
 
-      {/* sacle Progress Toast */}
-      <Toast
-        show={isShowToast}
-        sacleProgress={controller.scale}
-        style={getZindexAdd}
-      />
-    </div>
+          {/* sacle Progress Toast */}
+          <Toast
+            show={isShowToast}
+            sacleProgress={controller.scale}
+            style={getZindexAdd}
+          />
+        </div>
+      ) : null}
+    </>
   );
 };
 

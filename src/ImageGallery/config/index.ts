@@ -4,9 +4,9 @@
  * @Author: wangsen
  * @Date: 2021-09-17 15:17:27
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-08 11:51:28
+ * @LastEditTime: 2021-10-12 14:24:54
  */
-const rootPrefix = 'lib';
+export const rootPrefix = 'lib';
 
 export const wrapperCls = 'image-gallery';
 
