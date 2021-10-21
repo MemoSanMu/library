@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-17 15:17:27
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-12 14:24:54
+ * @LastEditTime: 2021-10-21 13:53:24
  */
 export const rootPrefix = 'lib';
 
@@ -39,3 +39,15 @@ export const defaultController = {
 export const imageGallery = `image-gallery`;
 
 export const imageGalleryCard = `${imageGallery}-card`;
+
+// 默认控制显示操作区域按钮显示隐藏
+export const defaultControllers = {
+  // 缩放按钮
+  zoom: true,
+  // 下载按钮
+  download: true,
+  // 旋转按钮
+  rotate: true,
+  // 删除按钮
+  delete: true,
+};

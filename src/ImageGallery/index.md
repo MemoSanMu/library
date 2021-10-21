@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-20 19:35:54
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-12 15:24:15
+ * @LastEditTime: 2021-10-21 15:24:14
 -->
 
 ## Foo
@@ -121,10 +121,16 @@ export default () => (
           thumbnailsSlideMobileCount={3}
           src={i.src}
           configurations={{
-            initialSlide: ind + 1,
+            initialSlide: ind,
           }}
           style={{
             marginRight: 10,
+          }}
+          controllers={{
+            zoom: true,
+            rotate: true,
+            download: true,
+            delete: true,
           }}
         />
       );

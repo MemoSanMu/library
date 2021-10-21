@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-30 10:20:02
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-12 14:24:32
+ * @LastEditTime: 2021-10-21 15:43:33
  */
 export type Items = {
   src: string; // 图片 Url，与 img 标签的 src 属性相同
@@ -13,6 +13,18 @@ export type Items = {
 };
 
 export type Direction = string | 'left' | 'right';
+
+// 操作区域按钮type
+export type Controllers = {
+  // 缩放按钮
+  zoom?: boolean;
+  // 下载按钮
+  download?: boolean;
+  // 旋转按钮
+  rotate?: boolean;
+  // 删除按钮
+  delete?: boolean;
+};
 
 export interface Configurations {
   initialSlide?: number; // 第一张幻灯片的索引,用于指定打开后的默认页
@@ -33,6 +45,7 @@ export interface ImageGalleryProps {
   delCb?: (items: Items[]) => void; // 删除后的回掉
   className?: string; // 容器类名
   configurations?: Configurations;
+  controllers?: Controllers; // 控制操作按钮显示隐藏
 }
 
 export interface Controller {

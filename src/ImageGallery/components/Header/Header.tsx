@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-30 11:53:54
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-08 15:27:44
+ * @LastEditTime: 2021-10-21 15:13:53
  */
 import React, { FC } from 'react';
 import Tooltip from '../Tooltip';
@@ -28,7 +28,7 @@ const Header: FC<HeaderProps> = ({ ...props }) => {
       <div className={getPrefixCls(prefixCls, `${imageGallery}-header-alt`)}>
         {showTitle && currentSlider ? (
           <Tooltip
-            text={currentSlider.alt || currentSlider.src}
+            text={currentSlider.title || currentSlider.src}
             placement="bottom"
             style={style}
           >

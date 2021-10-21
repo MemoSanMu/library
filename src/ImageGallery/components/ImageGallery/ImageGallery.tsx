@@ -36,6 +36,7 @@ import {
   getPrefixCls,
   wrapperCls,
   rootPrefix,
+  defaultControllers,
 } from '../../config';
 import { handleDownload } from '../../utils';
 import {
@@ -60,6 +61,7 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
     showTitle = true,
     className,
     configurations,
+    controllers,
   } = props;
   const Slider = useRef<any>(); // Slider.current.slickPrev()
   const SliderThumbnails = useRef<any>(null); // Slider.current.slickPrev()
@@ -82,6 +84,36 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
 
   // 当前画廊数据
   const [imageGalleryItems, setImageGalleryItems] = useState<Items[]>(items);
+
+  // 获取操作区域按钮
+  const getControllers: any = useMemo(
+    () => ({ ...defaultControllers, ...controllers }),
+    [],
+  );
+
+  // 获取操作区域宽度
+  const getControlsStyle = useMemo(() => {
+    let countLen = Object.values(getControllers).filter(
+      (btn) => btn === true,
+    ).length;
+    if (getControllers.zoom === false) {
+      --countLen;
+    }
+    if (getControllers.rotate === false) {
+      --countLen;
+    }
+    // 272 为操作区域的总宽,104为1个icon时的宽度,42为单个操作icon的宽度和左右边距
+    return {
+      width: 104 + 42 * countLen,
+      minWidth: 146, // 最小宽度
+    };
+  }, [getControllers]);
+
+  // 是否展示操作区域
+  const isShowControls = useMemo(
+    () => Object.values(getControllers).some((btn) => btn === true),
+    [getControllers],
+  );
 
   const itemsLength = useMemo(
     () => imageGalleryItems.length,
@@ -337,58 +369,86 @@ const ImageGallery: FC<GalleryProps> = ({ ...props }) => {
           <div
             className={`${getPrefixCls(rootPrefix, `${imageGallery}-control`)}`}
           >
+            {/* 按钮都不显示 操作区域也将隐藏 */}
+            {isShowControls ? (
+              <div
+                className={`${getPrefixCls(
+                  rootPrefix,
+                  `${imageGallery}-control-icon`,
+                )}`}
+                style={getControlsStyle}
+              >
+                {/* 缩放 */}
+                {getControllers.zoom ? (
+                  <>
+                    <Tooltip text="放大" style={getZindexAdd}>
+                      <ZoomIn
+                        onClick={() => handleZoom('ZoomIn')}
+                        className={getIconCls()}
+                      />
+                    </Tooltip>
+                    <Tooltip text="缩小" style={getZindexAdd}>
+                      <ZoomOut
+                        onClick={() => handleZoom('ZoomOut')}
+                        className={getIconCls()}
+                      />
+                    </Tooltip>
+                  </>
+                ) : null}
+
+                {/* 旋转 */}
+                {getControllers.rotate ? (
+                  <>
+                    <Tooltip text="左旋转" style={getZindexAdd}>
+                      <RotateLeft
+                        onClick={() => handleRotate('RotateLeft')}
+                        className={getIconCls()}
+                      />
+                    </Tooltip>
+                    <Tooltip text="右旋转" style={getZindexAdd}>
+                      <RotateRight
+                        onClick={() => handleRotate('RotateRight')}
+                        className={getIconCls()}
+                      />
+                    </Tooltip>
+                  </>
+                ) : null}
+
+                {/* 下载 */}
+                {getControllers.download ? (
+                  <Tooltip text="下载" style={getZindexAdd}>
+                    <Download
+                      onClick={handleDownloadImage}
+                      className={getIconCls()}
+                    />
+                  </Tooltip>
+                ) : null}
+
+                {/* 删除 */}
+                {getControllers.delete ? (
+                  <Tooltip text="删除" style={getZindexAdd}>
+                    <Delate
+                      onClick={debounce(handleDel, 300, {
+                        leading: false,
+                        trailing: true,
+                      })}
+                      className={getIconCls()}
+                    />
+                  </Tooltip>
+                ) : null}
+              </div>
+            ) : null}
+            {/* 当前预览条/总数 */}
             <div
-              className={`${getPrefixCls(
-                rootPrefix,
-                `${imageGallery}-control-icon`,
-              )}`}
-            >
-              {/* 放大 */}
-              <Tooltip text="放大" style={getZindexAdd}>
-                <ZoomIn
-                  onClick={() => handleZoom('ZoomIn')}
-                  className={getIconCls()}
-                />
-              </Tooltip>
-              <Tooltip text="缩小" style={getZindexAdd}>
-                <ZoomOut
-                  onClick={() => handleZoom('ZoomOut')}
-                  className={getIconCls()}
-                />
-              </Tooltip>
-              <Tooltip text="左旋转" style={getZindexAdd}>
-                <RotateLeft
-                  onClick={() => handleRotate('RotateLeft')}
-                  className={getIconCls()}
-                />
-              </Tooltip>
-              <Tooltip text="右旋转" style={getZindexAdd}>
-                <RotateRight
-                  onClick={() => handleRotate('RotateRight')}
-                  className={getIconCls()}
-                />
-              </Tooltip>
-              <Tooltip text="下载" style={getZindexAdd}>
-                <Download
-                  onClick={handleDownloadImage}
-                  className={getIconCls()}
-                />
-              </Tooltip>
-              <Tooltip text="删除" style={getZindexAdd}>
-                <Delate
-                  onClick={debounce(handleDel, 300, {
-                    leading: false,
-                    trailing: true,
-                  })}
-                  className={getIconCls()}
-                />
-              </Tooltip>
-            </div>
-            <div
-              className={`${getPrefixCls(
-                rootPrefix,
-                `${imageGallery}-control-pagination`,
-              )}`}
+              className={classNames(
+                `${getPrefixCls(
+                  rootPrefix,
+                  `${imageGallery}-control-pagination`,
+                )}`,
+                {
+                  'hidden-controll': isShowControls === false,
+                },
+              )}
             >
               {`${currentIndex + 1}/${itemsLength}`}
             </div>
