@@ -4,7 +4,7 @@
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-12 14:51:37
+ * @LastEditTime: 2021-10-26 11:54:14
  */
 
 /**
@@ -25,7 +25,7 @@ const defaultStyle = {
 };
 
 export interface GalleryProps extends ImageGalleryProps {
-  className?: string;
+  imgcls?: string;
   style?: React.CSSProperties; // defaultStyle
   src: string;
   alt?: string;
@@ -37,7 +37,7 @@ export interface GalleryProps extends ImageGalleryProps {
 
 const GalleryPreview: FC<GalleryProps> = ({ ...props }) => {
   const {
-    className,
+    imgcls,
     style = {},
     src,
     alt = '',
@@ -77,7 +77,7 @@ const GalleryPreview: FC<GalleryProps> = ({ ...props }) => {
     <>
       {/*图片*/}
       <img
-        className={className}
+        className={imgcls}
         style={{ ...defaultStyle, ...style }}
         src={src}
         alt={alt}
