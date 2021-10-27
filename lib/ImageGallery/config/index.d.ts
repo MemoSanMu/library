@@ -1,3 +1,4 @@
+export declare const rootPrefix = 'lib';
 export declare const wrapperCls = 'image-gallery';
 /**
  * @name: getPrefixCls 拼接前缀
@@ -18,3 +19,9 @@ export declare const defaultController: {
 };
 export declare const imageGallery = 'image-gallery';
 export declare const imageGalleryCard: string;
+export declare const defaultControllers: {
+  zoom: boolean;
+  download: boolean;
+  rotate: boolean;
+  delete: boolean;
+};

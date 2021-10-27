@@ -267,6 +267,9 @@
   font-size: 16px;
   font-family: PingFangSC-Regular;
 }
+.lib-image-gallery .lib-image-gallery-control-pagination.hidden-controll {
+  padding-top: 76px;
+}
 .lib-image-gallery-rc-tooltip {
   z-index: 1001;
 }

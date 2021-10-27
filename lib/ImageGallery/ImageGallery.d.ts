@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 import { ImageGalleryProps } from './interfaces';
 import Card from './components/Card';
 export interface GalleryProps extends ImageGalleryProps {
-  className?: string;
+  imgcls?: string;
   style?: React.CSSProperties;
   src: string;
   alt?: string;
@@ -16,8 +16,8 @@ export interface GalleryProps extends ImageGalleryProps {
 }
 declare const GalleryPreview: FC<GalleryProps>;
 declare type ImageGalleryType = typeof GalleryPreview & {
-  browsing: (props: GalleryProps) => void;
-  Browsing: (props: GalleryProps) => void;
+  browsing: (props: ImageGalleryProps) => void;
+  Browsing: (props: ImageGalleryProps) => void;
   ImageGalleryCard: typeof Card;
 };
 declare const ImageGallery: ImageGalleryType;

@@ -4,9 +4,9 @@
  * @Author: wangsen
  * @Date: 2021-09-17 15:17:27
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-08 11:51:28
+ * @LastEditTime: 2021-10-21 13:53:24
  */
-var rootPrefix = 'lib';
+export var rootPrefix = 'lib';
 export var wrapperCls = 'image-gallery';
 /**
  * @name: getPrefixCls 拼接前缀
@@ -37,4 +37,15 @@ export var defaultController = {
   scale: 1,
 };
 export var imageGallery = 'image-gallery';
-export var imageGalleryCard = ''.concat(imageGallery, '-card');
+export var imageGalleryCard = ''.concat(imageGallery, '-card'); // 默认控制显示操作区域按钮显示隐藏
+
+export var defaultControllers = {
+  // 缩放按钮
+  zoom: true,
+  // 下载按钮
+  download: true,
+  // 旋转按钮
+  rotate: true,
+  // 删除按钮
+  delete: true,
+};

@@ -6,7 +6,7 @@ import _objectSpread from '@babel/runtime/helpers/esm/objectSpread2';
  * @Author: wangsen
  * @Date: 2021-09-29 10:26:07
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-09 12:44:58
+ * @LastEditTime: 2021-10-12 14:52:03
  */
 
 /**
@@ -24,6 +24,10 @@ var RENDER = {
 }; // 主动触发 调用函数
 
 var callee = function callee(props) {
+  if (!props.items || !Array.isArray(props.items) || props.items.length === 0) {
+    return;
+  }
+
   RENDER.PORTAL = document.createElement('figure'); // 入口
 
   RENDER.CONTENT = document.createElement('div'); // 内容

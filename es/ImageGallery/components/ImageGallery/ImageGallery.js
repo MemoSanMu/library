@@ -4,10 +4,16 @@ import _asyncToGenerator from '@babel/runtime/helpers/esm/asyncToGenerator';
 import _objectSpread from '@babel/runtime/helpers/esm/objectSpread2';
 import _slicedToArray from '@babel/runtime/helpers/esm/slicedToArray';
 import _extends from '@babel/runtime/helpers/esm/extends';
-import React, { useRef, useState, useMemo, useCallback } from 'react';
+import React, {
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+} from 'react';
 import { message } from '../Message';
 import Toast from '../Toast';
-import { isEqual } from 'lodash-es';
+import { isEqual, debounce } from 'lodash-es';
 import classNames from 'classnames';
 import SliderWrapper from '../Slider';
 import ImageSlide from '../ImageSlide';
@@ -34,6 +40,8 @@ import {
   imageGallery,
   getPrefixCls,
   wrapperCls,
+  rootPrefix,
+  defaultControllers,
 } from '../../config';
 import { handleDownload } from '../../utils';
 
@@ -43,7 +51,6 @@ var ImageGallery = function ImageGallery(_ref) {
   var _props$thumbnailsSlid = props.thumbnailsSlideMobileCount,
     thumbnailsSlideMobileCount =
       _props$thumbnailsSlid === void 0 ? 1 : _props$thumbnailsSlid,
-    prefixCls = props.prefixCls,
     items = props.items,
     delCb = props.delCb,
     outBrowsing = props.outBrowsing,
@@ -52,7 +59,8 @@ var ImageGallery = function ImageGallery(_ref) {
     _props$showTitle = props.showTitle,
     showTitle = _props$showTitle === void 0 ? true : _props$showTitle,
     className = props.className,
-    configurations = props.configurations;
+    configurations = props.configurations,
+    controllers = props.controllers;
   var Slider = useRef(); // Slider.current.slickPrev()
 
   var SliderThumbnails = useRef(null); // Slider.current.slickPrev()
@@ -94,14 +102,67 @@ var ImageGallery = function ImageGallery(_ref) {
   var _useState11 = useState(items),
     _useState12 = _slicedToArray(_useState11, 2),
     imageGalleryItems = _useState12[0],
-    setImageGalleryItems = _useState12[1];
+    setImageGalleryItems = _useState12[1]; // 获取操作区域按钮
 
+  var getControllers = useMemo(function () {
+    return _objectSpread(_objectSpread({}, defaultControllers), controllers);
+  }, []); // 获取操作区域宽度
+
+  var getControlsStyle = useMemo(
+    function () {
+      var countLen = Object.values(getControllers).filter(function (btn) {
+        return btn === true;
+      }).length;
+
+      if (getControllers.zoom === false) {
+        --countLen;
+      }
+
+      if (getControllers.rotate === false) {
+        --countLen;
+      } // 272 为操作区域的总宽,104为1个icon时的宽度,42为单个操作icon的宽度和左右边距
+
+      return {
+        width: 104 + 42 * countLen,
+        minWidth: 146, // 最小宽度
+      };
+    },
+    [getControllers]
+  ); // 是否展示操作区域
+
+  var isShowControls = useMemo(
+    function () {
+      return Object.values(getControllers).some(function (btn) {
+        return btn === true;
+      });
+    },
+    [getControllers]
+  );
   var itemsLength = useMemo(
     function () {
       return imageGalleryItems.length;
     },
     [imageGalleryItems]
-  ); // 处理缩略图左右切换移动按钮 滚动宽度
+  );
+  useEffect(function () {
+    // 初始化传入initialSlide 在大于0和小于itemsLength的区间内
+    if (currentIndex > 0 && currentIndex < itemsLength) {
+      var _SliderThumbnails$cur;
+
+      //  初始化缩略图跟随滚动
+      SliderThumbnails === null || SliderThumbnails === void 0
+        ? void 0
+        : (_SliderThumbnails$cur = SliderThumbnails.current) === null ||
+          _SliderThumbnails$cur === void 0
+        ? void 0
+        : _SliderThumbnails$cur.scrollTo({
+            left: thumbnailsSlideWidth * currentIndex - thumbnailsSlideWidth,
+            behavior: 'smooth',
+          });
+    }
+
+    return function () {};
+  }, []); // 处理缩略图左右切换移动按钮 滚动宽度
 
   var handleControlMobile = function handleControlMobile(isLeft) {
     var scrollLeft = SliderThumbnails.current.scrollLeft;
@@ -193,13 +254,13 @@ var ImageGallery = function ImageGallery(_ref) {
   }; // 当图片切换前触发钩子
 
   var _beforeChange = function beforeChange(newIndex) {
-    var _SliderThumbnails$cur;
+    var _SliderThumbnails$cur2;
 
     //  缩略图跟随滚动
-    (_SliderThumbnails$cur = SliderThumbnails.current) === null ||
-    _SliderThumbnails$cur === void 0
+    (_SliderThumbnails$cur2 = SliderThumbnails.current) === null ||
+    _SliderThumbnails$cur2 === void 0
       ? void 0
-      : _SliderThumbnails$cur.scrollTo({
+      : _SliderThumbnails$cur2.scrollTo({
           left: thumbnailsSlideWidth * newIndex - thumbnailsSlideWidth,
           behavior: 'smooth',
         });
@@ -229,6 +290,8 @@ var ImageGallery = function ImageGallery(_ref) {
   var handleDownloadImage = /*#__PURE__*/ (function () {
     var _ref2 = _asyncToGenerator(
       /*#__PURE__*/ _regeneratorRuntime.mark(function _callee() {
+        var _imageGalleryItems$cu;
+
         return _regeneratorRuntime.wrap(
           function _callee$(_context) {
             while (1) {
@@ -237,7 +300,13 @@ var ImageGallery = function ImageGallery(_ref) {
                   _context.prev = 0;
                   setIsDownloading(true);
                   _context.next = 4;
-                  return handleDownload(imageGalleryItems[currentIndex].src);
+                  return handleDownload(
+                    (_imageGalleryItems$cu =
+                      imageGalleryItems[currentIndex]) === null ||
+                      _imageGalleryItems$cu === void 0
+                      ? void 0
+                      : _imageGalleryItems$cu.src
+                  );
 
                 case 4:
                   _context.next = 10;
@@ -252,7 +321,7 @@ var ImageGallery = function ImageGallery(_ref) {
                       : _context.t0.type) &&
                     message.warning({
                       content: _context.t0.type,
-                      prefixCls: prefixCls,
+                      prefixCls: rootPrefix,
                       style: getZindexAdd,
                     });
                   console.error(_context.t0, 'error');
@@ -286,7 +355,7 @@ var ImageGallery = function ImageGallery(_ref) {
       if (scale >= 2) {
         message.warning({
           content: '不能再放大了',
-          prefixCls: prefixCls,
+          prefixCls: rootPrefix,
           style: getZindexAdd,
         });
         return;
@@ -295,7 +364,7 @@ var ImageGallery = function ImageGallery(_ref) {
       if (scale <= 0.25) {
         message.warning({
           content: '不能再缩小了',
-          prefixCls: prefixCls,
+          prefixCls: rootPrefix,
           style: getZindexAdd,
         });
         return;
@@ -342,7 +411,7 @@ var ImageGallery = function ImageGallery(_ref) {
 
   var getIconCls = function getIconCls(cls) {
     return classNames(
-      [getPrefixCls(prefixCls, ''.concat(imageGallery, '-icon'))],
+      [getPrefixCls(rootPrefix, ''.concat(imageGallery, '-icon'))],
       cls
     );
   }; // 获取当前active数据
@@ -359,7 +428,7 @@ var ImageGallery = function ImageGallery(_ref) {
         return /*#__PURE__*/ React.createElement(ImageSlide, {
           item: i,
           key: i.src,
-          prefixCls: prefixCls,
+          prefixCls: rootPrefix,
           controller: controller,
           itemsLength: itemsLength,
         });
@@ -373,15 +442,15 @@ var ImageGallery = function ImageGallery(_ref) {
       {
         dots: true,
         dotsClass: 'slick-dots slick-thumb '.concat(
-          getPrefixCls(prefixCls, ''.concat(imageGallery, '-thumbnails'))
+          getPrefixCls(rootPrefix, ''.concat(imageGallery, '-thumbnails'))
         ),
         className: classNames(
-          getPrefixCls(prefixCls, 'slick-slider'),
+          getPrefixCls(rootPrefix, 'slick-slider'),
           _defineProperty(
             {},
             ''.concat(
               getPrefixCls(
-                prefixCls,
+                rootPrefix,
                 ''.concat(imageGallery, '-slick-full-screen')
               )
             ),
@@ -401,7 +470,7 @@ var ImageGallery = function ImageGallery(_ref) {
 
           return /*#__PURE__*/ React.createElement('img', {
             className: ''.concat(
-              getPrefixCls(prefixCls, ''.concat(imageGallery, '-t-c-img'))
+              getPrefixCls(rootPrefix, ''.concat(imageGallery, '-t-c-img'))
             ),
             src:
               (_imageGalleryItems$i = imageGalleryItems[i]) === null ||
@@ -423,102 +492,129 @@ var ImageGallery = function ImageGallery(_ref) {
               'div',
               {
                 className: ''.concat(
-                  getPrefixCls(prefixCls, ''.concat(imageGallery, '-control'))
+                  getPrefixCls(rootPrefix, ''.concat(imageGallery, '-control'))
                 ),
               },
+              isShowControls
+                ? /*#__PURE__*/ React.createElement(
+                    'div',
+                    {
+                      className: ''.concat(
+                        getPrefixCls(
+                          rootPrefix,
+                          ''.concat(imageGallery, '-control-icon')
+                        )
+                      ),
+                      style: getControlsStyle,
+                    },
+                    getControllers.zoom
+                      ? /*#__PURE__*/ React.createElement(
+                          React.Fragment,
+                          null,
+                          /*#__PURE__*/ React.createElement(
+                            Tooltip,
+                            {
+                              text: '\u653E\u5927',
+                              style: getZindexAdd,
+                            },
+                            /*#__PURE__*/ React.createElement(ZoomIn, {
+                              onClick: function onClick() {
+                                return handleZoom('ZoomIn');
+                              },
+                              className: getIconCls(),
+                            })
+                          ),
+                          /*#__PURE__*/ React.createElement(
+                            Tooltip,
+                            {
+                              text: '\u7F29\u5C0F',
+                              style: getZindexAdd,
+                            },
+                            /*#__PURE__*/ React.createElement(ZoomOut, {
+                              onClick: function onClick() {
+                                return handleZoom('ZoomOut');
+                              },
+                              className: getIconCls(),
+                            })
+                          )
+                        )
+                      : null,
+                    getControllers.rotate
+                      ? /*#__PURE__*/ React.createElement(
+                          React.Fragment,
+                          null,
+                          /*#__PURE__*/ React.createElement(
+                            Tooltip,
+                            {
+                              text: '\u5DE6\u65CB\u8F6C',
+                              style: getZindexAdd,
+                            },
+                            /*#__PURE__*/ React.createElement(RotateLeft, {
+                              onClick: function onClick() {
+                                return handleRotate('RotateLeft');
+                              },
+                              className: getIconCls(),
+                            })
+                          ),
+                          /*#__PURE__*/ React.createElement(
+                            Tooltip,
+                            {
+                              text: '\u53F3\u65CB\u8F6C',
+                              style: getZindexAdd,
+                            },
+                            /*#__PURE__*/ React.createElement(RotateRight, {
+                              onClick: function onClick() {
+                                return handleRotate('RotateRight');
+                              },
+                              className: getIconCls(),
+                            })
+                          )
+                        )
+                      : null,
+                    getControllers.download
+                      ? /*#__PURE__*/ React.createElement(
+                          Tooltip,
+                          {
+                            text: '\u4E0B\u8F7D',
+                            style: getZindexAdd,
+                          },
+                          /*#__PURE__*/ React.createElement(Download, {
+                            onClick: handleDownloadImage,
+                            className: getIconCls(),
+                          })
+                        )
+                      : null,
+                    getControllers.delete
+                      ? /*#__PURE__*/ React.createElement(
+                          Tooltip,
+                          {
+                            text: '\u5220\u9664',
+                            style: getZindexAdd,
+                          },
+                          /*#__PURE__*/ React.createElement(Delate, {
+                            onClick: debounce(handleDel, 300, {
+                              leading: false,
+                              trailing: true,
+                            }),
+                            className: getIconCls(),
+                          })
+                        )
+                      : null
+                  )
+                : null,
               /*#__PURE__*/ React.createElement(
                 'div',
                 {
-                  className: ''.concat(
-                    getPrefixCls(
-                      prefixCls,
-                      ''.concat(imageGallery, '-control-icon')
-                    )
-                  ),
-                },
-                /*#__PURE__*/ React.createElement(
-                  Tooltip,
-                  {
-                    text: '\u653E\u5927',
-                    style: getZindexAdd,
-                  },
-                  /*#__PURE__*/ React.createElement(ZoomIn, {
-                    onClick: function onClick() {
-                      return handleZoom('ZoomIn');
-                    },
-                    className: getIconCls(),
-                  })
-                ),
-                /*#__PURE__*/ React.createElement(
-                  Tooltip,
-                  {
-                    text: '\u7F29\u5C0F',
-                    style: getZindexAdd,
-                  },
-                  /*#__PURE__*/ React.createElement(ZoomOut, {
-                    onClick: function onClick() {
-                      return handleZoom('ZoomOut');
-                    },
-                    className: getIconCls(),
-                  })
-                ),
-                /*#__PURE__*/ React.createElement(
-                  Tooltip,
-                  {
-                    text: '\u5DE6\u65CB\u8F6C',
-                    style: getZindexAdd,
-                  },
-                  /*#__PURE__*/ React.createElement(RotateLeft, {
-                    onClick: function onClick() {
-                      return handleRotate('RotateLeft');
-                    },
-                    className: getIconCls(),
-                  })
-                ),
-                /*#__PURE__*/ React.createElement(
-                  Tooltip,
-                  {
-                    text: '\u53F3\u65CB\u8F6C',
-                    style: getZindexAdd,
-                  },
-                  /*#__PURE__*/ React.createElement(RotateRight, {
-                    onClick: function onClick() {
-                      return handleRotate('RotateRight');
-                    },
-                    className: getIconCls(),
-                  })
-                ),
-                /*#__PURE__*/ React.createElement(
-                  Tooltip,
-                  {
-                    text: '\u4E0B\u8F7D',
-                    style: getZindexAdd,
-                  },
-                  /*#__PURE__*/ React.createElement(Download, {
-                    onClick: handleDownloadImage,
-                    className: getIconCls(),
-                  })
-                ),
-                /*#__PURE__*/ React.createElement(
-                  Tooltip,
-                  {
-                    text: '\u5220\u9664',
-                    style: getZindexAdd,
-                  },
-                  /*#__PURE__*/ React.createElement(Delate, {
-                    onClick: handleDel,
-                    className: getIconCls(),
-                  })
-                )
-              ),
-              /*#__PURE__*/ React.createElement(
-                'div',
-                {
-                  className: ''.concat(
-                    getPrefixCls(
-                      prefixCls,
-                      ''.concat(imageGallery, '-control-pagination')
-                    )
+                  className: classNames(
+                    ''.concat(
+                      getPrefixCls(
+                        rootPrefix,
+                        ''.concat(imageGallery, '-control-pagination')
+                      )
+                    ),
+                    {
+                      'hidden-controll': isShowControls === false,
+                    }
                   ),
                 },
                 ''.concat(currentIndex + 1, '/').concat(itemsLength)
@@ -530,7 +626,7 @@ var ImageGallery = function ImageGallery(_ref) {
               {
                 className: ''.concat(
                   getPrefixCls(
-                    prefixCls,
+                    rootPrefix,
                     ''.concat(imageGallery, '-thumbnails-content')
                   )
                 ),
@@ -539,7 +635,7 @@ var ImageGallery = function ImageGallery(_ref) {
                 'ul',
                 {
                   className: ''.concat(
-                    getPrefixCls(prefixCls, ''.concat(imageGallery, '-t-c-ul'))
+                    getPrefixCls(rootPrefix, ''.concat(imageGallery, '-t-c-ul'))
                   ),
                   ref: SliderThumbnails,
                   onScroll: handleScroll,
@@ -572,55 +668,64 @@ var ImageGallery = function ImageGallery(_ref) {
   );
 
   var wrapCls = classNames(
-    getPrefixCls(prefixCls),
+    getPrefixCls(rootPrefix),
     _defineProperty({}, ''.concat(className), className)
   );
   return /*#__PURE__*/ React.createElement(
-    'div',
-    {
-      className: wrapCls,
-      style: getZindex,
-    },
-    /*#__PURE__*/ React.createElement(
-      Header,
-      {
-        currentSlider: getCurrentSlider,
-        showTitle: showTitle,
-        style: getZindexAdd,
-      },
-      /*#__PURE__*/ React.createElement(Close, {
-        className: getIconCls(
-          getPrefixCls(prefixCls, ''.concat(imageGallery, '-close'))
-        ),
-        onClick: outBrowsing,
-      })
-    ),
-    /*#__PURE__*/ React.createElement(ClipLoader, {
-      color: '#108ee9',
-      size: 40,
-      prefixCls: prefixCls,
-      loading: isDownloading,
-      zIndex: getZindexAdd.zIndex,
-    }),
-    /*#__PURE__*/ React.createElement(
-      'div',
-      {
-        className: getPrefixCls(prefixCls, ''.concat(wrapperCls, '-container')),
-      },
-      /*#__PURE__*/ React.createElement(
-        SliderWrapper,
-        {
-          sliderWrapper: Slider,
-          settings: settings,
-        },
-        getGalleryRender
-      )
-    ),
-    /*#__PURE__*/ React.createElement(Toast, {
-      show: isShowToast,
-      sacleProgress: controller.scale,
-      style: getZindexAdd,
-    })
+    React.Fragment,
+    null,
+    itemsLength
+      ? /*#__PURE__*/ React.createElement(
+          'div',
+          {
+            className: wrapCls,
+            style: getZindex,
+          },
+          /*#__PURE__*/ React.createElement(
+            Header,
+            {
+              currentSlider: getCurrentSlider,
+              showTitle: showTitle,
+              style: getZindexAdd,
+            },
+            /*#__PURE__*/ React.createElement(Close, {
+              className: getIconCls(
+                getPrefixCls(rootPrefix, ''.concat(imageGallery, '-close'))
+              ),
+              onClick: outBrowsing,
+            })
+          ),
+          /*#__PURE__*/ React.createElement(ClipLoader, {
+            color: '#108ee9',
+            size: 40,
+            prefixCls: rootPrefix,
+            loading: isDownloading,
+            zIndex: getZindexAdd.zIndex,
+          }),
+          /*#__PURE__*/ React.createElement(
+            'div',
+            {
+              className: getPrefixCls(
+                rootPrefix,
+                ''.concat(wrapperCls, '-container')
+              ),
+            },
+            /*#__PURE__*/ React.createElement(
+              SliderWrapper,
+              {
+                sliderWrapper: Slider,
+                settings: settings,
+              },
+              getGalleryRender
+            )
+          ),
+          /*#__PURE__*/ React.createElement(Toast, {
+            show: isShowToast,
+            sacleProgress: controller.scale,
+            style: getZindexAdd,
+          })
+        )
+      : null
   );
 };
 

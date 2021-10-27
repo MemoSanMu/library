@@ -6,7 +6,7 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  * @Author: wangsen
  * @Date: 2021-09-30 11:53:54
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-08 15:27:44
+ * @LastEditTime: 2021-10-21 15:13:53
  */
 import React from 'react';
 import Tooltip from '../Tooltip';
@@ -35,25 +35,26 @@ var Header = function Header(_ref) {
           ''.concat(imageGallery, '-header-alt')
         ),
       },
-      showTitle &&
-        /*#__PURE__*/ React.createElement(
-          Tooltip,
-          {
-            text: currentSlider.alt || currentSlider.src,
-            placement: 'bottom',
-            style: style,
-          },
-          /*#__PURE__*/ React.createElement(
-            'p',
+      showTitle && currentSlider
+        ? /*#__PURE__*/ React.createElement(
+            Tooltip,
             {
-              className: getPrefixCls(
-                prefixCls,
-                ''.concat(imageGallery, '-header-title')
-              ),
+              text: currentSlider.title || currentSlider.src,
+              placement: 'bottom',
+              style: style,
             },
-            currentSlider.title || currentSlider.src
+            /*#__PURE__*/ React.createElement(
+              'p',
+              {
+                className: getPrefixCls(
+                  prefixCls,
+                  ''.concat(imageGallery, '-header-title')
+                ),
+              },
+              currentSlider.title || currentSlider.src
+            )
           )
-        )
+        : null
     ),
     children
   );

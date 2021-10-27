@@ -4,8 +4,13 @@ export declare type Items = {
   title?: string;
 };
 export declare type Direction = string | 'left' | 'right';
+export declare type Controllers = {
+  zoom?: boolean;
+  download?: boolean;
+  rotate?: boolean;
+  delete?: boolean;
+};
 export interface Configurations {
-  zIndex?: number;
   initialSlide?: number;
   fade?: boolean;
   draggable?: boolean;
@@ -15,7 +20,6 @@ export interface Configurations {
   onReInit?: () => void;
 }
 export interface ImageGalleryProps {
-  prefixCls?: string;
   thumbnailsSlideMobileCount?: number;
   items: Items[];
   zIndex?: number;
@@ -24,6 +28,7 @@ export interface ImageGalleryProps {
   delCb?: (items: Items[]) => void;
   className?: string;
   configurations?: Configurations;
+  controllers?: Controllers;
 }
 export interface Controller {
   rotate: number;

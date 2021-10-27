@@ -8,7 +8,7 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  * @Author: wangsen
  * @Date: 2021-09-29 10:54:25
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-09 11:10:51
+ * @LastEditTime: 2021-10-26 11:54:14
  */
 
 /**
@@ -20,7 +20,7 @@ import Browser from './components/Browser';
 import callee from './ImageGallery.callee';
 import Card from './components/Card';
 var defaultStyle = {
-  cursor: 'pointer',
+  cursor: 'zoom-in',
   width: 100,
   height: 80,
 };
@@ -28,7 +28,7 @@ var defaultStyle = {
 var GalleryPreview = function GalleryPreview(_ref) {
   var props = _extends({}, _ref);
 
-  var className = props.className,
+  var imgcls = props.imgcls,
     _props$style = props.style,
     style = _props$style === void 0 ? {} : _props$style,
     src = props.src,
@@ -75,7 +75,7 @@ var GalleryPreview = function GalleryPreview(_ref) {
     React.Fragment,
     null,
     /*#__PURE__*/ React.createElement('img', {
-      className: className,
+      className: imgcls,
       style: _objectSpread(_objectSpread({}, defaultStyle), style),
       src: src,
       alt: alt,
@@ -85,17 +85,21 @@ var GalleryPreview = function GalleryPreview(_ref) {
       },
       ref: imageRef,
     }),
-    /*#__PURE__*/ React.createElement(
-      Browser,
-      _objectSpread(
-        {
-          browsing: isBrowsingControlled ? !!props.browsing : browsing,
-          isPortal: true,
-          destroyer: outBrowsing,
-        },
-        props
-      )
-    )
+    (props === null || props === void 0 ? void 0 : props.items) &&
+      Array.isArray(props.items) &&
+      props.items.length
+      ? /*#__PURE__*/ React.createElement(
+          Browser,
+          _objectSpread(
+            {
+              browsing: isBrowsingControlled ? !!props.browsing : browsing,
+              isPortal: true,
+              destroyer: outBrowsing,
+            },
+            props
+          )
+        )
+      : null
   );
 }; // 常规组件 image展示触发后调用
 

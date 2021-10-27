@@ -9,9 +9,15 @@ import _extends from '@babel/runtime/helpers/esm/extends';
  * @Author: wangsen
  * @Date: 2021-09-29 16:06:40
  * @LastEditors: wangsen
- * @LastEditTime: 2021-10-09 11:10:18
+ * @LastEditTime: 2021-10-12 15:21:59
  */
-import React, { useState, useRef, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+  useEffect,
+} from 'react';
 import classNames from 'classnames';
 import SliderWrapper from '../Slider';
 import { CareLeftFilled, CareRightFilled } from '../Svg';
@@ -20,13 +26,13 @@ import {
   imageGalleryCard,
   cardThumbnailsMaxLength as cardThumbnailsMaxLen,
   cardThumbnailsSlideWidth,
+  rootPrefix,
 } from '../../config';
 
 var Card = function Card(_ref) {
   var props = _extends({}, _ref);
 
-  var prefixCls = props.prefixCls,
-    items = props.items,
+  var items = props.items,
     _props$thumbnailsSlid = props.thumbnailsSlideMobileCount,
     thumbnailsSlideMobileCount =
       _props$thumbnailsSlid === void 0 ? 1 : _props$thumbnailsSlid,
@@ -62,16 +68,37 @@ var Card = function Card(_ref) {
     thumbnailsControl = _useState6[0],
     setThumbnailsControl = _useState6[1]; // 控制缩略图左右按钮禁用
 
-  var itemsLength = imageGalleryItems.length; // 当图片切换前触发钩子
+  var itemsLength = imageGalleryItems.length;
+  useEffect(function () {
+    // 初始化传入initialSlide 在大于0和小于itemsLength的区间内
+    if (currentIndex > 0 && currentIndex < itemsLength) {
+      var _SliderThumbnails$cur;
+
+      //  缩略图跟随滚动
+      SliderThumbnails === null || SliderThumbnails === void 0
+        ? void 0
+        : (_SliderThumbnails$cur = SliderThumbnails.current) === null ||
+          _SliderThumbnails$cur === void 0
+        ? void 0
+        : _SliderThumbnails$cur.scrollTo({
+            left:
+              cardThumbnailsSlideWidth * currentIndex -
+              cardThumbnailsSlideWidth,
+            behavior: 'smooth',
+          });
+    }
+
+    return function () {};
+  }, []); // 当图片切换前触发钩子
 
   var _beforeChange = function beforeChange(newIndex) {
-    var _SliderThumbnails$cur;
+    var _SliderThumbnails$cur2;
 
     //  缩略图跟随滚动
-    (_SliderThumbnails$cur = SliderThumbnails.current) === null ||
-    _SliderThumbnails$cur === void 0
+    (_SliderThumbnails$cur2 = SliderThumbnails.current) === null ||
+    _SliderThumbnails$cur2 === void 0
       ? void 0
-      : _SliderThumbnails$cur.scrollTo({
+      : _SliderThumbnails$cur2.scrollTo({
           left: cardThumbnailsSlideWidth * newIndex - cardThumbnailsSlideWidth,
           behavior: 'smooth',
         });
@@ -116,7 +143,7 @@ var Card = function Card(_ref) {
 
   var getIconCls = function getIconCls(cls) {
     return classNames(
-      [getPrefixCls(prefixCls, ''.concat(imageGalleryCard, '-icon'))],
+      [getPrefixCls(rootPrefix, ''.concat(imageGalleryCard, '-icon'))],
       cls
     );
   }; // 缩略图左右切换
@@ -193,7 +220,7 @@ var Card = function Card(_ref) {
     [isShowCardSwitchBtn]
   );
   var wrapCls = classNames(
-    getPrefixCls(prefixCls, imageGalleryCard),
+    getPrefixCls(rootPrefix, imageGalleryCard),
     _defineProperty(
       {
         control: getIsShowCardSwitchBtn,
@@ -203,137 +230,146 @@ var Card = function Card(_ref) {
     )
   );
   return /*#__PURE__*/ React.createElement(
-    'div',
-    {
-      className: wrapCls,
-    },
-    /*#__PURE__*/ React.createElement(
-      SliderWrapper,
-      {
-        sliderWrapper: Slider,
-        settings: settings,
-      },
-      imageGalleryItems &&
-        imageGalleryItems.map(function (i) {
-          return /*#__PURE__*/ React.createElement(
-            'div',
+    React.Fragment,
+    null,
+    itemsLength
+      ? /*#__PURE__*/ React.createElement(
+          'div',
+          {
+            className: wrapCls,
+          },
+          /*#__PURE__*/ React.createElement(
+            SliderWrapper,
             {
-              key: i.src,
-              className: getPrefixCls(
-                prefixCls,
-                ''.concat(imageGalleryCard, '-image-content')
-              ),
+              sliderWrapper: Slider,
+              settings: settings,
             },
-            /*#__PURE__*/ React.createElement('img', {
-              src: i.src,
-              alt: i.alt,
-              className: getPrefixCls(
-                prefixCls,
-                ''.concat(imageGalleryCard, '-image')
-              ),
-            })
-          );
-        })
-    ),
-    /*#__PURE__*/ React.createElement(
-      'div',
-      {
-        className: ''.concat(
-          getPrefixCls(
-            prefixCls,
-            ''.concat(imageGalleryCard, '-thumbnails-content')
-          )
-        ),
-      },
-      getIsShowCardSwitchBtn
-        ? /*#__PURE__*/ React.createElement(
-            'div',
-            {
-              className: ''.concat(
-                getPrefixCls(
-                  prefixCls,
-                  ''.concat(imageGalleryCard, '-thumbnails-control')
-                )
-              ),
-              onClick: function onClick() {
-                return handleThumbnailsMove('left');
-              },
-            },
-            /*#__PURE__*/ React.createElement(CareLeftFilled, {
-              className: getIconCls(),
-              thumbnailsControl: thumbnailsControl,
-            })
-          )
-        : null,
-      /*#__PURE__*/ React.createElement(
-        'ul',
-        {
-          className: classNames(
-            ''.concat(
-              getPrefixCls(prefixCls, ''.concat(imageGalleryCard, '-t-c-ul'))
-            ),
-            {
-              center: itemsLength < 4,
-            }
-          ),
-          ref: SliderThumbnails,
-          onScroll: handleScroll,
-        },
-        imageGalleryItems &&
-          imageGalleryItems.map(function (i, ind) {
-            return /*#__PURE__*/ React.createElement(
-              'li',
-              {
-                key: i.src,
-                className: classNames(
-                  getPrefixCls(
-                    prefixCls,
-                    ''.concat(imageGalleryCard, '-image')
-                  ),
-                  _defineProperty(
-                    {},
-                    ''.concat(imageGalleryCard, '-active'),
-                    currentIndex === ind
-                  )
-                ),
-                onClick: function onClick() {
-                  return handleSlickGoTo(ind);
-                },
-              },
-              /*#__PURE__*/ React.createElement('img', {
-                className: ''.concat(
-                  getPrefixCls(
-                    prefixCls,
-                    ''.concat(imageGalleryCard, '-t-c-img')
-                  )
-                ),
-                src: i.src,
-                alt: i.alt,
+            imageGalleryItems &&
+              imageGalleryItems.map(function (i) {
+                return /*#__PURE__*/ React.createElement(
+                  'div',
+                  {
+                    key: i.src,
+                    className: getPrefixCls(
+                      rootPrefix,
+                      ''.concat(imageGalleryCard, '-image-content')
+                    ),
+                  },
+                  /*#__PURE__*/ React.createElement('img', {
+                    src: i.src,
+                    alt: i.alt,
+                    className: getPrefixCls(
+                      rootPrefix,
+                      ''.concat(imageGalleryCard, '-image')
+                    ),
+                  })
+                );
               })
-            );
-          })
-      ),
-      getIsShowCardSwitchBtn
-        ? /*#__PURE__*/ React.createElement(
+          ),
+          /*#__PURE__*/ React.createElement(
             'div',
             {
               className: ''.concat(
                 getPrefixCls(
-                  prefixCls,
-                  ''.concat(imageGalleryCard, '-thumbnails-control')
+                  rootPrefix,
+                  ''.concat(imageGalleryCard, '-thumbnails-content')
                 )
               ),
-              onClick: function onClick() {
-                return handleThumbnailsMove('right');
-              },
             },
-            /*#__PURE__*/ React.createElement(CareRightFilled, {
-              className: getIconCls(),
-              thumbnailsControl: thumbnailsControl,
-            })
+            getIsShowCardSwitchBtn
+              ? /*#__PURE__*/ React.createElement(
+                  'div',
+                  {
+                    className: ''.concat(
+                      getPrefixCls(
+                        rootPrefix,
+                        ''.concat(imageGalleryCard, '-thumbnails-control')
+                      )
+                    ),
+                    onClick: function onClick() {
+                      return handleThumbnailsMove('left');
+                    },
+                  },
+                  /*#__PURE__*/ React.createElement(CareLeftFilled, {
+                    className: getIconCls(),
+                    thumbnailsControl: thumbnailsControl,
+                  })
+                )
+              : null,
+            /*#__PURE__*/ React.createElement(
+              'ul',
+              {
+                className: classNames(
+                  ''.concat(
+                    getPrefixCls(
+                      rootPrefix,
+                      ''.concat(imageGalleryCard, '-t-c-ul')
+                    )
+                  ),
+                  {
+                    center: itemsLength < 4,
+                  }
+                ),
+                ref: SliderThumbnails,
+                onScroll: handleScroll,
+              },
+              imageGalleryItems &&
+                imageGalleryItems.map(function (i, ind) {
+                  return /*#__PURE__*/ React.createElement(
+                    'li',
+                    {
+                      key: i.src,
+                      className: classNames(
+                        getPrefixCls(
+                          rootPrefix,
+                          ''.concat(imageGalleryCard, '-image')
+                        ),
+                        _defineProperty(
+                          {},
+                          ''.concat(imageGalleryCard, '-active'),
+                          currentIndex === ind
+                        )
+                      ),
+                      onClick: function onClick() {
+                        return handleSlickGoTo(ind);
+                      },
+                    },
+                    /*#__PURE__*/ React.createElement('img', {
+                      className: ''.concat(
+                        getPrefixCls(
+                          rootPrefix,
+                          ''.concat(imageGalleryCard, '-t-c-img')
+                        )
+                      ),
+                      src: i.src,
+                      alt: i.alt,
+                    })
+                  );
+                })
+            ),
+            getIsShowCardSwitchBtn
+              ? /*#__PURE__*/ React.createElement(
+                  'div',
+                  {
+                    className: ''.concat(
+                      getPrefixCls(
+                        rootPrefix,
+                        ''.concat(imageGalleryCard, '-thumbnails-control')
+                      )
+                    ),
+                    onClick: function onClick() {
+                      return handleThumbnailsMove('right');
+                    },
+                  },
+                  /*#__PURE__*/ React.createElement(CareRightFilled, {
+                    className: getIconCls(),
+                    thumbnailsControl: thumbnailsControl,
+                  })
+                )
+              : null
           )
-        : null
-    )
+        )
+      : null
   );
 };
 
