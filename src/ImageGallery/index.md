@@ -1,15 +1,4 @@
-<!--
- * @Descripttion:
- * @version:
- * @Author: wangsen
- * @Date: 2021-09-20 19:35:54
- * @LastEditors: wangsen
- * @LastEditTime: 2021-10-21 15:24:14
--->
-
-## Foo
-
-Demo:
+### 基本使用:
 
 ```tsx
 import React from 'react';
@@ -18,13 +7,6 @@ const { ImageGalleryCard } = ImageGallery; // 卡片
 
 const PREFIX_URL =
   'https://raw.githubusercontent.com/xiaolin/react-image-gallery/master/static/';
-
-// const items = [...Array(3).keys()].map((item, i) => ({
-//   src:
-//     i === 2
-//       ? 'https://user-images.githubusercontent.com/9554297/83762004-a0761b00-a6a9-11ea-83b4-9c8ff721d4b8.png'
-//       : `${PREFIX_URL}${1}.jpg`,
-// }));
 
 const items = [
   {
